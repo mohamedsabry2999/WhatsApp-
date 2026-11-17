@@ -1,0 +1,25 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<style>
+  body { font-family: system-ui, "Segoe UI", Tahoma, sans-serif; width: 300px; margin: 0; padding: 16px; background: #fff; color: #111b21; }
+  h1 { font-size: 16px; margin: 0 0 12px; color: #008069; }
+  label { display: flex; gap: 8px; align-items: center; font-size: 13px; margin: 6px 0; cursor: pointer; }
+  button { width: 100%; margin-top: 12px; padding: 10px; border: 0; border-radius: 8px; background: #00a884; color: #fff; font-size: 14px; font-weight: 600; cursor: pointer; }
+  button:disabled { background: #8fd3c3; cursor: wait; }
+  #status { margin-top: 12px; font-size: 13px; line-height: 1.6; white-space: pre-line; }
+  .err { color: #c0392b; }
+  .ok { color: #008069; }
+</style>
+</head>
+<body>
+  <h1>تصدير جهات واتساب لإكسيل</h1>
+  <label><input type="checkbox" id="includeAll"> ضيف كمان كل جهات الاتصال المحفوظة</label>
+  <button id="go">استخراج وتحميل الشيت</button>
+  <div id="status"></div>
+  <script src="xlsx.js"></script>
+  <script src="extract.js"></script>
+  <script src="popup.js"></script>
+</body>
+</html>
