@@ -13,6 +13,16 @@ function fmtDate(sec) {
   return `${d.getFullYear()}-${p(d.getMonth() + 1)}-${p(d.getDate())} ${p(d.getHours())}:${p(d.getMinutes())}`;
 }
 
+// CSV بترميز UTF-8 مع BOM عشان العربي يفتح صح في إكسيل
+function buildCsv(headers, rows) {
+  const cell = (v) => {
+    const s = String(v ?? '');
+    return /[",\r\n]/.test(s) ? '"' + s.replace(/"/g, '""') + '"' : s;
+  };
+  const text = [headers, ...rows].map((r) => r.map(cell).join(',')).join('\r\n');
+  return new Blob(['\ufeff' + text], { type: 'text/csv;charset=utf-8' });
+}
+
 btn.addEventListener('click', async () => {
   btn.disabled = true;
   setStatus('جاري القراءة...');
@@ -43,19 +53,19 @@ btn.addEventListener('click', async () => {
       r.pushName,
       r.saved ? 'نعم' : 'لا',
       r.chatted ? fmtDate(r.lastMessage) : '(مفيش محادثة)',
+      r.groups.length,
+      r.groups.join('، '),
     ]);
-    const blob = buildXlsx({
-      sheetName: 'WhatsApp Contacts',
-      headers: ['#', 'الاسم', 'رقم التليفون', 'الاسم على واتساب', 'محفوظ عندي؟', 'آخر محادثة'],
-      rows,
-      widths: [6, 30, 20, 25, 13, 18],
-      rtl: true,
-    });
+    const headers = ['#', 'الاسم', 'رقم التليفون', 'الاسم على واتساب', 'محفوظ عندي؟', 'آخر محادثة', 'عدد الجروبات المشتركة', 'الجروبات المشتركة'];
+    const fmt = document.querySelector('input[name="fmt"]:checked').value;
+    const blob = fmt === 'csv'
+      ? buildCsv(headers, rows)
+      : buildXlsx({ sheetName: 'WhatsApp Contacts', headers, rows, widths: [6, 30, 20, 25, 13, 18, 12, 50], rtl: true });
 
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href = url;
-    a.download = `whatsapp-contacts-${new Date().toISOString().slice(0, 10)}.xlsx`;
+    a.download = `whatsapp-contacts-${new Date().toISOString().slice(0, 10)}.${fmt}`;
     document.body.appendChild(a);
     a.click();
     a.remove();

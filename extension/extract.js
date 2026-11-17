@@ -91,6 +91,7 @@ async function extractWhatsAppContacts(options) {
       saved: !!(c && (c.isAddressBookContact || c.name)) || !!(prev && prev.saved),
       lastMessage: Math.max(ts, (prev && prev.lastMessage) || 0),
       chatted: !!chat || !!(prev && prev.chatted),
+      groups: (prev && prev.groups) || [],
     };
     rows.set(key, row);
   }
@@ -100,6 +101,28 @@ async function extractWhatsAppContacts(options) {
     for (const c of contacts) {
       const id = idStr(c.id);
       if (c.isAddressBookContact || c.name) add(id, null);
+    }
+  }
+
+  // الجروبات المشتركة: اسم كل جروب + أعضاؤه
+  const groupNames = new Map();
+  for (const chat of chats) {
+    const id = idStr(chat.id);
+    if (id.endsWith('@g.us') && (chat.name || chat.formattedTitle)) groupNames.set(id, chat.name || chat.formattedTitle);
+  }
+  for (const g of await getAll(db, 'group-metadata')) {
+    const id = idStr(g.id);
+    if (id && g.subject && !groupNames.has(id)) groupNames.set(id, g.subject);
+  }
+  const keyOf = (id) => phoneOf(id, contactById.get(id)) || id;
+  for (const rec of await getAll(db, 'participant')) {
+    const gid = idStr(rec.groupId || rec.id);
+    const gname = groupNames.get(gid);
+    if (!gname || !Array.isArray(rec.participants)) continue;
+    for (const p of rec.participants) {
+      const pid = idStr(p && typeof p === 'object' && !p.server && p.id ? p.id : p);
+      const row = rows.get(keyOf(pid));
+      if (row && !row.groups.includes(gname)) row.groups.push(gname);
     }
   }
 

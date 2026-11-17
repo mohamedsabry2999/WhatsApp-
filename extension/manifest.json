@@ -2,7 +2,7 @@
   "manifest_version": 3,
   "name": "WhatsApp Contacts Exporter",
   "description": "تصدير كل الأرقام اللي اتراسلت معاها على واتساب ويب لشيت إكسيل (الاسم + رقم التليفون).",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "permissions": ["scripting", "activeTab"],
   "host_permissions": ["https://web.whatsapp.com/*"],
   "action": {
