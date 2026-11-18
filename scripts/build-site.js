@@ -12,7 +12,11 @@ const MAIN_SITE = 'https://mohammedsabry.site';
 
 const esc = (s) => String(s ?? '').replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
 const kb = (n) => Math.round(n / 1024) + ' KB';
-const CATS = ['واتساب', 'محتوى', 'تحليل'];
+const FW = data.framework;
+const stageOf = (t) => FW.find((x) => x.id === t.stage);
+const stageLabel = (t) => { const x = stageOf(t); return x ? `0${x.n} · ${x.ar}` : ''; };
+const byStage = (a, b2) => ((stageOf(a) || { n: 99 }).n - (stageOf(b2) || { n: 99 }).n);
+const extTools = () => tools.filter((t) => t.extension);
 
 // ====== اللوجو (لما يوصل اللوجو الرسمي: حطه في site/assets/logo.svg وغيّر LOGO_IMG لـ true) ======
 const LOGO_IMG = fs.existsSync(path.join(SITE, 'assets', 'logo.svg')) || fs.existsSync(path.join(SITE, 'assets', 'logo.png'));
@@ -80,8 +84,8 @@ ${body}
 <footer class="site"><div class="wrap">
   <div class="cols">
     <div class="about">${logo(b)}<p>أدوات مجانية بتشيل الشغل المتكرر من يوم المسوّق، عشان وقته يروح للقرار. البيانات كلها بتفضل على جهازك.</p></div>
-    <div><h6>واتساب</h6><ul>${tools.filter((t) => t.category === 'واتساب').map((t) => `<li><a href="${b}tools/${t.id}.html">${t.name}</a></li>`).join('')}</ul></div>
-    <div><h6>محتوى وتحليل</h6><ul>${tools.filter((t) => t.category !== 'واتساب').map((t) => `<li><a href="${b}tools/${t.id}.html">${t.name}</a></li>`).join('')}</ul></div>
+    <div><h6>الأدوات</h6><ul>${tools.slice().sort(byStage).slice(0, Math.ceil(tools.length / 2)).map((t) => `<li><a href="${b}tools/${t.id}.html">${t.name}</a></li>`).join('')}</ul></div>
+    <div><h6>&nbsp;</h6><ul>${tools.slice().sort(byStage).slice(Math.ceil(tools.length / 2)).map((t) => `<li><a href="${b}tools/${t.id}.html">${t.name}</a></li>`).join('')}</ul></div>
     <div><h6>روابط</h6><ul><li><a href="${b}install.html">طريقة التثبيت</a></li><li><a href="${b}${bundle.download.zip}" download>Marketer's Toolkit (الكل)</a></li><li><a href="${b}privacy.html">الخصوصية</a></li><li><a href="${MAIN_SITE}">الموقع الرئيسي</a></li></ul></div>
   </div>
   <div class="legal"><span>© ${new Date().getFullYear()} محمد صبري | <span class="en">Mohamed Sabry</span>. كل الأدوات مجانية.</span><span class="en">v${version}</span></div>
@@ -94,22 +98,22 @@ ${scripts}
 }
 
 const toolCard = (t, b, delay = 0) => `
-  <a class="panel tool-card reveal" data-delay="${delay}" data-cat="${t.category}" data-web="${t.web ? 1 : 0}" href="${b}tools/${t.id}.html">
+  <a class="panel tool-card reveal" data-delay="${delay}" data-stage="${t.stage}" data-web="${t.web ? 1 : 0}" href="${b}tools/${t.id}.html">
     <img class="ic" src="${b}assets/icons/${t.id}.svg" alt="">
     <h3 class="en" style="text-align:right">${t.nameHtml}</h3>
     <p>${esc(t.tagline)}</p>
-    <div class="tags"><span class="tag">${t.category}</span>${t.web ? '<span class="tag red">جرّبها أونلاين</span>' : '<span class="tag">إضافة كروم</span>'}</div>
+    <div class="tags"><span class="tag">${stageLabel(t)}</span>${t.web ? '<span class="tag red">جرّبها أونلاين</span>' : ''}${t.extension ? '<span class="tag">إضافة كروم</span>' : ''}</div>
     <span class="go">التفاصيل والتحميل</span>
   </a>`;
 
-const toolsJson = () => `<script type="application/json" id="tools-data">${JSON.stringify({ version, tools: tools.map(slim), bundle: slim(bundle) })}</script>`;
-const slim = (t) => ({ id: t.id, name: t.name, tagline: t.tagline, download: { zip: t.download.zip, folder: t.download.folder } });
+const toolsJson = () => `<script type="application/json" id="tools-data">${JSON.stringify({ version, tools: extTools().map(slim), bundle: slim(bundle) })}</script>`;
+const slim = (t) => !t.download ? null : ({ id: t.id, name: t.name, tagline: t.tagline, download: { zip: t.download.zip, folder: t.download.folder } });
 
 function guide(b) {
   const chrome = (svg) => `<span class="b-ico">${svg}</span>`;
   return `
   <div class="tool-pick" role="group" aria-label="اختار الأداة">
-    ${[...tools, bundle].map((t) => `<button data-id="${t.id}"><img src="${b}assets/icons/${t.id}.svg" alt="">${t.name}</button>`).join('')}
+    ${[...extTools(), bundle].map((t) => `<button data-id="${t.id}"><img src="${b}assets/icons/${t.id}.svg" alt="">${t.name}</button>`).join('')}
   </div>
   <div class="guide" id="guide">
     <div>
@@ -205,19 +209,35 @@ function home() {
 
   <section style="padding-top:28px">
     <div class="stats">
-      <div class="glass stat reveal"><div class="num" data-count="${tools.length}">${tools.length}<span class="dot">.</span></div><h5>أدوات</h5><p>كل واحدة إضافة لوحدها</p></div>
+      <div class="glass stat reveal"><div class="num" data-count="${tools.length}">${tools.length}<span class="dot">.</span></div><h5>أدوات</h5><p>على ${FW.filter((x) => tools.some((t) => t.stage === x.id)).length} مراحل من المنظومة</p></div>
       <div class="glass stat reveal" data-delay="80"><div class="num" data-count="0">0<span class="dot">.</span></div><h5>جنيه اشتراكات</h5><p>ولا API مدفوع</p></div>
       <div class="glass stat reveal" data-delay="160"><div class="num" data-count="100" data-suffix="%">100%<span class="dot">.</span></div><h5>بياناتك عندك</h5><p>مفيش سيرفر بيشوف حاجة</p></div>
       <div class="glass stat reveal" data-delay="240"><div class="num" data-count="${tools.filter((t) => t.web).length}">${tools.filter((t) => t.web).length}<span class="dot">.</span></div><h5>تشتغل أونلاين</h5><p>جرّبها من غير تحميل</p></div>
     </div>
   </section>
 
+  <section id="framework">
+    <div class="section-head reveal">
+      <div><p class="eyebrow">المنظومة <span class="en">· Market-to-Measurement</span></p><h2 class="h2">مش مجرد أدوات<span class="dot">.</span><span class="soft">منظومة من 8 مراحل.</span></h2>
+      <p class="lead">كل أداة بتخدم مرحلة من الـ Market-to-Measurement Framework: من ربط التسويق بالبيزنس، لحد القياس والتطوير.</p></div>
+    </div>
+    <div class="fw-grid">${FW.map((x, i) => { const ts = tools.filter((t) => t.stage === x.id); return `
+      <button class="glass fw-card reveal${ts.length ? '' : ' soon'}" data-delay="${(i % 4) * 70}" data-stage="${x.id}"${ts.length ? '' : ' disabled'}>
+        <span class="fw-n">0${x.n}<span class="dot">.</span></span>
+        <span class="fw-en en">${esc(x.en)}</span>
+        <b>${esc(x.ar)}</b>
+        <span class="fw-d">${esc(x.desc)}</span>
+        <span class="fw-tools">${ts.length ? ts.map((t) => `<img src="assets/icons/${t.id}.svg" alt="${esc(t.name)}" title="${esc(t.name)}">`).join('') + `<i>${ts.length} ${ts.length > 2 ? 'أدوات' : ts.length === 2 ? 'أداتين' : 'أداة'}</i>` : '<i>أدوات قريبًا</i>'}</span>
+      </button>`; }).join('')}
+    </div>
+  </section>
+
   <section id="tools">
     <div class="section-head reveal">
       <div><p class="eyebrow">الأدوات <span class="en">· The Toolkit</span></p><h2 class="h2">كل أداة لوحدها<span class="dot">.</span><span class="soft">نزّل اللي محتاجه بس.</span></h2></div>
-      <div class="filters"><button class="chip on" data-f="all">الكل</button>${CATS.map((c) => `<button class="chip" data-f="${c}">${c}</button>`).join('')}<button class="chip" data-f="web">تشتغل أونلاين</button></div>
+      <div class="filters"><button class="chip on" data-f="all">الكل</button>${FW.filter((x) => tools.some((t) => t.stage === x.id)).map((x) => `<button class="chip" data-f="${x.id}">0${x.n} · ${esc(x.ar)}</button>`).join('')}<button class="chip" data-f="web">تشتغل أونلاين</button></div>
     </div>
-    <div class="tools-grid">${tools.map((t, i) => toolCard(t, b, (i % 3) * 80)).join('')}</div>
+    <div class="tools-grid">${tools.slice().sort(byStage).map((t, i) => toolCard(t, b, (i % 3) * 80)).join('')}</div>
   </section>
 
   <section id="install">
@@ -291,13 +311,17 @@ function home() {
 function toolPage(t) {
   const b = '../';
   const perms = [...t.permissions, ...t.hosts];
-  const others = tools.filter((x) => x.id !== t.id && x.category === t.category).concat(tools.filter((x) => x.id !== t.id && x.category !== t.category)).slice(0, 3);
+  const others = tools.filter((x) => x.id !== t.id && x.stage === t.stage).concat(tools.filter((x) => x.id !== t.id && x.stage !== t.stage).sort(byStage)).slice(0, 3);
+  const st = stageOf(t);
+  const isAudit = t.id === 'audit';
   const demo = t.web ? `
   <section id="try">
     <div class="dark">
       <div class="section-head" style="position:relative">
-        <div><p class="eyebrow">جرّبها هنا <span class="en">· Live demo</span></p><h2 class="h2">دي الأداة نفسها<span class="dot">.</span><span class="soft">شغّالة على الموقع.</span></h2>
-        <p class="lead">بياناتك بتتحفظ في المتصفح بتاعك بس. ولو عجبتك، نزّلها كإضافة عشان تبقى قدامك على طول.</p></div>
+        <div>${isAudit
+          ? '<p class="eyebrow">ابدأ التقييم <span class="en">· 5 minutes</span></p><h2 class="h2">جاوب بصراحة<span class="dot">.</span><span class="soft">النتيجة بتفضل على جهازك.</span></h2><p class="lead">24 سؤال، 3 لكل مرحلة. وتقدر ترجع لأي مرحلة وتعدّل إجابتك.</p>'
+          : `<p class="eyebrow">جرّبها هنا <span class="en">· Live demo</span></p><h2 class="h2">دي الأداة نفسها<span class="dot">.</span><span class="soft">شغّالة على الموقع.</span></h2>
+        <p class="lead">بياناتك بتتحفظ في المتصفح بتاعك بس.${t.extension ? ' ولو عجبتك، نزّلها كإضافة عشان تبقى قدامك على طول.' : ''}</p>`}</div>
       </div>
       <div class="demo-shell" style="position:relative"><div class="demo-bar"><i></i><i></i><i></i><span class="en">${esc(t.name)}</span></div>
         <div class="demo" id="demo-root"><div class="row demo-actions" style="margin-bottom:10px"></div><div class="demo-tool"></div></div></div>
@@ -307,24 +331,29 @@ function toolPage(t) {
 <div class="wrap">
   <section class="panel tool-hero">
     <div class="reveal">
-      <p class="eyebrow"><a href="../index.html#tools">الأدوات</a> / ${t.category}</p>
+      <p class="eyebrow"><a href="../index.html#framework">${st ? `0${st.n} · ${esc(st.en)}` : 'الأدوات'}</a>&nbsp;/ ${st ? esc(st.ar) : ''}</p>
       <img class="ic" src="${b}assets/icons/${t.id}.svg" alt="">
       <h1 class="tname">${t.nameHtml}</h1>
       <p style="font-size:22px;font-weight:800;margin:0">${esc(t.tagline)}</p>
       <p class="lead">${esc(t.description)}</p>
       <div class="bullets">${t.bullets.map((x) => `<div>${esc(x)}</div>`).join('')}</div>
       <div style="display:flex;gap:12px;margin-top:30px;flex-wrap:wrap">
-        <a class="btn btn-red" href="${b}${t.download.zip}" download>تحميل ${esc(t.name)}</a>
-        ${t.web ? '<a class="btn btn-dark" href="#try">جرّبها أونلاين</a>' : ''}
-        <a class="btn btn-light" href="${b}install.html?tool=${t.id}">إزاي أثبّتها؟</a>
+        ${t.extension ? `<a class="btn btn-red" href="${b}${t.download.zip}" download>تحميل ${esc(t.name)}</a>` : `<a class="btn btn-red" href="#try">${isAudit ? 'ابدأ التقييم' : 'جرّبها دلوقتي'}</a>`}
+        ${t.web && t.extension ? '<a class="btn btn-dark" href="#try">جرّبها أونلاين</a>' : ''}
+        ${t.extension ? `<a class="btn btn-light" href="${b}install.html?tool=${t.id}">إزاي أثبّتها؟</a>` : ''}
       </div>
     </div>
-    <aside class="glass dl-card reveal" data-delay="120">
+    ${t.extension ? `<aside class="glass dl-card reveal" data-delay="120">
       <b style="font-size:18px">تحميل مجاني</b>
-      <div class="meta"><b>النسخة</b><span class="en" style="text-align:right">v${version}</span><b>الحجم</b><span class="en" style="text-align:right">${kb(t.download.size)}</span><b>بتشتغل على</b><span>${esc(t.where)}</span><b>المتصفح</b><span>Chrome · Edge · Brave</span></div>
+      <div class="meta"><b>النسخة</b><span class="en" style="text-align:right">v${version}</span><b>الحجم</b><span class="en" style="text-align:right">${kb(t.download.size)}</span><b>بتشتغل على</b><span>${esc(t.where)}</span><b>المرحلة</b><span>${st ? esc(st.ar) : ''}</span><b>المتصفح</b><span>Chrome · Edge · Brave</span></div>
       <a class="btn btn-red" href="${b}${t.download.zip}" download>تحميل · ZIP</a>
       <a class="btn btn-light" href="${b}install.html?tool=${t.id}">دليل التثبيت التفاعلي</a>
-    </aside>
+    </aside>` : `<aside class="glass dl-card reveal" data-delay="120">
+      <b style="font-size:18px">مجانية على الموقع</b>
+      <p style="color:var(--ink-2);margin:8px 0 0">مش محتاجة تحميل ولا تسجيل. افتحها واشتغل على طول، وبياناتك بتفضل على جهازك.</p>
+      <div class="meta"><b>المرحلة</b><span>${st ? esc(st.ar) : ''}</span><b>بتشتغل على</b><span>أي متصفح، كمبيوتر أو موبايل</span></div>
+      <a class="btn btn-red" href="#try">${isAudit ? 'ابدأ التقييم' : 'جرّبها دلوقتي'}</a>
+    </aside>`}
   </section>
 
   <section>
@@ -332,13 +361,13 @@ function toolPage(t) {
     <div class="shot-frame reveal"><img src="${b}assets/shots/${t.id}.jpg" alt="${esc(t.name)}" loading="lazy"></div>
   </section>
   ${demo}
-  <section>
+  ${t.extension ? '' : '<!--'}<section>
     <div class="panel reveal" style="padding:clamp(24px,4vw,44px)">
       <p class="eyebrow">الصلاحيات <span class="en">· Permissions</span></p>
       <h2 class="h2" style="font-size:clamp(26px,3vw,36px)">بتطلب إيه وليه<span class="dot">.</span><span class="soft">ولا صلاحية زيادة عن اللزوم.</span></h2>
       <div style="margin-top:18px">${perms.map((p) => `<div class="perm-row"><code>${esc(p.replace('https://', '').replace('/*', ''))}</code><span>${esc(PERM[p] || '')}</span></div>`).join('')}</div>
     </div>
-  </section>
+  </section>${t.extension ? '' : '-->'}
 
   <section>
     <div class="section-head reveal"><div><p class="eyebrow">أدوات تانية</p><h2 class="h2">ممكن تحتاج كمان<span class="dot">.</span></h2></div><a class="btn btn-light" href="../index.html#tools">كل الأدوات</a></div>
@@ -347,7 +376,7 @@ function toolPage(t) {
 </div>`;
   const demoScripts = t.web ? `
 <link rel="stylesheet" href="${b}app/demo.css">
-<script src="${b}app/qrcode.js"></script><script src="${b}app/xlsx.js"></script><script src="${b}app/store-web.js"></script><script src="${b}app/ui.js"></script>
+<script src="${b}app/qrcode.js"></script><script src="${b}app/xlsx.js"></script><script src="${b}app/store-web.js"></script><script src="${b}app/ui.js"></script><script src="${b}app/framework.js"></script>
 <script src="${b}app/${t.id}.js"></script>
 <script>
   (function () {
@@ -445,6 +474,7 @@ tools.forEach((t) => write(`tools/${t.id}.html`, toolPage(t)));
 write('app/demo.css', demoCss());
 for (const f of ['qrcode.js', 'xlsx.js', 'ui.js']) fs.copyFileSync(path.join(TK, 'lib', f), path.join(SITE, 'app', f));
 for (const t of tools.filter((x) => x.web)) fs.copyFileSync(path.join(TK, 'tools', t.id + '.js'), path.join(SITE, 'app', t.id + '.js'));
+fs.copyFileSync(path.join(TK, 'lib', 'framework.js'), path.join(SITE, 'app', 'framework.js'));
 console.log('✔ site/app (أدوات أونلاين: ' + tools.filter((x) => x.web).map((x) => x.name).join('، ') + ')');
 write('404.html', layout({ title: 'الصفحة مش موجودة — محمد صبري', desc: '', b: '/', body: `<div class="wrap"><section class="panel hero" style="grid-template-columns:1fr;text-align:center"><div><h1 class="display">404<span class="dot">.</span><span class="soft">الصفحة دي مش موجودة.</span></h1><div style="margin-top:28px"><a class="btn btn-red" href="/index.html">ارجع للرئيسية</a></div></div></section></div>` }));
 write('robots.txt', `User-agent: *\nAllow: /\nSitemap: ${siteUrl}/sitemap.xml\n`);

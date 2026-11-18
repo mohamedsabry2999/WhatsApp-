@@ -35,8 +35,16 @@
     chips.forEach((x) => x.classList.toggle('on', x === c));
     document.querySelectorAll('.tools-grid .tool-card').forEach((card) => {
       const f = c.dataset.f;
-      card.hidden = !(f === 'all' || card.dataset.cat === f || (f === 'web' && card.dataset.web === '1'));
+      card.hidden = !(f === 'all' || card.dataset.stage === f || (f === 'web' && card.dataset.web === '1'));
     });
+  }));
+
+  // كارت المرحلة ← فلتر الأدوات
+  document.querySelectorAll('.fw-card:not(.soon)').forEach((card) => card.addEventListener('click', () => {
+    const chip = document.querySelector(`.filters .chip[data-f="${card.dataset.stage}"]`);
+    if (chip) chip.click();
+    document.querySelectorAll('.fw-card').forEach((x) => x.classList.toggle('on', x === card));
+    document.getElementById('tools').scrollIntoView({ behavior: 'smooth' });
   }));
 
   // الأرقام بتعدّ

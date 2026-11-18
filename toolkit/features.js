@@ -4,7 +4,7 @@ var MT_FEATURES = {
   name: "Marketer's Toolkit",
   nameHtml: "Marketer's <span>Toolkit</span>",
   tagline: 'أدوات المسوّق اليومية',
-  tools: ['replies', 'crm', 'walink', 'post', 'ads', 'notion', 'utm', 'calc'],
+  tools: ['replies', 'crm', 'walink', 'post', 'brief', 'resizer', 'ads', 'notion', 'utm', 'calc', 'discount', 'audit'],
   home: 'replies',
   popup: 'home',
   welcome: '',

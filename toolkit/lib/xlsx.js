@@ -18,7 +18,7 @@
     return (c ^ 0xffffffff) >>> 0;
   }
 
-  function zip(files) {
+  function zip(files, type) {
     const parts = [];
     const central = [];
     let offset = 0;
@@ -64,7 +64,7 @@
     end.setUint32(12, cdSize, true);
     end.setUint32(16, offset, true);
     return new Blob([...parts, ...central, new Uint8Array(end.buffer)], {
-      type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+      type: type || 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
     });
   }
 
@@ -145,4 +145,6 @@ ${cols}<sheetData>${sheetRows}</sheetData><autoFilter ref="A1:${lastRef}"/></wor
   }
 
   global.buildXlsx = buildXlsx;
+  // zip عادي (بدون ضغط) لأي ملفات: [{ name, data: Uint8Array | string }]
+  global.buildZip = (files) => zip(files, 'application/zip');
 })(typeof window !== 'undefined' ? window : globalThis);

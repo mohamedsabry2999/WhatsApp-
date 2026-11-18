@@ -1,13 +1,72 @@
 {
-  "version": "1.0.0",
+  "version": "1.1.0",
   "author": "محمد صبري | Mohamed Sabry",
   "siteUrl": "https://tools.mohammedsabry.site",
+  "framework": [
+    {
+      "id": "business",
+      "n": 1,
+      "en": "Business Alignment",
+      "ar": "ربط التسويق بالبيزنس",
+      "desc": "هدف تسويقي مربوط برقم إيراد وأولويات واضحة."
+    },
+    {
+      "id": "intel",
+      "n": 2,
+      "en": "Market Intelligence",
+      "ar": "فهم السوق",
+      "desc": "المنافسين والعملاء والداتا قبل أي قرار."
+    },
+    {
+      "id": "diagnosis",
+      "n": 3,
+      "en": "Strategic Diagnosis",
+      "ar": "التشخيص",
+      "desc": "إحنا فين دلوقتي، وإيه اللي شغال وإيه اللي لأ."
+    },
+    {
+      "id": "choice",
+      "n": 4,
+      "en": "Market Choice",
+      "ar": "اختيار السوق",
+      "desc": "شريحة واضحة بدل ما نكلّم الكل."
+    },
+    {
+      "id": "value",
+      "n": 5,
+      "en": "Value Architecture",
+      "ar": "بناء القيمة",
+      "desc": "العرض والتسعير والسبب اللي يخلّي العميل يختارك."
+    },
+    {
+      "id": "plan",
+      "n": 6,
+      "en": "Strategic Plan Design",
+      "ar": "تصميم الخطة",
+      "desc": "خطة مكتوبة وميزانية متوزعة على أرقام."
+    },
+    {
+      "id": "execution",
+      "n": 7,
+      "en": "Execution System",
+      "ar": "منظومة التنفيذ",
+      "desc": "أدوار، وأدوات، وانتظام في التنفيذ."
+    },
+    {
+      "id": "measure",
+      "n": 8,
+      "en": "Measurement & Evolution",
+      "ar": "القياس والتطوير",
+      "desc": "نقيس، ونتعلم، ونعدّل الخطة."
+    }
+  ],
   "tools": [
     {
       "id": "contactharvest",
       "name": "ContactHarvest",
       "nameHtml": "Contact<span>Harvest</span>",
       "category": "واتساب",
+      "stage": "intel",
       "tagline": "كل أرقام واتساب اللي اتراسلت معاها في شيت Excel",
       "description": "بتجمع كل الأرقام اللي اتراسلت معاها على واتساب ويب في شيت واحد: الاسم ورقم التليفون، وآخر محادثة، والجروبات المشتركة. وبتجيب الاسم حتى للأرقام اللي مش متسجلة عندك.",
       "bullets": [
@@ -18,6 +77,7 @@
       ],
       "where": "web.whatsapp.com",
       "web": false,
+      "extension": true,
       "permissions": [
         "scripting",
         "activeTab"
@@ -29,8 +89,8 @@
         "id": "contactharvest",
         "name": "ContactHarvest",
         "folder": "ContactHarvest",
-        "zip": "downloads/ContactHarvest-v1.0.0.zip",
-        "size": 168610
+        "zip": "downloads/ContactHarvest-v1.1.0.zip",
+        "size": 192521
       }
     },
     {
@@ -38,6 +98,7 @@
       "name": "ReplyKit",
       "nameHtml": "Reply<span>Kit</span>",
       "category": "واتساب",
+      "stage": "execution",
       "tagline": "ردود جاهزة في واتساب ويب باسم العميل",
       "description": "اكتب / في واتساب ويب وبعدها الاختصار (زي /سعر)، والرد يتكتب لوحده وفيه اسم العميل. إنت اللي بتدوس إرسال، فمفيش أي خطر على رقمك.",
       "bullets": [
@@ -48,6 +109,7 @@
       ],
       "where": "web.whatsapp.com",
       "web": false,
+      "extension": true,
       "permissions": [
         "storage"
       ],
@@ -56,8 +118,8 @@
         "id": "replies",
         "name": "ReplyKit",
         "folder": "ReplyKit",
-        "zip": "downloads/ReplyKit-v1.0.0.zip",
-        "size": 166145
+        "zip": "downloads/ReplyKit-v1.1.0.zip",
+        "size": 189995
       }
     },
     {
@@ -65,6 +127,7 @@
       "name": "ChatCRM",
       "nameHtml": "Chat<span>CRM</span>",
       "category": "واتساب",
+      "stage": "execution",
       "tagline": "CRM صغير جوه واتساب ويب",
       "description": "زرار جوه واتساب ويب بتصنّف بيه كل عميل (محتمل، مهتم، عميل...) وتكتب ملاحظاتك، وتحدد ميعاد متابعة يجيلك عليه إشعار. وكل عميل بيظهر جنب اسمه تاج بلونه.",
       "bullets": [
@@ -75,6 +138,7 @@
       ],
       "where": "web.whatsapp.com",
       "web": false,
+      "extension": true,
       "permissions": [
         "storage",
         "alarms",
@@ -87,8 +151,8 @@
         "id": "crm",
         "name": "ChatCRM",
         "folder": "ChatCRM",
-        "zip": "downloads/ChatCRM-v1.0.0.zip",
-        "size": 165246
+        "zip": "downloads/ChatCRM-v1.1.0.zip",
+        "size": 189086
       }
     },
     {
@@ -96,6 +160,7 @@
       "name": "ChatLink QR",
       "nameHtml": "ChatLink <span>QR</span>",
       "category": "واتساب",
+      "stage": "execution",
       "tagline": "لينك واتساب برسالة جاهزة + QR لكل حملة",
       "description": "اعمل لينك wa.me برسالة جاهزة وكود حملة، عشان تعرف كل رسالة جاتلك من أنهي إعلان. ومعاه QR بالأسود أو الأحمر جاهز للطباعة. وكمان QR لأي لينك تاني.",
       "bullets": [
@@ -106,6 +171,7 @@
       ],
       "where": "أي مكان",
       "web": true,
+      "extension": true,
       "permissions": [
         "storage",
         "contextMenus"
@@ -115,8 +181,8 @@
         "id": "walink",
         "name": "ChatLink QR",
         "folder": "ChatLink-QR",
-        "zip": "downloads/ChatLink-QR-v1.0.0.zip",
-        "size": 165828
+        "zip": "downloads/ChatLink-QR-v1.1.0.zip",
+        "size": 189708
       }
     },
     {
@@ -124,6 +190,7 @@
       "name": "PostCheck",
       "nameHtml": "Post<span>Check</span>",
       "category": "محتوى",
+      "stage": "execution",
       "tagline": "راجع الكابشن قبل ما تنشر",
       "description": "بيراجع الكابشن على حدود كل منصة: الطول، والـ Hook، والهاشتاجات المتكررة أو الزيادة، ووجود CTA، والنص على التصميم (من 3 لـ 12 كلمة). وبيوريك البوست هيظهر إزاي قبل \"المزيد\".",
       "bullets": [
@@ -134,6 +201,7 @@
       ],
       "where": "أي مكان",
       "web": true,
+      "extension": true,
       "permissions": [
         "storage"
       ],
@@ -142,8 +210,8 @@
         "id": "post",
         "name": "PostCheck",
         "folder": "PostCheck",
-        "zip": "downloads/PostCheck-v1.0.0.zip",
-        "size": 166450
+        "zip": "downloads/PostCheck-v1.1.0.zip",
+        "size": 190309
       }
     },
     {
@@ -151,6 +219,7 @@
       "name": "AdVault",
       "nameHtml": "Ad<span>Vault</span>",
       "category": "محتوى",
+      "stage": "intel",
       "tagline": "أرشيف لإعلانات المنافسين من Meta Ad Library",
       "description": "زرار \"احفظ في الأرشيف\" على كل إعلان في Meta Ad Library، بيحفظه بالصورة والنص وتاريخ البداية. وتقدر تضيف ملاحظاتك عن الزاوية والعرض، وتضيف إعلانات من أي منصة تانية بإيدك.",
       "bullets": [
@@ -161,6 +230,7 @@
       ],
       "where": "facebook.com/ads/library",
       "web": false,
+      "extension": true,
       "permissions": [
         "storage",
         "unlimitedStorage"
@@ -173,8 +243,8 @@
         "id": "ads",
         "name": "AdVault",
         "folder": "AdVault",
-        "zip": "downloads/AdVault-v1.0.0.zip",
-        "size": 166324
+        "zip": "downloads/AdVault-v1.1.0.zip",
+        "size": 190165
       }
     },
     {
@@ -182,6 +252,7 @@
       "name": "PixelScope",
       "nameHtml": "Pixel<span>Scope</span>",
       "category": "تحليل",
+      "stage": "intel",
       "tagline": "اعرف أي موقع بيستخدم أنهي Pixel وأكواد تتبع",
       "description": "افتح أي موقع ودوس الأيقونة: هيطلعلك Meta Pixel، وGA4، وGTM، وGoogle Ads، وTikTok، وSnap، وLinkedIn، وClarity، وHotjar بأرقام الـ ID. ومعاهم تقرير SEO سريع وشكل اللينك لما يتشارك.",
       "bullets": [
@@ -192,6 +263,7 @@
       ],
       "where": "أي موقع",
       "web": false,
+      "extension": true,
       "permissions": [
         "scripting",
         "activeTab"
@@ -201,8 +273,8 @@
         "id": "inspect",
         "name": "PixelScope",
         "folder": "PixelScope",
-        "zip": "downloads/PixelScope-v1.0.0.zip",
-        "size": 167743
+        "zip": "downloads/PixelScope-v1.1.0.zip",
+        "size": 191613
       }
     },
     {
@@ -210,6 +282,7 @@
       "name": "UTM Studio",
       "nameHtml": "UTM <span>Studio</span>",
       "category": "تحليل",
+      "stage": "measure",
       "tagline": "لينكات UTM بنظام تسمية ثابت",
       "description": "بيعمل لينكات UTM بنظام تسمية واحد (حروف صغيرة ومن غير مسافات)، وفيه قوالب Meta وTikTok الديناميك ومكتبة لكل حملاتك. ومعاه QR للمطبوعات وتصدير Excel.",
       "bullets": [
@@ -220,6 +293,7 @@
       ],
       "where": "أي مكان",
       "web": true,
+      "extension": true,
       "permissions": [
         "storage",
         "contextMenus",
@@ -230,8 +304,8 @@
         "id": "utm",
         "name": "UTM Studio",
         "folder": "UTM-Studio",
-        "zip": "downloads/UTM-Studio-v1.0.0.zip",
-        "size": 167766
+        "zip": "downloads/UTM-Studio-v1.1.0.zip",
+        "size": 191637
       }
     },
     {
@@ -239,6 +313,7 @@
       "name": "CampaignMath",
       "nameHtml": "Campaign<span>Math</span>",
       "category": "تحليل",
+      "stage": "measure",
       "tagline": "كل مؤشرات الحملة + الميزانية من الهدف",
       "description": "حط أرقام الحملة يطلعلك CPM، وCTR، وCPC، وCPL، وCAC، وROAS، وROI. أو ابدأ من عدد العملاء اللي محتاجهم، وهو يقولّك الميزانية المطلوبة ويقسّمها على المنصات.",
       "bullets": [
@@ -249,6 +324,7 @@
       ],
       "where": "أي مكان",
       "web": true,
+      "extension": true,
       "permissions": [
         "storage"
       ],
@@ -257,8 +333,8 @@
         "id": "calc",
         "name": "CampaignMath",
         "folder": "CampaignMath",
-        "zip": "downloads/CampaignMath-v1.0.0.zip",
-        "size": 164402
+        "zip": "downloads/CampaignMath-v1.1.0.zip",
+        "size": 188293
       }
     },
     {
@@ -266,6 +342,7 @@
       "name": "IdeaDrop",
       "nameHtml": "Idea<span>Drop</span>",
       "category": "محتوى",
+      "stage": "plan",
       "tagline": "احفظ أي فكرة على Notion بضغطة",
       "description": "أي صفحة أو نص أو صورة عجبتك، احفظها في قاعدة بيانات المحتوى على Notion، من الأيقونة أو بكليك يمين. وبتتحفظ معاها ملاحظتك واللينك وتاريخ الحفظ.",
       "bullets": [
@@ -276,6 +353,7 @@
       ],
       "where": "أي موقع",
       "web": false,
+      "extension": true,
       "permissions": [
         "storage",
         "contextMenus",
@@ -289,8 +367,116 @@
         "id": "notion",
         "name": "IdeaDrop",
         "folder": "IdeaDrop",
-        "zip": "downloads/IdeaDrop-v1.0.0.zip",
-        "size": 166198
+        "zip": "downloads/IdeaDrop-v1.1.0.zip",
+        "size": 190047
+      }
+    },
+    {
+      "id": "brief",
+      "name": "BriefBuilder",
+      "nameHtml": "Brief<span>Builder</span>",
+      "category": "محتوى",
+      "stage": "execution",
+      "tagline": "بريف المحتوى الكامل + برومت التصميم في دقيقة",
+      "description": "بريف لكل بوست بالـ 16 بند: الفكرة، والجمهور، والـ Hook، ونص التصميم، والاستعارة البصرية، والكابشن، والـ CTA. وبيكتبلك برومت التصميم كامل بنفس الترتيب كل مرة، وبيراجع البريف قبل ما تبعته.",
+      "bullets": [
+        "16 بند ثابتين في كل بريف",
+        "برومت تصميم جاهز للمصمم أو الـ AI",
+        "مراجعة الـ Hook ونص التصميم",
+        "مكتبة + Markdown + Notion"
+      ],
+      "where": "أي مكان",
+      "web": true,
+      "extension": true,
+      "permissions": [
+        "storage"
+      ],
+      "hosts": [],
+      "download": {
+        "id": "brief",
+        "name": "BriefBuilder",
+        "folder": "BriefBuilder",
+        "zip": "downloads/BriefBuilder-v1.1.0.zip",
+        "size": 189844
+      }
+    },
+    {
+      "id": "discount",
+      "name": "DiscountCheck",
+      "nameHtml": "Discount<span>Check</span>",
+      "category": "تحليل",
+      "stage": "value",
+      "tagline": "الخصم ده مكسب ولا خسارة؟",
+      "description": "حط السعر والتكلفة ونسبة الخصم، وهي تقولّك لازم تبيع قد إيه زيادة عشان تطلع بنفس المكسب، وأقصى خصم تقدر تعمله. وتقدر تنسخ النتيجة كبوست جاهز.",
+      "bullets": [
+        "المبيعات الإضافية المطلوبة",
+        "هامش الربح قبل وبعد",
+        "جدول لكل نسب الخصم",
+        "نقطة التعادل"
+      ],
+      "where": "أي مكان",
+      "web": true,
+      "extension": true,
+      "permissions": [
+        "storage"
+      ],
+      "hosts": [],
+      "download": {
+        "id": "discount",
+        "name": "DiscountCheck",
+        "folder": "DiscountCheck",
+        "zip": "downloads/DiscountCheck-v1.1.0.zip",
+        "size": 190639
+      }
+    },
+    {
+      "id": "audit",
+      "name": "GrowthScore",
+      "nameHtml": "Growth<span>Score</span>",
+      "category": "تحليل",
+      "stage": "diagnosis",
+      "tagline": "قيّم تسويق شركتك من 100 في 5 دقايق",
+      "description": "24 سؤال على المراحل التمانية للـ Market-to-Measurement Framework. في الآخر بيطلعلك تقييم من 100، ونقط الضعف بالترتيب، وتوصية لكل مرحلة، وتقرير تقدر تطبعه أو تحفظه PDF.",
+      "bullets": [
+        "8 مراحل × 3 أسئلة",
+        "تقييم من 100 لكل مرحلة",
+        "أهم 3 أولويات تبدأ بيها",
+        "تقرير PDF"
+      ],
+      "where": "على الموقع",
+      "web": true,
+      "extension": false,
+      "permissions": [],
+      "hosts": [],
+      "download": null
+    },
+    {
+      "id": "resizer",
+      "name": "SocialSizer",
+      "nameHtml": "Social<span>Sizer</span>",
+      "category": "محتوى",
+      "stage": "execution",
+      "tagline": "صورة واحدة ← كل مقاسات السوشيال",
+      "description": "ارفع صورة واحدة وخدها بكل مقاسات المنصات (Post، وStory، وCover، وThumbnail...) مرة واحدة. فيه قص ذكي بتحدد فيه منتصف الصورة، أو ملء بخلفية. والصورة مش بتترفع على أي سيرفر.",
+      "bullets": [
+        "+14 مقاس جاهز",
+        "قص أو ملء بخلفية",
+        "تحديد منتصف الصورة",
+        "تحميل الكل في ZIP"
+      ],
+      "where": "أي مكان",
+      "web": true,
+      "extension": true,
+      "permissions": [
+        "storage"
+      ],
+      "hosts": [],
+      "download": {
+        "id": "resizer",
+        "name": "SocialSizer",
+        "folder": "SocialSizer",
+        "zip": "downloads/SocialSizer-v1.1.0.zip",
+        "size": 189903
       }
     }
   ],
@@ -299,15 +485,17 @@
     "name": "Marketer's Toolkit",
     "nameHtml": "Marketer's <span>Toolkit</span>",
     "category": "الكل",
+    "stage": "",
     "tagline": "كل الأدوات في إضافة واحدة",
     "description": "كل الأدوات في إضافة واحدة: واتساب، والمحتوى، والتحليل. للي عايز كله من غير ما ينزّل عشر إضافات.",
     "bullets": [
-      "10 أدوات",
+      "كل أدوات الإضافات",
       "لوحة واحدة لكل حاجة",
       "نفس البيانات في كل الأدوات"
     ],
     "where": "",
     "web": false,
+    "extension": true,
     "permissions": [
       "storage",
       "unlimitedStorage",
@@ -327,8 +515,8 @@
       "id": "toolkit",
       "name": "Marketer's Toolkit",
       "folder": "Marketers-Toolkit",
-      "zip": "downloads/Marketers-Toolkit-v1.0.0.zip",
-      "size": 166093
+      "zip": "downloads/Marketers-Toolkit-v1.1.0.zip",
+      "size": 190051
     }
   }
 }

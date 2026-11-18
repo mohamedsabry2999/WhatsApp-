@@ -194,6 +194,24 @@ details.faq code, .kbd { font: 700 13px Inter, monospace; background: var(--bg);
 .reveal.in { opacity: 1; transform: none; }
 @media (prefers-reduced-motion: reduce) { .reveal { opacity: 1; transform: none; transition: none; } html { scroll-behavior: auto; } }
 
+/* ===== المنظومة (8 مراحل) ===== */
+.fw-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; }
+.fw-card { all: unset; box-sizing: border-box; display: flex; flex-direction: column; gap: 4px; padding: 22px; cursor: pointer; text-align: right;
+  background: var(--glass); border: 1px solid rgba(255,255,255,.9); border-radius: var(--radius); box-shadow: var(--shadow); transition: transform .3s, box-shadow .3s; position: relative; overflow: hidden; }
+.fw-card:hover:not(.soon) { transform: translateY(-4px); box-shadow: var(--shadow-lift); }
+.fw-card:focus-visible { outline: 2px solid var(--red); outline-offset: 2px; }
+.fw-card .fw-n { font: 800 38px/1 Inter, sans-serif; letter-spacing: -1px; color: var(--ink); direction: ltr; text-align: right; }
+.fw-card .fw-en { font: 800 10px Inter; letter-spacing: .18em; text-transform: uppercase; color: var(--ink-3); margin-top: 10px; }
+.fw-card b { font-size: 18px; }
+.fw-card .fw-d { color: var(--ink-3); font-size: 13px; line-height: 1.6; flex: 1; }
+.fw-card .fw-tools { display: flex; align-items: center; gap: 6px; margin-top: 12px; flex-wrap: wrap; }
+.fw-card .fw-tools img { width: 26px; height: 26px; border-radius: 7px; }
+.fw-card .fw-tools i { font-style: normal; font-size: 12px; font-weight: 700; color: var(--ink-2); margin-inline-start: 4px; }
+.fw-card.soon { cursor: default; opacity: .62; }
+.fw-card.soon .fw-n { color: var(--ink-3); }
+.fw-card.soon .fw-tools i { color: var(--ink-3); border: 1px dashed var(--ink-3); border-radius: 999px; padding: 1px 10px; margin: 0; }
+.fw-card.on { box-shadow: 0 0 0 2px var(--red), var(--shadow-lift); }
+
 /* ===== تقسيمة عمودين ===== */
 .split { display: grid; grid-template-columns: 1.1fr 1fr; gap: 40px; align-items: center; }
 
@@ -202,6 +220,7 @@ details.faq code, .kbd { font: 700 13px Inter, monospace; background: var(--bg);
   .hero, .tool-hero, .split { grid-template-columns: 1fr; }
   .stack { height: 300px; margin-top: 10px; }
   .stats { grid-template-columns: 1fr 1fr; }
+  .fw-grid { grid-template-columns: 1fr 1fr; }
   footer.site .cols { grid-template-columns: 1fr 1fr; }
   .dl-card { position: static; }
 }
@@ -215,6 +234,10 @@ details.faq code, .kbd { font: 700 13px Inter, monospace; background: var(--bg);
   .nav .bar > .btn { display: none; }
   .menu-btn { display: block; }
   .principles, .bullets { grid-template-columns: 1fr; }
+  .fw-grid { grid-template-columns: 1fr 1fr; gap: 10px; }
+  .fw-card { padding: 16px; }
+  .fw-card .fw-n { font-size: 30px; }
+  .fw-card .fw-d { display: none; }
   .perm-row { grid-template-columns: 1fr; gap: 2px; }
   section { padding: 40px 0; }
   .dark { border-radius: 24px; }

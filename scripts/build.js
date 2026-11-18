@@ -5,7 +5,7 @@
 const fs = require('fs');
 const path = require('path');
 const { execFileSync } = require('child_process');
-const { VERSION, AUTHOR, SITE_URL, tools, bundle, ALL_OFF } = require('../tools.config.js');
+const { VERSION, AUTHOR, SITE_URL, FRAMEWORK, tools, bundle, ALL_OFF } = require('../tools.config.js');
 
 const ROOT = path.resolve(__dirname, '..');
 const SRC = path.join(ROOT, 'toolkit');
@@ -71,6 +71,10 @@ function build(t) {
     `${t.name} v${VERSION}\n${t.tagline}\nتطوير: ${AUTHOR}\n\nالتثبيت:\n1) افتح chrome://extensions\n2) فعّل Developer mode\n3) دوس Load unpacked واختار الفولدر ده (${name})\n\nالشرح الكامل: ${SITE_URL}/install.html\n`);
   // zip فيه فولدر واحد باسم الأداة (عشان المستخدم يختاره على طول)
   fs.mkdirSync(DOWNLOADS, { recursive: true });
+  // شيل النسخ القديمة من نفس الأداة (الموقع بيلينك على النسخة الحالية بس)
+  for (const f of fs.readdirSync(DOWNLOADS)) {
+    if (f.startsWith(`${name}-v`) && f.endsWith('.zip') && f !== `${name}-v${VERSION}.zip`) fs.unlinkSync(path.join(DOWNLOADS, f));
+  }
   const zip = path.join(DOWNLOADS, `${name}-v${VERSION}.zip`);
   fs.rmSync(zip, { force: true });
   execFileSync('zip', ['-qr', '-X', zip, name], { cwd: DIST });
@@ -81,15 +85,16 @@ function build(t) {
 // ملف البيانات للموقع
 function siteData(built) {
   const pick = (t) => ({
-    id: t.id, name: t.name, nameHtml: t.nameHtml, category: t.category, tagline: t.tagline, description: t.description,
-    bullets: t.bullets, where: t.where || '', web: !!t.web, permissions: t.permissions, hosts: t.hosts,
-    download: built.find((b) => b.id === t.id),
+    id: t.id, name: t.name, nameHtml: t.nameHtml, category: t.category, stage: t.stage || '', tagline: t.tagline, description: t.description,
+    bullets: t.bullets, where: t.where || '', web: !!t.web, extension: t.extension !== false, permissions: t.permissions, hosts: t.hosts,
+    download: built.find((b) => b.id === t.id) || null,
   });
-  return { version: VERSION, author: AUTHOR, siteUrl: SITE_URL, tools: tools.map(pick), bundle: pick(bundle) };
+  return { version: VERSION, author: AUTHOR, siteUrl: SITE_URL, framework: FRAMEWORK, tools: tools.map(pick), bundle: pick(bundle) };
 }
 
 fs.mkdirSync(DIST, { recursive: true });
-const built = [...tools, bundle].map(build);
+// الأدوات اللي على الموقع بس (extension: false) مالهاش إضافة
+const built = [...tools.filter((t) => t.extension !== false), bundle].map(build);
 built.forEach((b) => console.log(`✔ ${b.name.padEnd(20)} ${b.zip}  ${(b.size / 1024).toFixed(0)} KB`));
 fs.mkdirSync(path.join(ROOT, 'site', 'assets'), { recursive: true });
 fs.writeFileSync(path.join(ROOT, 'site', 'assets', 'tools.json'), JSON.stringify(siteData(built), null, 2));

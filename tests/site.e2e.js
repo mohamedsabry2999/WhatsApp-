@@ -54,7 +54,8 @@ const check = (n, ok, x = '') => { results.push(ok); console.log(ok ? 'PASS' : '
   // فلترة الأدوات
   await home.click('.chip[data-f="web"]');
   const visible = await home.$$eval('#tools .tool-card', (cs) => cs.filter((c) => !c.hidden).length);
-  check('tools filter "تشتغل أونلاين" shows 4', visible === 4, String(visible));
+  const webCount = JSON.parse(fs.readFileSync(path.resolve(__dirname, '../site/assets/tools.json'), 'utf8')).tools.filter((t) => t.web).length;
+  check(`tools filter "تشتغل أونلاين" shows ${webCount}`, visible === webCount, String(visible));
 
   // الدليل التفاعلي
   const g = await ctx.newPage();

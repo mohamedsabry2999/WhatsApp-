@@ -65,6 +65,14 @@ async function notionSave(item) {
   if (item.selection) children.push({ object: 'block', type: 'quote', quote: { rich_text: rt(item.selection) } });
   if (item.image) children.push({ object: 'block', type: 'image', image: { type: 'external', external: { url: item.image } } });
   if (item.url && /^https?:/.test(item.url)) children.push({ object: 'block', type: 'bookmark', bookmark: { url: item.url } });
+  // أقسام (زي البريف): [عنوان، نص، 'code' اختياري]. Notion بيقبل 2000 حرف في كل جزء نص، فبنقسّم.
+  for (const [heading, text, kind] of item.blocks || []) {
+    if (!text) continue;
+    children.push({ object: 'block', type: 'heading_3', heading_3: { rich_text: rt(heading) } });
+    const parts = String(text).match(/[\s\S]{1,1900}/g) || [];
+    if (kind === 'code') children.push({ object: 'block', type: 'code', code: { language: 'plain text', rich_text: parts.map((p) => ({ type: 'text', text: { content: p } })) } });
+    else parts.forEach((p) => children.push({ object: 'block', type: 'paragraph', paragraph: { rich_text: rt(p) } }));
+  }
   const page = await notionFetch('/pages', s.token, {
     method: 'POST',
     body: JSON.stringify({ parent: { database_id: notionId(s.dbId) }, properties, children }),

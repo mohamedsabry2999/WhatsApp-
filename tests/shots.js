@@ -209,6 +209,52 @@ im.save(${JSON.stringify(path.join(OUT, id + '.jpg'))},quality=84,optimize=True,
   await app.waitForTimeout(300);
   jpg(await shot(app, 'calc'), 'calc');
 
+  // ===== DiscountCheck =====
+  await app.goto(base + 'app.html#discount');
+  for (const [k, v] of [['price', 850], ['cost', 520], ['units', 240], ['fixed', 30000]]) await app.fill('#d-' + k, String(v));
+  await app.click('[data-d="20"]');
+  await app.waitForTimeout(300);
+  jpg(await shot(app, 'discount'), 'discount');
+
+  // ===== BriefBuilder =====
+  await app.goto(base + 'app.html#brief');
+  const bf = [['idea', 'التسويق مش بوستات، ده منظومة قرارات'], ['audience', 'أصحاب الشركات'], ['hook', 'لو كل شهر بتبدأ من الصفر، يبقى عندك أنشطة مش منظومة'],
+    ['designText', 'التسويق منظومة قرارات مش أنشطة'], ['cta', 'احفظ البوست ترجعله وقت الخطة'], ['scene', 'شاشة GPS بتعيد حساب الطريق، والطريق نفسه مرسوم كخطوات الـ Framework']];
+  for (const [k, v] of bf) await app.fill(`[data-k="${k}"]`, v);
+  await app.selectOption('[data-k="axis"]', { index: 1 });
+  await app.click('[data-meta="GPS"]');
+  await app.evaluate(() => window.scrollTo(0, 0));
+  await app.waitForTimeout(300);
+  jpg(await shot(app, 'brief'), 'brief');
+
+  // ===== SocialSizer =====
+  const photo = path.join(TMP, 'photo.png');
+  execFileSync('python3', ['-c', `from PIL import Image, ImageDraw, ImageFilter
+w,h=2400,1600
+im=Image.new('RGB',(w,h)); px=im.load()
+for y in range(h):
+    for x in range(0,w,4):
+        c=(int(20+40*y/h),int(18+20*y/h),int(22+30*y/h))
+        for k in range(4): px[x+k,y]=c
+d=ImageDraw.Draw(im)
+d.ellipse((1500,450,2100,1050),fill=(199,22,29))
+d.rectangle((300,900,1300,1300),fill=(240,236,230))
+d.rectangle((380,980,1220,1040),fill=(17,17,17)); d.rectangle((380,1080,1000,1120),fill=(120,120,120))
+im=im.filter(ImageFilter.GaussianBlur(2)); im.save(${JSON.stringify(photo)})`]);
+  await app.goto(base + 'app.html#resizer');
+  await app.setInputFiles('#r-file', photo);
+  await app.waitForSelector('#r-out canvas');
+  await app.evaluate(() => window.scrollTo(0, 0));
+  await app.waitForTimeout(300);
+  jpg(await shot(app, 'resizer-top'), 'resizer');
+
+  // ===== GrowthScore (النتيجة) =====
+  await sw.evaluate(() => chrome.storage.local.set({ audit: { company: 'شركة النور للتجارة', step: 8, answers: { business: [2, 2, 1], intel: [2, 1, 1], diagnosis: [1, 0, 1], choice: [0, 1, 0], value: [2, 1, 0], plan: [1, 1, 0], execution: [2, 1, 1], measure: [1, 0, 0] } } }));
+  await app.goto(base + 'app.html#audit');
+  await app.waitForSelector('#audit-report');
+  await app.waitForTimeout(300);
+  jpg(await shot(app, 'audit'), 'audit');
+
   await sw.evaluate((now) => chrome.storage.local.set({
     notion: { token: 'ntn_demo', dbId: 'https://www.notion.so/Personal-Brand-Content-System-0123456789abcdef0123456789abcdef', titleProp: 'Name', urlProp: 'Link', dateProp: 'Created', extraProp: 'Status', extraType: 'select', extraValue: 'Idea',
       schema: { id: '0123456789abcdef0123456789abcdef', title: 'Personal Brand Content System', props: [{ name: 'Name', type: 'title', options: [] }, { name: 'Link', type: 'url', options: [] }, { name: 'Status', type: 'select', options: ['Idea', 'Draft', 'Published'] }, { name: 'Created', type: 'date', options: [] }] } },
