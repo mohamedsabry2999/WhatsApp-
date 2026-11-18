@@ -106,3 +106,13 @@ $('#go').addEventListener('click', async () => {
     set('حصل خطأ: ' + (e && e.message ? e.message : e), 'err');
   } finally { btn.disabled = false; }
 });
+
+// نسخة أداة واحدة: افتح الأداة على طول
+const FEAT = (typeof MT_FEATURES !== 'undefined' && MT_FEATURES) || { popup: 'home' };
+if (FEAT.popup !== 'home') {
+  $('#brand').innerHTML = FEAT.nameHtml;
+  if (FEAT.tagline) $('#tagline').textContent = FEAT.tagline;
+  $$('[data-back]').forEach((b) => { b.hidden = true; });
+  const start = { inspect: '#qa-inspect', notion: '#qa-notion', harvest: '#qa-harvest' }[FEAT.popup];
+  if (start) $(start).click();
+}

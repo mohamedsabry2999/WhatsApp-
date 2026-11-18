@@ -4,6 +4,7 @@
   if (window.__mtWhatsApp) return;
   window.__mtWhatsApp = true;
 
+  const F = (typeof MT_FEATURES !== 'undefined' && MT_FEATURES) || { replies: true, crm: true };
   let replies = [];
   let crm = {};
   let tags = DEFAULT_TAGS;
@@ -76,14 +77,14 @@
     menu.style.width = Math.min(520, rect.width - 24) + 'px';
     menu.style.bottom = window.innerHeight - rect.top + 6 + 'px';
   }
-  document.addEventListener('input', (e) => {
+  if (F.replies) document.addEventListener('input', (e) => {
     const box = composeBox();
     if (!box || !box.contains(e.target)) return;
     const text = (box.innerText || '').replace(/\n$/, '');
     const m = text.match(/^\/(\S*)$/);
     if (m) openMenu(m[1], box); else closeMenu();
   }, true);
-  document.addEventListener('keydown', (e) => {
+  if (F.replies) document.addEventListener('keydown', (e) => {
     if (!menu || menu.style.display === 'none' || !menuItems.length) return;
     const box = composeBox();
     if (!box || !box.contains(e.target)) return;
@@ -97,7 +98,7 @@
   // ---------- لوحة CRM ----------
   let panel = null, fab = null;
   function ensureUi() {
-    if (fab) return;
+    if (fab || !F.crm) return;
     fab = h('button', { className: 'mt-fab', title: "Marketer's Toolkit — CRM والردود" }, '<span>CRM</span>');
     fab.addEventListener('click', () => { if (panel.style.display === 'none') { renderPanel(); panel.style.display = 'block'; } else panel.style.display = 'none'; });
     panel = h('div', { className: 'mt-panel' });
@@ -124,8 +125,8 @@
         <input type="datetime-local" class="mt-when" value="${e.remindAt && !e.reminded ? toLocalInput(e.remindAt) : ''}">
         <div class="mt-quick"><button data-q="1h">بعد ساعة</button><button data-q="tom">بكرة 10ص</button><button data-q="3d">بعد 3 أيام</button><button data-q="7d">بعد أسبوع</button></div>
         <div class="mt-actions"><button class="mt-save">حفظ</button>${crm[name] ? '<button class="mt-del">حذف</button>' : ''}</div>
-        <div class="mt-lbl" style="margin-top:12px">ردود جاهزة <span class="mt-hint">(أو اكتب / في خانة الرسالة)</span></div>
-        <div class="mt-replies">${replies.map((r, i) => `<button data-r="${i}" title="${escH(r.text)}">/${escH(r.shortcut)}</button>`).join('')}</div>
+        ${F.replies ? `<div class="mt-lbl" style="margin-top:12px">ردود جاهزة <span class="mt-hint">(أو اكتب / في خانة الرسالة)</span></div>
+        <div class="mt-replies">${replies.map((r, i) => `<button data-r="${i}" title="${escH(r.text)}">/${escH(r.shortcut)}</button>`).join('')}</div>` : ''}
         <div class="mt-foot"><a href="#" class="mt-open">افتح لوحة CRM كاملة</a><span>محمد صبري</span></div>`;
       let tag = e.tag || '';
       panel.querySelectorAll('.mt-tag').forEach((b) => b.addEventListener('click', () => {
@@ -167,6 +168,7 @@
   // ---------- تاجات جنب الأسماء في قائمة الشاتات ----------
   let badgeTimer = null;
   function badgeChatList(force) {
+    if (!F.crm) return;
     clearTimeout(badgeTimer);
     badgeTimer = setTimeout(() => {
       const side = document.querySelector('#pane-side');

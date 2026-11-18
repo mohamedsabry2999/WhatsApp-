@@ -1,6 +1,7 @@
 // Marketer's Toolkit — background service worker
 // تطوير: محمد صبري | Mohamed Sabry
-importScripts('lib/store.js');
+importScripts('features.js', 'lib/store.js');
+const F = MT_FEATURES;
 
 const NOTION_VERSION = '2022-06-28';
 const CRM_PREFIX = 'crm|';
@@ -73,21 +74,30 @@ async function notionSave(item) {
 }
 
 // ================= Context menus =================
-chrome.runtime.onInstalled.addListener(() => {
-  chrome.contextMenus.removeAll(() => {
-    chrome.contextMenus.create({ id: 'notion', title: 'احفظ على Notion', contexts: ['page', 'selection', 'link', 'image'] });
-    chrome.contextMenus.create({ id: 'utm', title: 'اعمل UTM للينك ده', contexts: ['page', 'link'] });
-    chrome.contextMenus.create({ id: 'qr', title: 'اعمل QR للينك ده', contexts: ['page', 'link'] });
+chrome.runtime.onInstalled.addListener((details) => {
+  if (chrome.contextMenus) chrome.contextMenus.removeAll(() => {
+    if (F.notion) chrome.contextMenus.create({ id: 'notion', title: 'احفظ على Notion', contexts: ['page', 'selection', 'link', 'image'] });
+    if (F.utm) chrome.contextMenus.create({ id: 'utm', title: 'اعمل UTM للينك ده', contexts: ['page', 'link'] });
+    if (F.qr) chrome.contextMenus.create({ id: 'qr', title: 'اعمل QR للينك ده', contexts: ['page', 'link'] });
   });
   syncCrmAlarms();
+  // أول تثبيت: افتح صفحة الأداة (لو ليها صفحة)
+  if (details.reason === 'install' && F.welcome) chrome.tabs.create({ url: chrome.runtime.getURL('app.html') + '#' + F.welcome });
 });
 chrome.runtime.onStartup.addListener(syncCrmAlarms);
 
+// لو النسخة مالهاش popup: الضغط على الأيقونة بيفتح صفحة الأداة
+chrome.action.onClicked.addListener((tab) => {
+  const q = F.home === 'utm' && tab && /^https?:/.test(tab.url || '') ? '?url=' + encodeURIComponent(tab.url.split('#')[0]) : '';
+  chrome.tabs.create({ url: chrome.runtime.getURL('app.html') + q + '#' + F.home });
+});
+
 function notify(id, title, message) {
+  if (!chrome.notifications) return;
   chrome.notifications.create(id, { type: 'basic', iconUrl: 'icons/icon128.png', title, message, priority: 2 });
 }
 
-chrome.contextMenus.onClicked.addListener(async (info, tab) => {
+if (chrome.contextMenus) chrome.contextMenus.onClicked.addListener(async (info, tab) => {
   const link = info.linkUrl || info.pageUrl || (tab && tab.url) || '';
   if (info.menuItemId === 'utm' || info.menuItemId === 'qr') {
     const target = info.menuItemId === 'utm' ? 'utm' : 'walink';
@@ -108,6 +118,7 @@ chrome.contextMenus.onClicked.addListener(async (info, tab) => {
 
 // ================= CRM reminders =================
 async function syncCrmAlarms() {
+  if (!chrome.alarms || !F.crm) return;
   const crm = await Store.get('crm', {});
   const alarms = await chrome.alarms.getAll();
   const wanted = new Map();
@@ -122,7 +133,7 @@ async function syncCrmAlarms() {
 }
 chrome.storage.onChanged.addListener((changes, area) => { if (area === 'local' && changes.crm) syncCrmAlarms(); });
 
-chrome.alarms.onAlarm.addListener(async (alarm) => {
+if (chrome.alarms) chrome.alarms.onAlarm.addListener(async (alarm) => {
   if (!alarm.name.startsWith(CRM_PREFIX)) return;
   const key = alarm.name.slice(CRM_PREFIX.length);
   const crm = await Store.get('crm', {});
@@ -134,7 +145,7 @@ chrome.alarms.onAlarm.addListener(async (alarm) => {
   await Store.set('crm', crm);
 });
 
-chrome.notifications.onClicked.addListener(async (id) => {
+if (chrome.notifications) chrome.notifications.onClicked.addListener(async (id) => {
   chrome.notifications.clear(id);
   if (!id.startsWith(CRM_PREFIX)) return;
   const tabs = await chrome.tabs.query({ url: 'https://web.whatsapp.com/*' });

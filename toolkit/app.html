@@ -22,6 +22,13 @@
   .page-head { display: flex; justify-content: space-between; align-items: flex-end; gap: 12px; margin-bottom: 18px; flex-wrap: wrap; }
   .page-head h1 { font-size: 22px; margin: 0; }
   .page-head p { margin: 4px 0 0; color: var(--muted); }
+  /* نسخة أداة واحدة: من غير قايمة جانبية */
+  body.single { grid-template-columns: 1fr; }
+  body.single aside { position: static; height: auto; flex-direction: row; align-items: center; justify-content: space-between; border-left: 0; border-bottom: 3px solid var(--brand); padding: 12px 32px; }
+  body.single aside nav { display: none; }
+  body.single .logo { border: 0; margin: 0; padding: 0; }
+  body.single aside .sig { margin: 0; border: 0; padding: 0; text-align: left; }
+  body.single main { margin: 0 auto; }
   @media (max-width: 760px) { body { grid-template-columns: 1fr; } aside { position: static; height: auto; } main { padding: 18px 16px; } }
 </style>
 </head>
@@ -29,7 +36,7 @@
   <aside>
     <div class="logo">
       <img src="icons/icon.svg" alt="">
-      <div class="brand-name" dir="ltr" style="text-align:right">Marketer's<br><span>Toolkit</span></div>
+      <div class="brand-name" id="brand" dir="ltr" style="text-align:right">Marketer's<br><span>Toolkit</span></div>
     </div>
     <nav id="nav">
       <div class="grp">واتساب</div>
@@ -48,6 +55,7 @@
   </aside>
   <main id="main"></main>
 
+  <script src="features.js"></script>
   <script src="lib/qrcode.js"></script>
   <script src="lib/xlsx.js"></script>
   <script src="lib/store.js"></script>

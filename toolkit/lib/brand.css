@@ -50,3 +50,5 @@ table.t th { color: var(--muted); font-weight: 700; font-size: 12px; }
   border-radius: 8px; font-weight: 700; border-bottom: 3px solid var(--brand); z-index: 99; }
 .empty { color: var(--muted); text-align: center; padding: 24px; }
 .mono { font-family: ui-monospace, Consolas, monospace; direction: ltr; unicode-bidi: plaintext; word-break: break-all; }
+
+[hidden] { display: none !important; }

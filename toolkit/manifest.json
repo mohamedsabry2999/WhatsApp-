@@ -30,6 +30,7 @@
         "https://web.whatsapp.com/*"
       ],
       "js": [
+        "features.js",
         "lib/store.js",
         "lib/defaults.js",
         "content/whatsapp.js"

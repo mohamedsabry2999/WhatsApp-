@@ -1,0 +1,136 @@
+// تعريف كل أداة: بيستخدمه سكريبت البناء (الإضافات المنفصلة) والموقع.
+// غيّر الاسم أو الوصف هنا وهيتغيّر في الإضافة والموقع مع بعض.
+const VERSION = '1.0.0';
+const AUTHOR = 'محمد صبري | Mohamed Sabry';
+// رابط الموقع (غيّره لو اخترت subdomain تاني)
+const SITE_URL = 'https://tools.mohammedsabry.site';
+
+const ALL_OFF = { replies: false, crm: false, ads: false, notion: false, utm: false, qr: false, harvest: false, inspect: false };
+
+const tools = [
+  {
+    id: 'contactharvest', name: 'ContactHarvest', nameHtml: 'Contact<span>Harvest</span>', category: 'واتساب',
+    tagline: 'كل أرقام واتساب اللي اتراسلت معاها في شيت Excel',
+    description: 'بتجمع كل الأرقام اللي اتراسلت معاها على واتساب ويب في شيت واحد: الاسم ورقم التليفون، وآخر محادثة، والجروبات المشتركة. وبتجيب الاسم حتى للأرقام اللي مش متسجلة عندك.',
+    bullets: ['الاسم + الرقم + آخر محادثة', 'أسماء غير المسجّلين من رسايلهم', 'الجروبات المشتركة مع كل شخص', 'Excel أو CSV بضغطة'],
+    where: 'web.whatsapp.com',
+    web: false,
+    features: { harvest: true },
+    tools: [], popup: 'harvest',
+    permissions: ['scripting', 'activeTab'], hosts: ['https://web.whatsapp.com/*'], content: [],
+  },
+  {
+    id: 'replies', name: 'ReplyKit', nameHtml: 'Reply<span>Kit</span>', category: 'واتساب',
+    tagline: 'ردود جاهزة في واتساب ويب باسم العميل',
+    description: 'اكتب / في واتساب ويب وبعدها الاختصار (زي /سعر)، والرد يتكتب لوحده وفيه اسم العميل. إنت اللي بتدوس إرسال، فمفيش أي خطر على رقمك.',
+    bullets: ['اختصارات زي /سعر و /متابعة', 'متغيرات: {الاسم} {الاسم_الأول} {اليوم}', 'Enter للاختيار من غير ما الرسالة تتبعت', 'إدارة الردود من صفحة واحدة'],
+    where: 'web.whatsapp.com',
+    web: false,
+    features: { replies: true },
+    tools: ['replies'], home: 'replies', welcome: 'replies',
+    permissions: ['storage'], hosts: [], content: ['whatsapp'],
+  },
+  {
+    id: 'crm', name: 'ChatCRM', nameHtml: 'Chat<span>CRM</span>', category: 'واتساب',
+    tagline: 'CRM صغير جوه واتساب ويب',
+    description: 'زرار جوه واتساب ويب بتصنّف بيه كل عميل (محتمل، مهتم، عميل...) وتكتب ملاحظاتك، وتحدد ميعاد متابعة يجيلك عليه إشعار. وكل عميل بيظهر جنب اسمه تاج بلونه.',
+    bullets: ['تصنيفات قابلة للتعديل', 'تذكير بالمتابعة كإشعار', 'تاج ملوّن جنب اسم الشات', 'لوحة كاملة + تصدير Excel'],
+    where: 'web.whatsapp.com',
+    web: false,
+    features: { crm: true },
+    tools: ['crm'], home: 'crm',
+    permissions: ['storage', 'alarms', 'notifications'], hosts: ['https://web.whatsapp.com/*'], content: ['whatsapp'],
+  },
+  {
+    id: 'walink', name: 'ChatLink QR', nameHtml: 'ChatLink <span>QR</span>', category: 'واتساب',
+    tagline: 'لينك واتساب برسالة جاهزة + QR لكل حملة',
+    description: 'اعمل لينك wa.me برسالة جاهزة وكود حملة، عشان تعرف كل رسالة جاتلك من أنهي إعلان. ومعاه QR بالأسود أو الأحمر جاهز للطباعة. وكمان QR لأي لينك تاني.',
+    bullets: ['بيظبط الرقم المصري لوحده', 'كود الحملة جوه الرسالة', 'QR بصيغة PNG وSVG', 'مكتبة لكل لينكاتك'],
+    where: 'أي مكان',
+    web: true,
+    features: { qr: true },
+    tools: ['walink'], home: 'walink',
+    permissions: ['storage', 'contextMenus'], hosts: [], content: [],
+  },
+  {
+    id: 'post', name: 'PostCheck', nameHtml: 'Post<span>Check</span>', category: 'محتوى',
+    tagline: 'راجع الكابشن قبل ما تنشر',
+    description: 'بيراجع الكابشن على حدود كل منصة: الطول، والـ Hook، والهاشتاجات المتكررة أو الزيادة، ووجود CTA، والنص على التصميم (من 3 لـ 12 كلمة). وبيوريك البوست هيظهر إزاي قبل "المزيد".',
+    bullets: ['Instagram, Facebook, LinkedIn, X, TikTok', 'معاينة قبل "المزيد"', 'مكتبة CTA وهاشتاجات', 'بيحفظ المسودة لوحده'],
+    where: 'أي مكان',
+    web: true,
+    features: {},
+    tools: ['post'], home: 'post',
+    permissions: ['storage'], hosts: [], content: [],
+  },
+  {
+    id: 'ads', name: 'AdVault', nameHtml: 'Ad<span>Vault</span>', category: 'محتوى',
+    tagline: 'أرشيف لإعلانات المنافسين من Meta Ad Library',
+    description: 'زرار "احفظ في الأرشيف" على كل إعلان في Meta Ad Library، بيحفظه بالصورة والنص وتاريخ البداية. وتقدر تضيف ملاحظاتك عن الزاوية والعرض، وتضيف إعلانات من أي منصة تانية بإيدك.',
+    bullets: ['حفظ بضغطة من Ad Library', 'الصورة محفوظة عندك', 'فلترة حسب المنافس', 'تصدير Excel'],
+    where: 'facebook.com/ads/library',
+    web: false,
+    features: { ads: true },
+    tools: ['ads'], home: 'ads',
+    permissions: ['storage', 'unlimitedStorage'], hosts: ['https://www.facebook.com/ads/library/*', 'https://*.fbcdn.net/*'], content: ['ads'],
+  },
+  {
+    id: 'inspect', name: 'PixelScope', nameHtml: 'Pixel<span>Scope</span>', category: 'تحليل',
+    tagline: 'اعرف أي موقع بيستخدم أنهي Pixel وأكواد تتبع',
+    description: 'افتح أي موقع ودوس الأيقونة: هيطلعلك Meta Pixel، وGA4، وGTM، وGoogle Ads، وTikTok، وSnap، وLinkedIn، وClarity، وHotjar بأرقام الـ ID. ومعاهم تقرير SEO سريع وشكل اللينك لما يتشارك.',
+    bullets: ['+12 أداة تتبع بأرقام الـ ID', 'المنصة (Shopify، WordPress، Salla...)', 'Title وDescription وH1 وSchema', 'نسخ التقرير بضغطة'],
+    where: 'أي موقع',
+    web: false,
+    features: { inspect: true },
+    tools: [], popup: 'inspect',
+    permissions: ['scripting', 'activeTab'], hosts: [], content: [],
+  },
+  {
+    id: 'utm', name: 'UTM Studio', nameHtml: 'UTM <span>Studio</span>', category: 'تحليل',
+    tagline: 'لينكات UTM بنظام تسمية ثابت',
+    description: 'بيعمل لينكات UTM بنظام تسمية واحد (حروف صغيرة ومن غير مسافات)، وفيه قوالب Meta وTikTok الديناميك ومكتبة لكل حملاتك. ومعاه QR للمطبوعات وتصدير Excel.',
+    bullets: ['تسمية موحّدة تلقائيًا', 'قوالب Meta وTikTok الديناميك', 'بيحافظ على باراميترات اللينك', 'مكتبة + QR + Excel'],
+    where: 'أي مكان',
+    web: true,
+    features: { utm: true },
+    tools: ['utm'], home: 'utm',
+    permissions: ['storage', 'contextMenus', 'activeTab'], hosts: [], content: [],
+  },
+  {
+    id: 'calc', name: 'CampaignMath', nameHtml: 'Campaign<span>Math</span>', category: 'تحليل',
+    tagline: 'كل مؤشرات الحملة + الميزانية من الهدف',
+    description: 'حط أرقام الحملة يطلعلك CPM، وCTR، وCPC، وCPL، وCAC، وROAS، وROI. أو ابدأ من عدد العملاء اللي محتاجهم، وهو يقولّك الميزانية المطلوبة ويقسّمها على المنصات.',
+    bullets: ['10 مؤشرات في ثانية', 'الميزانية من الهدف', 'تقسيم على المنصات', 'ج.م / ر.س / د.إ / $'],
+    where: 'أي مكان',
+    web: true,
+    features: {},
+    tools: ['calc'], home: 'calc',
+    permissions: ['storage'], hosts: [], content: [],
+  },
+  {
+    id: 'notion', name: 'IdeaDrop', nameHtml: 'Idea<span>Drop</span>', category: 'محتوى',
+    tagline: 'احفظ أي فكرة على Notion بضغطة',
+    description: 'أي صفحة أو نص أو صورة عجبتك، احفظها في قاعدة بيانات المحتوى على Notion، من الأيقونة أو بكليك يمين. وبتتحفظ معاها ملاحظتك واللينك وتاريخ الحفظ.',
+    bullets: ['كليك يمين ← احفظ على Notion', 'النص المحدد + الصورة + اللينك', 'بيملا أعمدة الحالة والتاريخ', 'مفتاح Notion مجاني'],
+    where: 'أي موقع',
+    web: false,
+    features: { notion: true },
+    tools: ['notion'], home: 'notion', popup: 'notion', welcome: 'notion',
+    permissions: ['storage', 'contextMenus', 'activeTab', 'scripting'], hosts: ['https://api.notion.com/*'], content: [],
+  },
+];
+
+const bundle = {
+  id: 'toolkit', name: "Marketer's Toolkit", nameHtml: "Marketer's <span>Toolkit</span>", category: 'الكل',
+  tagline: 'كل الأدوات في إضافة واحدة',
+  description: 'كل الأدوات في إضافة واحدة: واتساب، والمحتوى، والتحليل. للي عايز كله من غير ما ينزّل عشر إضافات.',
+  bullets: ['10 أدوات', 'لوحة واحدة لكل حاجة', 'نفس البيانات في كل الأدوات'],
+  web: false,
+  features: { replies: true, crm: true, ads: true, notion: true, utm: true, qr: true, harvest: true, inspect: true },
+  tools: ['replies', 'crm', 'walink', 'post', 'ads', 'notion', 'utm', 'calc'], home: 'replies', popup: 'home',
+  permissions: ['storage', 'unlimitedStorage', 'alarms', 'notifications', 'scripting', 'activeTab', 'contextMenus'],
+  hosts: ['https://web.whatsapp.com/*', 'https://www.facebook.com/ads/library/*', 'https://*.fbcdn.net/*', 'https://api.notion.com/*'],
+  content: ['whatsapp', 'ads'],
+};
+
+module.exports = { VERSION, AUTHOR, SITE_URL, tools, bundle, ALL_OFF };
