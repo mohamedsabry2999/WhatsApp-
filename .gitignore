@@ -1,3 +1,5 @@
 *.zip
 *.png
 !extension/**/*.png
+!toolkit/**/*.png
+previews/

@@ -1,0 +1,112 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<title>Marketer's Toolkit</title>
+<link rel="stylesheet" href="lib/brand.css">
+<style>
+  body { width: 360px; }
+  header { display: flex; align-items: center; gap: 12px; padding: 16px 16px 12px; border-bottom: 3px solid var(--brand); }
+  header img { width: 36px; height: 36px; }
+  header .brand-name { font-size: 18px; }
+  header .tag { color: var(--muted); font-size: 12px; }
+  main { padding: 12px 16px; }
+  .sec-title { color: var(--muted); font-size: 11px; font-weight: 700; margin: 10px 2px 6px; }
+  .quick { display: grid; gap: 8px; }
+  .qa { display: flex; align-items: center; gap: 10px; width: 100%; text-align: right; background: var(--panel); border: 1px solid var(--line);
+        border-radius: 10px; padding: 10px 12px; color: var(--white); cursor: pointer; font: 700 13px Cairo, Inter, sans-serif; }
+  .qa:hover { border-color: var(--brand); }
+  .qa .ico { width: 30px; height: 30px; flex: none; border-radius: 8px; background: var(--brand-soft); color: var(--brand); display: grid; place-items: center; font: 800 14px Inter; }
+  .qa small { display: block; color: var(--muted); font-weight: 400; font-size: 11px; }
+  .tools { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; }
+  .tool { background: var(--panel); border: 1px solid var(--line); border-radius: 8px; padding: 8px 10px; color: var(--text); cursor: pointer; font: 12px Cairo, Inter, sans-serif; text-align: right; }
+  .tool:hover { border-color: var(--brand); color: var(--white); }
+  .view { display: none; } .view.on { display: block; }
+  .back { background: none; border: 0; color: var(--muted); cursor: pointer; font: 12px Cairo; padding: 0; margin-bottom: 8px; }
+  #status { margin-top: 10px; white-space: pre-line; }
+  #status.ok { color: var(--white); border-right: 3px solid var(--brand); padding-right: 8px; }
+  #status.err { color: var(--bad); border-right: 3px solid var(--bad); padding-right: 8px; }
+  .kv { display: grid; grid-template-columns: 92px 1fr; gap: 4px 8px; font-size: 12px; }
+  .kv b { color: var(--muted); font-weight: 400; }
+  .og { border: 1px solid var(--line); border-radius: 10px; overflow: hidden; background: var(--panel); margin-top: 8px; }
+  .og img { width: 100%; max-height: 170px; object-fit: cover; display: block; background: #000; }
+  .og div { padding: 8px 10px; }
+  footer { display: flex; justify-content: space-between; padding: 10px 16px 12px; border-top: 1px solid var(--line); color: var(--muted); font-size: 11px; }
+  footer b { color: var(--brand); }
+  footer .sig { color: var(--white); }
+</style>
+</head>
+<body>
+  <header>
+    <img src="icons/icon.svg" alt="">
+    <div>
+      <div class="brand-name" dir="ltr" style="text-align:right">Marketer's <span>Toolkit</span></div>
+      <div class="tag">أدوات المسوّق اليومية</div>
+    </div>
+  </header>
+
+  <main>
+    <!-- الرئيسية -->
+    <section class="view on" id="v-home">
+      <div class="sec-title">على الصفحة اللي إنت فاتحها</div>
+      <div class="quick">
+        <button class="qa" id="qa-inspect"><span class="ico">P</span><span>افحص الصفحة<small>أكواد التتبع (Pixel / GA4 / GTM ...) + SEO</small></span></button>
+        <button class="qa" id="qa-notion"><span class="ico">N</span><span>احفظ على Notion<small>الصفحة أو النص المحدد كفكرة محتوى</small></span></button>
+        <button class="qa" id="qa-harvest"><span class="ico">C</span><span>ContactHarvest<small>صدّر أرقام واتساب لإكسيل (من web.whatsapp.com)</small></span></button>
+        <button class="qa" id="qa-utm"><span class="ico">#</span><span>UTM للصفحة دي<small>اعمل لينك متتبَّع للصفحة الحالية</small></span></button>
+      </div>
+      <div class="sec-title">كل الأدوات</div>
+      <div class="tools">
+        <button class="tool" data-open="replies">ردود واتساب الجاهزة</button>
+        <button class="tool" data-open="crm">CRM واتساب</button>
+        <button class="tool" data-open="walink">لينك واتساب + QR</button>
+        <button class="tool" data-open="post">مراجع البوست</button>
+        <button class="tool" data-open="utm">UTM Builder</button>
+        <button class="tool" data-open="calc">حاسبة الحملات</button>
+        <button class="tool" data-open="ads">أرشيف الإعلانات</button>
+        <button class="tool" data-open="notion">إعدادات Notion</button>
+      </div>
+    </section>
+
+    <!-- فحص الصفحة -->
+    <section class="view" id="v-inspect">
+      <button class="back" data-back>→ رجوع</button>
+      <div id="inspect-out" class="muted">جاري الفحص...</div>
+    </section>
+
+    <!-- Notion -->
+    <section class="view" id="v-notion">
+      <button class="back" data-back>→ رجوع</button>
+      <h3>احفظ على Notion</h3>
+      <label class="f">العنوان<input type="text" id="n-title"></label>
+      <label class="f" style="margin-top:8px">ملاحظة / زاوية الفكرة<textarea id="n-note" placeholder="إيه اللي عجبك هنا؟ ممكن تتحول لبوست إزاي؟"></textarea></label>
+      <div id="n-sel" class="muted" style="margin-top:6px;font-size:12px"></div>
+      <button class="btn primary" id="n-save" style="width:100%;margin-top:10px">حفظ</button>
+      <div id="n-status"></div>
+    </section>
+
+    <!-- ContactHarvest -->
+    <section class="view" id="v-harvest">
+      <button class="back" data-back>→ رجوع</button>
+      <h3 dir="ltr" style="text-align:right">Contact<span style="color:var(--brand)">Harvest</span></h3>
+      <label class="check"><input type="checkbox" id="includeAll"> ضيف كمان كل جهات الاتصال المحفوظة</label>
+      <label class="check"><input type="radio" name="fmt" value="xlsx" checked> Excel (.xlsx)</label>
+      <label class="check"><input type="radio" name="fmt" value="csv"> CSV</label>
+      <button class="btn primary" id="go" style="width:100%;margin-top:6px">استخراج وتحميل الشيت</button>
+      <div id="status"></div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="sig">تطوير: <b>محمد صبري</b> | <bdi dir="ltr">Mohamed Sabry</bdi></div>
+    <div dir="ltr">v<span id="ver"></span></div>
+  </footer>
+
+  <script src="lib/qrcode.js"></script>
+  <script src="lib/xlsx.js"></script>
+  <script src="lib/extract.js"></script>
+  <script src="lib/ui.js"></script>
+  <script src="tools/inspector.js"></script>
+  <script src="popup.js"></script>
+</body>
+</html>

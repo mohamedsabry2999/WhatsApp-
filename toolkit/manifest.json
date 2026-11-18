@@ -1,0 +1,82 @@
+{
+  "manifest_version": 3,
+  "name": "Marketer's Toolkit",
+  "short_name": "Marketer's Toolkit",
+  "description": "أدوات يومية للمسوّقين: واتساب، QR، UTM، فحص التتبع وSEO، أرشيف الإعلانات، Notion. تطوير: محمد صبري | Mohamed Sabry",
+  "version": "1.0.0",
+  "author": "محمد صبري | Mohamed Sabry",
+  "permissions": [
+    "storage",
+    "unlimitedStorage",
+    "alarms",
+    "notifications",
+    "scripting",
+    "activeTab",
+    "contextMenus",
+    "tabs"
+  ],
+  "host_permissions": [
+    "https://web.whatsapp.com/*",
+    "https://www.facebook.com/ads/library/*",
+    "https://*.fbcdn.net/*",
+    "https://api.notion.com/*"
+  ],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "content_scripts": [
+    {
+      "matches": [
+        "https://web.whatsapp.com/*"
+      ],
+      "js": [
+        "lib/store.js",
+        "lib/defaults.js",
+        "content/whatsapp.js"
+      ],
+      "css": [
+        "content/whatsapp.css"
+      ],
+      "run_at": "document_idle"
+    },
+    {
+      "matches": [
+        "https://www.facebook.com/ads/library/*"
+      ],
+      "js": [
+        "lib/store.js",
+        "content/adlibrary.js"
+      ],
+      "css": [
+        "content/adlibrary.css"
+      ],
+      "run_at": "document_idle"
+    }
+  ],
+  "action": {
+    "default_popup": "popup.html",
+    "default_title": "Marketer's Toolkit — محمد صبري",
+    "default_icon": {
+      "16": "icons/icon16.png",
+      "48": "icons/icon48.png",
+      "128": "icons/icon128.png"
+    }
+  },
+  "icons": {
+    "16": "icons/icon16.png",
+    "48": "icons/icon48.png",
+    "128": "icons/icon128.png"
+  },
+  "web_accessible_resources": [
+    {
+      "resources": [
+        "fonts/*",
+        "icons/*"
+      ],
+      "matches": [
+        "https://web.whatsapp.com/*",
+        "https://www.facebook.com/*"
+      ]
+    }
+  ]
+}

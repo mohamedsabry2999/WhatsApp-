@@ -1,0 +1,8 @@
+@font-face { font-family: MTCairo; font-weight: 700; src: url("chrome-extension://__MSG_@@extension_id__/fonts/cairo-arabic-700-normal.woff2") format("woff2"); }
+.mt-save-ad {
+  display: block; width: calc(100% - 16px); margin: 8px; padding: 7px 10px; border-radius: 8px; cursor: pointer;
+  background: #111111; color: #FFFFFF; border: 1px solid #E10600; font: 700 13px MTCairo, "Segoe UI", Tahoma, sans-serif;
+  direction: rtl; text-align: center; position: relative; z-index: 5;
+}
+.mt-save-ad:hover { background: #E10600; }
+.mt-save-ad.mt-done { background: #E10600; border-color: #E10600; }
