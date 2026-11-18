@@ -29,11 +29,18 @@ const check = (n, ok, x = '') => { results.push(ok); console.log(ok ? 'PASS' : '
   }
   // كل الروابط الداخلية والتحميلات موجودة
   const internal = [...links].filter((h) => h.startsWith(BASE));
-  const bad = [];
-  for (const h of internal) {
-    const res = await ctx.request.get(h.split('#')[0]);
-    if (res.status() !== 200) bad.push(res.status() + ' ' + h);
-  }
+  // الفحص من جوه المتصفح (عشان يمشي من نفس الشبكة/البروكسي زي الصفحات)
+  const probe = await ctx.newPage();
+  await probe.goto(BASE + 'index.html');
+  const bad = await probe.evaluate(async (urls) => {
+    const out = [];
+    for (const u of urls) {
+      const r = await fetch(u.split('#')[0], { cache: 'no-store' });
+      if (r.status !== 200) out.push(r.status + ' ' + u);
+    }
+    return out;
+  }, internal);
+  await probe.close();
   check(`all ${internal.length} internal links/downloads resolve`, bad.length === 0, bad.join(' | '));
 
   // الصفحة الرئيسية: سكرين كاملة (desktop + mobile)
