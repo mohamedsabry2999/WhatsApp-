@@ -1,5 +1,6 @@
 const btn = document.getElementById('go');
 const statusEl = document.getElementById('status');
+try { document.getElementById('ver').textContent = chrome.runtime.getManifest().version; } catch (e) {}
 
 function setStatus(text, cls = '') {
   statusEl.textContent = text;
@@ -60,12 +61,12 @@ btn.addEventListener('click', async () => {
     const fmt = document.querySelector('input[name="fmt"]:checked').value;
     const blob = fmt === 'csv'
       ? buildCsv(headers, rows)
-      : buildXlsx({ sheetName: 'WhatsApp Contacts', headers, rows, widths: [6, 30, 20, 25, 13, 18, 12, 50], rtl: true });
+      : buildXlsx({ sheetName: 'ContactHarvest', headers, rows, widths: [6, 30, 20, 25, 13, 18, 12, 50], rtl: true });
 
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href = url;
-    a.download = `whatsapp-contacts-${new Date().toISOString().slice(0, 10)}.${fmt}`;
+    a.download = `ContactHarvest-${new Date().toISOString().slice(0, 10)}.${fmt}`;
     document.body.appendChild(a);
     a.click();
     a.remove();

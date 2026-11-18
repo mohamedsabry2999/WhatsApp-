@@ -2,9 +2,12 @@
 <html lang="ar" dir="rtl">
 <head>
 <meta charset="utf-8">
+<title>ContactHarvest</title>
 <style>
   body { font-family: system-ui, "Segoe UI", Tahoma, sans-serif; width: 300px; margin: 0; padding: 16px; background: #fff; color: #111b21; }
-  h1 { font-size: 16px; margin: 0 0 12px; color: #008069; }
+  h1 { font-size: 20px; margin: 0; color: #008069; letter-spacing: .3px; }
+  .sub { font-size: 12px; color: #667781; margin: 2px 0 12px; }
+  footer { margin-top: 14px; padding-top: 10px; border-top: 1px solid #e9edef; font-size: 11px; color: #667781; text-align: center; }
   label { display: flex; gap: 8px; align-items: center; font-size: 13px; margin: 6px 0; cursor: pointer; }
   button { width: 100%; margin-top: 12px; padding: 10px; border: 0; border-radius: 8px; background: #00a884; color: #fff; font-size: 14px; font-weight: 600; cursor: pointer; }
   button:disabled { background: #8fd3c3; cursor: wait; }
@@ -14,12 +17,17 @@
 </style>
 </head>
 <body>
-  <h1>تصدير جهات واتساب لإكسيل</h1>
+  <h1 dir="ltr" style="text-align:right">ContactHarvest</h1>
+  <div class="sub">تصدير جهات واتساب لإكسيل</div>
   <label><input type="checkbox" id="includeAll"> ضيف كمان كل جهات الاتصال المحفوظة</label>
   <label><input type="radio" name="fmt" value="xlsx" checked> ملف Excel (.xlsx)</label>
   <label><input type="radio" name="fmt" value="csv"> ملف CSV</label>
   <button id="go">استخراج وتحميل الشيت</button>
   <div id="status"></div>
+  <footer>
+    <div>تطوير: محمد صبري | <bdi dir="ltr">Mohamed Sabry</bdi></div>
+    <div dir="ltr">v<span id="ver"></span></div>
+  </footer>
   <script src="xlsx.js"></script>
   <script src="extract.js"></script>
   <script src="popup.js"></script>

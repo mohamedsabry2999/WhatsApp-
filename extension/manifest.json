@@ -1,14 +1,29 @@
 {
   "manifest_version": 3,
-  "name": "WhatsApp Contacts Exporter",
-  "description": "تصدير كل الأرقام اللي اتراسلت معاها على واتساب ويب لشيت إكسيل (الاسم + رقم التليفون).",
-  "version": "1.2.0",
-  "permissions": ["scripting", "activeTab"],
-  "host_permissions": ["https://web.whatsapp.com/*"],
+  "name": "ContactHarvest",
+  "short_name": "ContactHarvest",
+  "description": "تصدير الأرقام اللي اتراسلت معاها على واتساب ويب لشيت إكسيل بالاسم ورقم التليفون. تطوير: محمد صبري | Mohamed Sabry",
+  "version": "1.3.0",
+  "author": "محمد صبري | Mohamed Sabry",
+  "permissions": [
+    "scripting",
+    "activeTab"
+  ],
+  "host_permissions": [
+    "https://web.whatsapp.com/*"
+  ],
   "action": {
     "default_popup": "popup.html",
-    "default_title": "تصدير جهات واتساب",
-    "default_icon": { "16": "icons/icon16.png", "48": "icons/icon48.png", "128": "icons/icon128.png" }
+    "default_title": "ContactHarvest — تصدير جهات واتساب",
+    "default_icon": {
+      "16": "icons/icon16.png",
+      "48": "icons/icon48.png",
+      "128": "icons/icon128.png"
+    }
   },
-  "icons": { "16": "icons/icon16.png", "48": "icons/icon48.png", "128": "icons/icon128.png" }
+  "icons": {
+    "16": "icons/icon16.png",
+    "48": "icons/icon48.png",
+    "128": "icons/icon128.png"
+  }
 }
