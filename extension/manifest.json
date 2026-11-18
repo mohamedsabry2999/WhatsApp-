@@ -3,7 +3,7 @@
   "name": "ContactHarvest",
   "short_name": "ContactHarvest",
   "description": "تصدير الأرقام اللي اتراسلت معاها على واتساب ويب لشيت إكسيل بالاسم ورقم التليفون. تطوير: محمد صبري | Mohamed Sabry",
-  "version": "1.3.0",
+  "version": "1.4.0",
   "author": "محمد صبري | Mohamed Sabry",
   "permissions": [
     "scripting",

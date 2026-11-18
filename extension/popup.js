@@ -61,7 +61,7 @@ btn.addEventListener('click', async () => {
     const fmt = document.querySelector('input[name="fmt"]:checked').value;
     const blob = fmt === 'csv'
       ? buildCsv(headers, rows)
-      : buildXlsx({ sheetName: 'ContactHarvest', headers, rows, widths: [6, 30, 20, 25, 13, 18, 12, 50], rtl: true });
+      : buildXlsx({ sheetName: 'ContactHarvest', headers, rows, widths: [6, 30, 20, 25, 13, 18, 12, 50], rtl: true, author: 'محمد صبري | Mohamed Sabry' });
 
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
