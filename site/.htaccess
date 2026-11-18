@@ -1,0 +1,36 @@
+# tools.mohammedsabry.site — إعدادات السيرفر (Hostinger / LiteSpeed / Apache)
+DirectoryIndex index.html
+ErrorDocument 404 /404.html
+Options -Indexes
+
+# أنواع الملفات
+AddType application/zip .zip
+AddType font/woff2 .woff2
+AddType image/svg+xml .svg
+AddCharset utf-8 .html .css .js .json .xml .txt
+
+# الكاش: الخطوط والصور والملفات الثابتة شهر، والصفحات من غير كاش طويل
+<IfModule mod_expires.c>
+  ExpiresActive On
+  ExpiresDefault "access plus 1 hour"
+  ExpiresByType text/html "access plus 0 seconds"
+  ExpiresByType font/woff2 "access plus 1 year"
+  ExpiresByType image/png "access plus 1 month"
+  ExpiresByType image/jpeg "access plus 1 month"
+  ExpiresByType image/svg+xml "access plus 1 month"
+  ExpiresByType text/css "access plus 1 week"
+  ExpiresByType application/javascript "access plus 1 week"
+  ExpiresByType text/javascript "access plus 1 week"
+</IfModule>
+
+# الضغط
+<IfModule mod_deflate.c>
+  AddOutputFilterByType DEFLATE text/html text/css text/javascript application/javascript application/json image/svg+xml text/xml application/xml
+</IfModule>
+
+# ملفات الإضافات تتحمّل على طول بدل ما تتفتح
+<IfModule mod_headers.c>
+  <FilesMatch "\.zip$">
+    Header set Content-Disposition attachment
+  </FilesMatch>
+</IfModule>

@@ -22,11 +22,15 @@ node scripts/build-site.js
 ## الطريقة 2: Cloudflare Pages (مجاني)
 نفس الفكرة: **Workers & Pages** ← **Create** ← **Pages** ← **Upload assets** ← ارفع فولدر `site`، وبعدين **Custom domains** ← `tools.mohammedsabry.site`. ولو الدومين أصلًا على Cloudflare، سجل الـ DNS بيتعمل لوحده.
 
-## الطريقة 3: نفس استضافة الموقع الرئيسي (cPanel / Hostinger)
-1. من لوحة الاستضافة اعمل **Subdomain** اسمه `tools`.
-2. افتح **File Manager** وادخل فولدر الـ subdomain (غالبًا `public_html/tools`).
-3. ارفع **محتويات** فولدر `site` (مش الفولدر نفسه)، يعني `index.html` يبقى على طول جوه فولدر الـ subdomain.
-4. فعّل SSL للـ subdomain من لوحة الاستضافة.
+## الطريقة 3: Hostinger (نفس استضافة الموقع الرئيسي)
+1. **اعمل الـ subdomain:** من hPanel ادخل **Websites** ← **Manage** جنب `mohammedsabry.site` ← من القايمة الجانبية **Domains** ← **Subdomains**. اكتب `tools` ودوس **Create**. وخد بالك من اسم الفولدر اللي هيظهر جنبه (غالبًا `public_html/tools`).
+2. **ارفع الملفات:** من القايمة الجانبية **Files** ← **File Manager** ← ادخل فولدر الـ subdomain. دوس **Upload** وارفع ملف `tools-site-v1.0.0.zip`.
+3. **فك الضغط:** كليك يمين على الملف ← **Extract** ← سيب المكان زي ما هو (`.`) ← **Extract**. المهم إن `index.html` يبقى جوه فولدر الـ subdomain على طول، مش جوه فولدر تاني.
+4. **نضّف:** امسح ملف الـ zip، وأي ملف `default.php` أو `index.php` هوستنجر حطه في الفولدر.
+5. **SSL:** من **Security** ← **SSL** اتأكد إن `tools.mohammedsabry.site` عليه SSL (هوستنجر بيعمله ببلاش، وساعات بياخد لحد ساعة)، وبعدين فعّل **Force HTTPS**.
+6. **جرّب:** افتح `https://tools.mohammedsabry.site` ودوس تحميل على أي أداة.
+
+> لو الدومين مش متوصّل بـ hPanel عن طريق الـ Nameservers (يعني الـ DNS عند شركة تانية)، لازم تضيف هناك سجل `A` اسمه `tools` بنفس الـ IP اللي في hPanel (**Websites** ← **Manage** ← **Website details**).
 
 ## لو غيّرت اسم الـ subdomain
 غيّر `SITE_URL` في `tools.config.js` وبعدين:
