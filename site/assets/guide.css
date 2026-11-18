@@ -1,0 +1,132 @@
+/* الدليل التفاعلي لتثبيت الإضافة (Load unpacked) */
+.guide { display: grid; grid-template-columns: 340px 1fr; gap: 28px; align-items: start; }
+.g-steps { display: grid; gap: 8px; }
+.g-step { display: grid; grid-template-columns: 40px 1fr; gap: 12px; padding: 14px 16px; border-radius: 18px; cursor: pointer; transition: background .3s, box-shadow .3s; border: 1px solid transparent; }
+.g-step .n { width: 36px; height: 36px; border-radius: 50%; display: grid; place-items: center; font: 800 15px Inter; background: rgba(255,255,255,.08); color: rgba(255,255,255,.6); transition: background .3s, color .3s; }
+.g-step b { display: block; font-size: 16px; color: rgba(255,255,255,.75); }
+.g-step p { margin: 2px 0 0; font-size: 14px; color: rgba(255,255,255,.45); display: none; }
+.g-step .extra { display: none; margin-top: 10px; }
+.g-step.on { background: var(--black-2); border-color: var(--black-line); }
+.g-step.on .n { background: var(--red); color: #fff; }
+.g-step.on b { color: #fff; }
+.g-step.on p, .g-step.on .extra { display: block; }
+.g-step.done .n { background: rgba(225,6,0,.18); color: var(--red); }
+.copy-cmd { display: inline-flex; align-items: center; gap: 8px; background: #000; border: 1px solid var(--black-line); border-radius: 10px; padding: 6px 6px 6px 12px; font: 700 13px Inter; color: #fff; direction: ltr; }
+.copy-cmd button { background: var(--red); color: #fff; border: 0; border-radius: 7px; padding: 4px 10px; font: 700 12px Cairo, Inter; cursor: pointer; }
+
+.g-controls { display: flex; align-items: center; gap: 10px; margin-top: 14px; }
+.g-controls button { width: 40px; height: 40px; border-radius: 50%; border: 1px solid var(--black-line); background: var(--black-2); color: #fff; cursor: pointer; font-size: 15px; }
+.g-controls button:hover { border-color: var(--red); }
+.g-progress { flex: 1; height: 4px; border-radius: 4px; background: rgba(255,255,255,.1); overflow: hidden; }
+.g-progress i { display: block; height: 100%; width: 0; background: var(--red); }
+
+/* ===== نافذة كروم الوهمية (إنجليزي LTR زي كروم الحقيقي) ===== */
+.browser { direction: ltr; font-family: Inter, "Segoe UI", Roboto, sans-serif; background: #DEE1E6; border-radius: 16px; overflow: hidden; box-shadow: 0 30px 80px rgba(0,0,0,.5); position: relative; user-select: none; }
+.b-tabs { display: flex; align-items: flex-end; gap: 6px; padding: 8px 10px 0; height: 40px; }
+.b-dots { display: flex; gap: 7px; padding: 0 8px 12px 4px; }
+.b-dots i { width: 12px; height: 12px; border-radius: 50%; background: #ff5f57; } .b-dots i:nth-child(2) { background: #febc2e; } .b-dots i:nth-child(3) { background: #28c840; }
+.b-tab { background: #fff; border-radius: 10px 10px 0 0; padding: 7px 14px; font-size: 12px; color: #333; display: flex; align-items: center; gap: 8px; min-width: 170px; }
+.b-tab img { width: 14px; height: 14px; }
+.b-bar { background: #fff; display: flex; align-items: center; gap: 8px; padding: 7px 10px; border-bottom: 1px solid #e3e3e3; }
+.b-nav { display: flex; gap: 10px; color: #777; font-size: 14px; padding: 0 4px; }
+.b-omni { flex: 1; background: #F1F3F4; border-radius: 999px; padding: 6px 14px; font-size: 13px; color: #202124; min-height: 30px; display: flex; align-items: center; gap: 6px; }
+.b-omni .caret { width: 1px; height: 15px; background: #202124; animation: caret 1s steps(1) infinite; }
+@keyframes caret { 50% { opacity: 0; } }
+.b-tools { display: flex; align-items: center; gap: 6px; }
+.b-ico { width: 30px; height: 30px; border-radius: 50%; display: grid; place-items: center; color: #5f6368; position: relative; }
+.b-ico svg { width: 18px; height: 18px; }
+.b-pinned { width: 0; overflow: hidden; transition: width .5s; }
+.b-pinned img { width: 18px; height: 18px; margin: 6px; border-radius: 4px; }
+.browser.pinned .b-pinned { width: 30px; }
+.browser.pinned .b-pinned img { animation: pulse 1.2s ease 2; }
+@keyframes pulse { 50% { transform: scale(1.35); } }
+.b-view { background: #fff; height: 400px; position: relative; overflow: hidden; }
+
+/* scenes */
+.scene { position: absolute; inset: 0; opacity: 0; transition: opacity .4s; pointer-events: none; }
+.scene.on { opacity: 1; }
+
+/* 1) فك الضغط */
+.sc-files { display: flex; align-items: center; justify-content: center; gap: 40px; height: 100%; background: linear-gradient(180deg, #f7f8fa, #eef0f3); }
+.file { width: 130px; text-align: center; font-size: 12px; color: #333; transition: transform .5s, opacity .5s; }
+.file .big { width: 84px; height: 84px; margin: 0 auto 10px; border-radius: 14px; display: grid; place-items: center; }
+.file.zip .big { background: #fff; border: 2px solid #ddd; font: 800 13px Inter; color: #888; }
+.file.folder .big { background: linear-gradient(180deg, #ffd96b, #f5b82e); border-radius: 10px 14px 14px 14px; position: relative; }
+.file.folder .big img { width: 34px; height: 34px; border-radius: 8px; }
+.sc-files .arrow { font-size: 28px; color: var(--red); transition: opacity .4s; }
+.s-unzip .file.folder, .s-unzip .arrow { opacity: 0; transform: scale(.7); }
+.s-unzip.go .file.folder, .s-unzip.go .arrow { opacity: 1; transform: none; }
+.sc-files .hint { position: absolute; bottom: 18px; left: 0; right: 0; text-align: center; font-size: 12px; color: #666; direction: rtl; font-family: Cairo, sans-serif; }
+
+/* 2..5) صفحة الإضافات */
+.ext-page { height: 100%; display: flex; flex-direction: column; background: #F8F9FA; }
+.ext-head { display: flex; align-items: center; gap: 12px; padding: 12px 18px; background: #fff; border-bottom: 1px solid #e8eaed; }
+.ext-head .ttl { font-size: 18px; color: #202124; flex: 1; display: flex; align-items: center; gap: 10px; }
+.ext-head .ttl::before { content: "☰"; color: #5f6368; font-size: 16px; }
+.ext-head .search { background: #F1F3F4; border-radius: 999px; padding: 5px 14px; color: #888; font-size: 12px; width: 200px; }
+.devmode { display: flex; align-items: center; gap: 8px; font-size: 13px; color: #202124; }
+.toggle { width: 34px; height: 14px; border-radius: 7px; background: #bdc1c6; position: relative; transition: background .3s; }
+.toggle::after { content: ""; position: absolute; top: -3px; left: -2px; width: 20px; height: 20px; border-radius: 50%; background: #fff; box-shadow: 0 1px 3px rgba(0,0,0,.4); transition: left .3s, background .3s; }
+.toggle.on { background: #8AB4F8; } .toggle.on::after { left: 16px; background: #1A73E8; }
+.ext-sub { display: flex; gap: 10px; padding: 0 18px; height: 0; overflow: hidden; background: #fff; border-bottom: 1px solid #e8eaed; transition: height .4s, padding .4s; }
+.ext-sub.on { height: 52px; padding: 10px 18px; }
+.ext-sub span { border: 1px solid #dadce0; border-radius: 6px; padding: 6px 12px; font-size: 12px; color: #1A73E8; font-weight: 600; white-space: nowrap; }
+.ext-sub span.hl { background: #E8F0FE; }
+.ext-body { flex: 1; padding: 18px; position: relative; }
+.ext-empty { color: #5f6368; font-size: 13px; text-align: center; margin-top: 70px; }
+.ext-card { width: 330px; background: #fff; border-radius: 10px; box-shadow: 0 1px 3px rgba(60,64,67,.3); padding: 16px; display: grid; grid-template-columns: 40px 1fr; gap: 14px; transform: translateY(20px) scale(.96); opacity: 0; transition: .5s cubic-bezier(.2,.8,.2,1); }
+.ext-card.on { transform: none; opacity: 1; }
+.ext-card img { width: 40px; height: 40px; border-radius: 9px; }
+.ext-card b { font-size: 14px; color: #202124; } .ext-card b small { color: #5f6368; font-weight: 400; margin-left: 6px; }
+.ext-card p { margin: 4px 0 12px; font-size: 12px; color: #5f6368; direction: rtl; text-align: left; font-family: Cairo, sans-serif; line-height: 1.5; }
+.ext-card .row { grid-column: 1 / -1; display: flex; justify-content: space-between; align-items: center; border-top: 1px solid #eee; padding-top: 10px; font-size: 12px; color: #1A73E8; font-weight: 600; }
+
+/* نافذة اختيار الفولدر */
+.picker { position: absolute; inset: 30px 60px; background: #fff; border-radius: 12px; box-shadow: 0 20px 60px rgba(0,0,0,.35); display: grid; grid-template-columns: 140px 1fr; grid-template-rows: 40px 1fr 54px; overflow: hidden; opacity: 0; transform: scale(.95); transition: .35s; font-size: 12px; color: #202124; z-index: 4; }
+.picker.on { opacity: 1; transform: none; }
+.picker .pt { grid-column: 1 / -1; background: #f3f3f3; border-bottom: 1px solid #e5e5e5; display: flex; align-items: center; padding: 0 14px; font-weight: 600; }
+.picker .side { background: #f7f7f7; border-right: 1px solid #eee; padding: 10px; display: grid; align-content: start; gap: 4px; color: #555; }
+.picker .side .on { background: #e4e9f2; border-radius: 6px; color: #111; }
+.picker .side div { padding: 4px 8px; }
+.picker .list { padding: 8px; }
+.picker .it { display: flex; align-items: center; gap: 8px; padding: 6px 8px; border-radius: 6px; }
+.picker .it.dim { color: #aaa; }
+.picker .it.sel { background: #1A73E8; color: #fff; }
+.picker .it .fi { width: 18px; height: 14px; border-radius: 2px 4px 3px 3px; background: #f5b82e; }
+.picker .it.dim .fi { background: #ddd; border-radius: 3px; width: 14px; height: 16px; }
+.picker .inside { margin: 6px 0 0 26px; color: #666; display: none; }
+.picker .inside div { padding: 2px 0; } .picker .inside .mf { color: var(--red); font-weight: 700; }
+.picker.peek .inside { display: block; }
+.picker .pf { grid-column: 1 / -1; border-top: 1px solid #eee; display: flex; justify-content: flex-end; align-items: center; gap: 8px; padding: 0 14px; }
+.picker .pf span { border-radius: 6px; padding: 6px 14px; border: 1px solid #ccc; }
+.picker .pf .ok { background: #1A73E8; color: #fff; border-color: #1A73E8; }
+
+/* قايمة الإضافات (البازل) */
+.puzzle-menu { position: absolute; top: 6px; right: 12px; width: 250px; background: #fff; border-radius: 10px; box-shadow: 0 8px 30px rgba(0,0,0,.25); padding: 10px; font-size: 13px; color: #202124; opacity: 0; transform: translateY(-8px); transition: .3s; z-index: 6; }
+.puzzle-menu.on { opacity: 1; transform: none; }
+.puzzle-menu .h { font-weight: 600; padding: 2px 6px 8px; border-bottom: 1px solid #eee; margin-bottom: 6px; }
+.puzzle-menu .it { display: flex; align-items: center; gap: 10px; padding: 6px; border-radius: 6px; }
+.puzzle-menu .it img { width: 20px; height: 20px; border-radius: 5px; }
+.puzzle-menu .it .pin { margin-left: auto; color: #5f6368; transition: color .3s, transform .3s; }
+.puzzle-menu .it .pin.on { color: #1A73E8; transform: rotate(-45deg); }
+
+/* الماوس */
+.cursor { position: absolute; top: 0; left: 0; width: 22px; height: 22px; z-index: 20; pointer-events: none; transition: transform .9s cubic-bezier(.5,.1,.2,1); filter: drop-shadow(0 2px 3px rgba(0,0,0,.35)); }
+.cursor::after { content: ""; position: absolute; top: -8px; left: -8px; width: 24px; height: 24px; border-radius: 50%; border: 2px solid var(--red); opacity: 0; transform: scale(.4); }
+.cursor.click::after { animation: ripple .5s ease-out; }
+@keyframes ripple { 0% { opacity: 1; transform: scale(.4); } 100% { opacity: 0; transform: scale(1.6); } }
+
+.tool-pick { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 26px; }
+.tool-pick button { display: flex; align-items: center; gap: 8px; padding: 6px 14px 6px 8px; border-radius: 999px; border: 1px solid var(--black-line); background: var(--black-2); color: rgba(255,255,255,.75); cursor: pointer; font: 700 13px Inter, Cairo; }
+.tool-pick button img { width: 22px; height: 22px; border-radius: 6px; }
+.tool-pick button.on { border-color: var(--red); color: #fff; background: rgba(225,6,0,.12); }
+
+@media (max-width: 980px) {
+  .guide { grid-template-columns: 1fr; }
+  .g-steps { order: 2; }
+  .b-view { height: 340px; }
+  .picker { inset: 16px 14px; grid-template-columns: 100px 1fr; }
+  .ext-head .search { display: none; }
+  .ext-card { width: auto; }
+}
+@media (max-width: 520px) { .b-tab { min-width: 0; } .b-nav { display: none; } .ext-sub span:nth-child(n+2) { display: none; } }

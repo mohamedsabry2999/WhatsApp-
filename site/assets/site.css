@@ -1,0 +1,219 @@
+/* tools.mohammedsabry.site — هوية محمد صبري: أحمر على أسود، بإحساس فاتح ومتهوّي */
+@font-face { font-family: Cairo; font-weight: 300; font-display: swap; src: url(fonts/cairo-arabic-300-normal.woff2) format("woff2"); unicode-range: U+0600-06FF,U+0750-077F,U+0870-088E,U+0890-0891,U+0898-08E1,U+08E3-08FF,U+200C-200E,U+2010-2011,U+204F,U+2E41,U+FB50-FDFF,U+FE70-FE74,U+FE76-FEFC; }
+@font-face { font-family: Cairo; font-weight: 400; font-display: swap; src: url(fonts/cairo-arabic-400-normal.woff2) format("woff2"); unicode-range: U+0600-06FF,U+0750-077F,U+0870-088E,U+0890-0891,U+0898-08E1,U+08E3-08FF,U+200C-200E,U+2010-2011,U+204F,U+2E41,U+FB50-FDFF,U+FE70-FE74,U+FE76-FEFC; }
+@font-face { font-family: Cairo; font-weight: 700; font-display: swap; src: url(fonts/cairo-arabic-700-normal.woff2) format("woff2"); unicode-range: U+0600-06FF,U+0750-077F,U+0870-088E,U+0890-0891,U+0898-08E1,U+08E3-08FF,U+200C-200E,U+2010-2011,U+204F,U+2E41,U+FB50-FDFF,U+FE70-FE74,U+FE76-FEFC; }
+@font-face { font-family: Cairo; font-weight: 800; font-display: swap; src: url(fonts/cairo-arabic-800-normal.woff2) format("woff2"); unicode-range: U+0600-06FF,U+0750-077F,U+0870-088E,U+0890-0891,U+0898-08E1,U+08E3-08FF,U+200C-200E,U+2010-2011,U+204F,U+2E41,U+FB50-FDFF,U+FE70-FE74,U+FE76-FEFC; }
+@font-face { font-family: Cairo; font-weight: 300; font-display: swap; src: url(fonts/cairo-latin-300-normal.woff2) format("woff2"); unicode-range: U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+2074,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD; }
+@font-face { font-family: Cairo; font-weight: 400; font-display: swap; src: url(fonts/cairo-latin-400-normal.woff2) format("woff2"); unicode-range: U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+2074,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD; }
+@font-face { font-family: Cairo; font-weight: 700; font-display: swap; src: url(fonts/cairo-latin-700-normal.woff2) format("woff2"); unicode-range: U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+2074,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD; }
+@font-face { font-family: Cairo; font-weight: 800; font-display: swap; src: url(fonts/cairo-latin-800-normal.woff2) format("woff2"); unicode-range: U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+2074,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD; }
+@font-face { font-family: Inter; font-weight: 400; font-display: swap; src: url(fonts/inter-latin-400-normal.woff2) format("woff2"); }
+@font-face { font-family: Inter; font-weight: 800; font-display: swap; src: url(fonts/inter-latin-800-normal.woff2) format("woff2"); }
+
+:root {
+  --red: #E10600; --red-deep: #B80500; --red-soft: rgba(225, 6, 0, .08);
+  --ink: #111111; --ink-2: rgba(17, 17, 17, .64); --ink-3: rgba(17, 17, 17, .40); --line: rgba(17, 17, 17, .08);
+  --bg: #F4F4F5; --surface: #FFFFFF; --glass: rgba(255, 255, 255, .82);
+  --black: #0E0E0E; --black-2: #181818; --black-line: #2A2A2A;
+  --shadow: 0 1px 2px rgba(17,17,17,.04), 0 18px 50px rgba(17,17,17,.07);
+  --shadow-lift: 0 2px 4px rgba(17,17,17,.05), 0 28px 70px rgba(17,17,17,.12);
+  --radius: 24px;
+}
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body { margin: 0; background: var(--bg); color: var(--ink); font: 16px/1.75 Cairo, Inter, system-ui, sans-serif; -webkit-font-smoothing: antialiased; overflow-x: hidden; }
+img { max-width: 100%; display: block; }
+a { color: inherit; text-decoration: none; }
+.en { font-family: Inter, Cairo, sans-serif; direction: ltr; unicode-bidi: isolate; }
+.wrap { max-width: 1240px; margin: 0 auto; padding: 0 24px; }
+[hidden] { display: none !important; }
+
+/* ===== الشريط الأحمر اللي فوق ===== */
+.topbar { background: var(--red); color: #fff; font-size: 13px; font-weight: 700; }
+.topbar .wrap { display: flex; justify-content: space-between; align-items: center; height: 42px; gap: 16px; }
+.topbar nav { display: flex; gap: 22px; }
+.topbar a:hover { opacity: .8; }
+
+/* ===== الـ nav العائم ===== */
+.nav { position: sticky; top: 12px; z-index: 50; margin-top: 12px; }
+.nav .bar { display: flex; align-items: center; gap: 18px; background: var(--glass); backdrop-filter: blur(18px) saturate(1.4); -webkit-backdrop-filter: blur(18px) saturate(1.4);
+  border: 1px solid rgba(255,255,255,.9); border-radius: 20px; padding: 10px 12px 10px 16px; box-shadow: var(--shadow); }
+.logo { display: flex; align-items: center; gap: 10px; flex: none; }
+.logo-mark { width: 38px; height: 38px; border-radius: 11px; background: var(--ink); display: grid; place-items: center; }
+.logo-mark svg { width: 22px; height: 22px; }
+.logo-text { line-height: 1.15; }
+.logo-text b { display: block; font-size: 16px; font-weight: 800; }
+.logo-text small { display: block; font: 600 11px Inter, sans-serif; color: var(--ink-3); letter-spacing: .14em; text-transform: uppercase; }
+.logo img.logo-img { height: 40px; width: auto; }
+.nav .links { display: flex; gap: 4px; margin-inline-start: 18px; }
+.nav .links a { padding: 7px 16px; border-radius: 999px; font-size: 15px; color: var(--ink-2); font-weight: 700; transition: background .2s, color .2s; }
+.nav .links a:hover { color: var(--ink); }
+.nav .links a.on { background: #fff; color: var(--ink); box-shadow: 0 2px 10px rgba(17,17,17,.08); }
+.nav .spacer { flex: 1; }
+.menu-btn { display: none; width: 42px; height: 42px; border-radius: 50%; border: 0; background: #fff; box-shadow: 0 2px 10px rgba(17,17,17,.08); cursor: pointer; font-size: 18px; }
+
+/* ===== الأزرار ===== */
+.btn { display: inline-flex; align-items: center; justify-content: center; gap: 10px; padding: 13px 28px; border-radius: 999px; font: 700 15px Cairo, Inter, sans-serif;
+  border: 0; cursor: pointer; transition: transform .2s, box-shadow .2s, background .2s; white-space: nowrap; }
+.btn:hover { transform: translateY(-2px); }
+.btn-red { background: linear-gradient(180deg, #F0140E, var(--red-deep)); color: #fff; box-shadow: 0 12px 28px rgba(225, 6, 0, .32); }
+.btn-red:hover { box-shadow: 0 16px 34px rgba(225, 6, 0, .4); }
+.btn-light { background: #fff; color: var(--ink); box-shadow: 0 6px 20px rgba(17,17,17,.08); }
+.btn-dark { background: var(--ink); color: #fff; box-shadow: 0 10px 24px rgba(17,17,17,.25); }
+.btn-ghost-dark { background: transparent; color: #fff; border: 1px solid var(--black-line); }
+.btn-sm { padding: 9px 18px; font-size: 14px; }
+.btn svg { width: 18px; height: 18px; }
+
+/* ===== العناوين ===== */
+.eyebrow { display: flex; align-items: center; gap: 12px; color: var(--ink-3); font-weight: 700; font-size: 14px; margin: 0 0 14px; }
+.eyebrow::before { content: ""; width: 22px; height: 2px; background: var(--red); border-radius: 2px; }
+.eyebrow .en { letter-spacing: .28em; text-transform: uppercase; font-size: 11px; }
+.display { font-size: clamp(40px, 6vw, 76px); font-weight: 800; line-height: 1.12; margin: 0; letter-spacing: -.5px; }
+.h2 { font-size: clamp(30px, 4vw, 50px); font-weight: 800; line-height: 1.2; margin: 0; }
+.soft { display: block; font-weight: 300; color: var(--ink-3); }
+.dark .soft { color: rgba(255,255,255,.42); }
+.lead { font-size: 18px; color: var(--ink-2); max-width: 620px; margin: 18px 0 0; }
+.dot { color: var(--red); }
+
+section { padding: 56px 0; }
+.section-head { display: flex; justify-content: space-between; align-items: flex-end; gap: 24px; margin-bottom: 34px; flex-wrap: wrap; }
+
+/* ===== الكروت ===== */
+.panel { background: var(--surface); border-radius: var(--radius); box-shadow: var(--shadow); }
+.glass { background: var(--glass); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); border: 1px solid rgba(255,255,255,.9); border-radius: var(--radius); box-shadow: var(--shadow); }
+
+/* ===== الهيرو ===== */
+.hero { margin-top: 28px; padding: clamp(36px, 6vw, 80px); display: grid; grid-template-columns: 1.1fr .9fr; gap: 40px; align-items: center; position: relative; overflow: hidden; }
+.hero::after { content: ""; position: absolute; inset: auto -120px -160px auto; width: 420px; height: 420px; border-radius: 50%; background: radial-gradient(circle, rgba(225,6,0,.10), transparent 70%); pointer-events: none; }
+.hero .cta { display: flex; gap: 14px; margin-top: 34px; flex-wrap: wrap; }
+.stack { position: relative; height: 420px; perspective: 1200px; }
+.stack .shot { position: absolute; inset: 0; border-radius: 22px; overflow: hidden; box-shadow: var(--shadow-lift); background: #111; transition: transform .8s cubic-bezier(.2,.8,.2,1), opacity .8s; }
+.stack .shot img { width: 100%; height: 100%; object-fit: cover; object-position: top center; }
+.stack .shot:nth-child(1) { transform: translate(-22px, 18px) rotate(-4deg) scale(.94); opacity: .55; }
+.stack .shot:nth-child(2) { transform: translate(-10px, 8px) rotate(-2deg) scale(.97); opacity: .8; }
+.stack .shot:nth-child(3) { transform: none; }
+.stack .label { position: absolute; bottom: 18px; right: 18px; z-index: 5; background: rgba(255,255,255,.92); border-radius: 999px; padding: 6px 16px; font: 800 12px Inter, Cairo; letter-spacing: .12em; text-transform: uppercase; }
+.stack .arrows { position: absolute; top: 50%; inset-inline: -18px; display: flex; justify-content: space-between; z-index: 6; transform: translateY(-50%); pointer-events: none; }
+.stack .arrows button { pointer-events: auto; width: 44px; height: 44px; border-radius: 50%; border: 0; background: #fff; box-shadow: var(--shadow); cursor: pointer; font-size: 18px; }
+.stack .bars { position: absolute; bottom: -22px; left: 50%; transform: translateX(-50%); display: flex; gap: 6px; }
+.stack .bars i { width: 22px; height: 3px; border-radius: 3px; background: rgba(17,17,17,.15); }
+.stack .bars i.on { background: var(--red); }
+
+/* ===== الأرقام ===== */
+.stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
+.stat { padding: 26px 26px 22px; }
+.stat .num { font: 800 clamp(44px, 5vw, 64px)/1 Inter, Cairo, sans-serif; letter-spacing: -2px; direction: ltr; text-align: right; }
+.stat h5 { margin: 16px 0 2px; font-size: 16px; font-weight: 800; }
+.stat p { margin: 0; color: var(--ink-3); font-size: 14px; }
+
+/* ===== كروت الأدوات ===== */
+.filters { display: flex; gap: 8px; flex-wrap: wrap; }
+.chip { padding: 7px 16px; border-radius: 999px; background: #fff; border: 1px solid var(--line); font-weight: 700; font-size: 14px; cursor: pointer; color: var(--ink-2); }
+.chip.on { background: var(--ink); color: #fff; border-color: var(--ink); }
+.tools-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(270px, 1fr)); gap: 18px; }
+.tool-card { display: flex; flex-direction: column; padding: 26px; transition: transform .3s, box-shadow .3s; position: relative; overflow: hidden; }
+.tool-card::after { content: ""; position: absolute; bottom: 0; right: 0; height: 3px; width: 0; background: var(--red); transition: width .4s; }
+.tool-card:hover { transform: translateY(-6px); box-shadow: var(--shadow-lift); }
+.tool-card:hover::after { width: 100%; }
+.tool-card .ic { width: 58px; height: 58px; border-radius: 16px; }
+.tool-card h3 { margin: 18px 0 2px; font: 800 22px Inter, Cairo, sans-serif; }
+.tool-card h3 span, .tname span { color: var(--red); }
+.tool-card p { margin: 0; color: var(--ink-2); font-size: 15px; flex: 1; }
+.tags { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 18px; }
+.tag { padding: 3px 12px; border-radius: 999px; font-size: 12px; font-weight: 700; background: var(--bg); color: var(--ink-2); border: 1px solid var(--line); }
+.tag.red { background: var(--red-soft); color: var(--red-deep); border-color: rgba(225,6,0,.2); }
+.tool-card .go { margin-top: 18px; font-weight: 800; font-size: 14px; display: flex; align-items: center; gap: 6px; }
+.tool-card .go::after { content: "←"; transition: transform .3s; }
+.tool-card:hover .go::after { transform: translateX(-5px); }
+
+/* ===== الأقسام السودا ===== */
+.dark { background: var(--black); color: #fff; border-radius: 32px; padding: clamp(36px, 6vw, 72px); position: relative; overflow: hidden; }
+.dark .eyebrow { color: rgba(255,255,255,.5); }
+.dark .lead { color: rgba(255,255,255,.62); }
+.dark::before { content: ""; position: absolute; top: -200px; left: -200px; width: 520px; height: 520px; border-radius: 50%; background: radial-gradient(circle, rgba(225,6,0,.22), transparent 70%); pointer-events: none; }
+
+/* ===== مبادئ ===== */
+.principles { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+.principle { padding: 22px; }
+.principle i { display: block; width: 8px; height: 8px; border-radius: 50%; background: var(--red); margin-bottom: 10px; box-shadow: 0 0 0 5px var(--red-soft); }
+.principle b { display: block; font-size: 17px; }
+.principle span { color: var(--ink-3); font-size: 14px; }
+
+/* ===== CTA الأخير ===== */
+.final { text-align: center; padding: 90px 24px; }
+.final .display { font-size: clamp(34px, 5vw, 62px); }
+
+/* ===== الفوتر ===== */
+footer.site { margin-top: 40px; background: var(--surface); border-radius: 28px 28px 0 0; box-shadow: 0 -10px 40px rgba(17,17,17,.04); }
+footer.site .cols { display: grid; grid-template-columns: 1.4fr 1fr 1fr 1fr; gap: 30px; padding: 56px 0 30px; }
+footer.site h6 { margin: 0 0 12px; font: 800 12px Inter, Cairo; letter-spacing: .2em; color: var(--ink-3); text-transform: uppercase; }
+footer.site ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 6px; font-size: 15px; color: var(--ink-2); }
+footer.site ul a:hover { color: var(--red); }
+footer.site .about p { color: var(--ink-3); font-size: 14px; max-width: 300px; }
+footer.site .legal { border-top: 1px solid var(--line); padding: 18px 0 26px; display: flex; justify-content: space-between; color: var(--ink-3); font-size: 13px; flex-wrap: wrap; gap: 10px; }
+
+/* ===== صفحة الأداة ===== */
+.tool-hero { margin-top: 28px; padding: clamp(32px, 5vw, 64px); display: grid; grid-template-columns: 1fr 380px; gap: 40px; align-items: start; }
+.tool-hero .ic { width: 84px; height: 84px; border-radius: 22px; box-shadow: var(--shadow); }
+.tool-hero .tname { font: 800 clamp(38px, 5vw, 60px)/1.1 Inter, Cairo, sans-serif; margin: 22px 0 6px; direction: ltr; text-align: right; }
+.dl-card { padding: 26px; position: sticky; top: 110px; }
+.dl-card .meta { display: grid; grid-template-columns: auto 1fr; gap: 6px 16px; font-size: 14px; margin: 16px 0 20px; }
+.dl-card .meta b { color: var(--ink-3); font-weight: 700; }
+.dl-card .btn { width: 100%; }
+.dl-card .btn + .btn { margin-top: 10px; }
+.bullets { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 28px; }
+.bullets div { display: flex; gap: 10px; align-items: flex-start; font-weight: 700; }
+.bullets div::before { content: "✓"; flex: none; width: 22px; height: 22px; border-radius: 50%; background: var(--red-soft); color: var(--red); display: grid; place-items: center; font-size: 12px; margin-top: 4px; }
+.perm-row { display: grid; grid-template-columns: 200px 1fr; gap: 16px; padding: 14px 0; border-bottom: 1px solid var(--line); }
+.perm-row:last-child { border: 0; }
+.perm-row code { font: 700 12px Inter, monospace; color: var(--ink-3); letter-spacing: .08em; text-transform: uppercase; direction: ltr; text-align: right; }
+.shot-frame { border-radius: 22px; overflow: hidden; box-shadow: var(--shadow-lift); background: #111; }
+
+/* ===== التجربة الحية (الأداة الحقيقية جوه الموقع) ===== */
+.demo-shell { background: #111; border-radius: 28px; padding: 10px; box-shadow: var(--shadow-lift); }
+.demo-bar { display: flex; align-items: center; gap: 8px; padding: 8px 12px 14px; color: rgba(255,255,255,.55); font-size: 13px; }
+.demo-bar i { width: 11px; height: 11px; border-radius: 50%; background: #333; }
+.demo-bar i:first-child { background: var(--red); }
+.demo-bar span { margin-inline-start: auto; }
+.toast { position: fixed; bottom: 22px; left: 50%; transform: translateX(-50%); background: var(--ink); color: #fff; padding: 10px 20px; border-radius: 999px; font-weight: 700; z-index: 999; box-shadow: var(--shadow-lift); border-bottom: 3px solid var(--red); }
+
+/* ===== FAQ ===== */
+details.faq { background: #fff; border-radius: 18px; box-shadow: var(--shadow); margin-bottom: 10px; }
+details.faq summary { cursor: pointer; padding: 18px 22px; font-weight: 800; list-style: none; display: flex; justify-content: space-between; gap: 12px; }
+details.faq summary::after { content: "+"; color: var(--red); font: 800 22px/1 Inter; transition: transform .3s; }
+details.faq[open] summary::after { transform: rotate(45deg); }
+details.faq div { padding: 0 22px 20px; color: var(--ink-2); }
+details.faq code, .kbd { font: 700 13px Inter, monospace; background: var(--bg); border: 1px solid var(--line); border-radius: 6px; padding: 1px 7px; direction: ltr; unicode-bidi: isolate; }
+
+/* ===== حركة الظهور ===== */
+.reveal { opacity: 0; transform: translateY(26px); transition: opacity .9s cubic-bezier(.2,.8,.2,1), transform .9s cubic-bezier(.2,.8,.2,1); }
+.reveal.in { opacity: 1; transform: none; }
+@media (prefers-reduced-motion: reduce) { .reveal { opacity: 1; transform: none; transition: none; } html { scroll-behavior: auto; } }
+
+/* ===== تقسيمة عمودين ===== */
+.split { display: grid; grid-template-columns: 1.1fr 1fr; gap: 40px; align-items: center; }
+
+/* ===== الموبايل ===== */
+@media (max-width: 980px) {
+  .hero, .tool-hero, .split { grid-template-columns: 1fr; }
+  .stack { height: 300px; margin-top: 10px; }
+  .stats { grid-template-columns: 1fr 1fr; }
+  footer.site .cols { grid-template-columns: 1fr 1fr; }
+  .dl-card { position: static; }
+}
+@media (max-width: 760px) {
+  .wrap { padding: 0 16px; }
+  .topbar .hide-sm, .eyebrow .en { display: none; }
+  .hero .cta .btn { flex: 1; }
+  .nav .links { display: none; position: absolute; top: calc(100% + 8px); right: 0; left: 0; flex-direction: column; background: #fff; border-radius: 18px; padding: 10px; box-shadow: var(--shadow-lift); margin: 0; }
+  .nav .links.open { display: flex; }
+  .nav .bar { position: relative; }
+  .nav .bar > .btn { display: none; }
+  .menu-btn { display: block; }
+  .principles, .bullets { grid-template-columns: 1fr; }
+  .perm-row { grid-template-columns: 1fr; gap: 2px; }
+  section { padding: 40px 0; }
+  .dark { border-radius: 24px; }
+  footer.site .cols { grid-template-columns: 1fr; }
+  .stat { padding: 20px; }
+}

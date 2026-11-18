@@ -1,0 +1,48 @@
+/* متولّد من toolkit/lib/brand.css بواسطة scripts/build-site.js */
+.demo { --brand: #E10600; --brand-soft: rgba(225, 6, 0, .14);
+  --black: #111111; --panel: #1B1B1B; --panel-2: #222222; --line: #2E2E2E;
+  --white: #FFFFFF; --text: #EDEDED; --muted: #9A9A9A;
+  --ok: #FFFFFF; --warn: #FFB020; --bad: #FF6B63; }
+.demo * { box-sizing: border-box; }
+.demo { margin: 0; background: var(--black); color: var(--text); font: 13px/1.6 Inter, Cairo, system-ui, sans-serif; }
+.demo a { color: var(--white); text-decoration-color: var(--brand); }
+.demo h1, .demo h2, .demo h3 { color: var(--white); margin: 0 0 10px; line-height: 1.3; }
+.demo h2 { font-size: 18px; }
+.demo h3 { font-size: 14px; }
+.demo .muted { color: var(--muted); }
+.demo .brand-name { font-family: Inter, sans-serif; font-weight: 800; letter-spacing: -.2px; color: var(--white); }
+.demo .brand-name span { color: var(--brand); }
+.demo .card { background: var(--panel); border: 1px solid var(--line); border-radius: 12px; padding: 14px; }
+.demo .row { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
+.demo .grid { display: grid; gap: 12px; }
+.demo .g2 { grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); }
+.demo .g3 { grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); }
+.demo label.f { display: flex; flex-direction: column; gap: 4px; color: var(--muted); font-size: 12px; }
+.demo input:not([type]), .demo input[type=text], .demo input[type=url], .demo input[type=number], .demo input[type=password], .demo input[type=datetime-local], .demo input[type=search], .demo select, .demo textarea { width: 100%; background: var(--black); color: var(--white); border: 1px solid var(--line); border-radius: 8px;
+  padding: 8px 10px; font: inherit; outline: none; }
+.demo input:focus, .demo select:focus, .demo textarea:focus { border-color: var(--brand); }
+.demo textarea { resize: vertical; min-height: 80px; }
+.demo input[type=checkbox], .demo input[type=radio] { accent-color: var(--brand); }
+.demo .btn { display: inline-flex; align-items: center; justify-content: center; gap: 6px; padding: 8px 14px; border-radius: 8px; border: 1px solid var(--line);
+  background: var(--panel-2); color: var(--white); font: 700 13px Cairo, Inter, sans-serif; cursor: pointer; text-decoration: none; }
+.demo .btn:hover { border-color: var(--brand); }
+.demo .btn.primary { background: var(--brand); border-color: var(--brand); }
+.demo .btn.primary:hover { filter: brightness(1.12); }
+.demo .btn.sm { padding: 4px 10px; font-size: 12px; }
+.demo .btn.ghost { background: transparent; }
+.demo .btn:disabled { opacity: .5; cursor: wait; }
+.demo .pill { display: inline-block; padding: 1px 9px; border-radius: 99px; font-size: 11px; font-weight: 700; background: var(--panel-2); border: 1px solid var(--line); color: var(--white); }
+.demo .pill.red { background: var(--brand-soft); border-color: var(--brand); }
+.demo table.t { width: 100%; border-collapse: collapse; }
+.demo table.t th, .demo table.t td { text-align: right; padding: 8px; border-bottom: 1px solid var(--line); vertical-align: top; }
+.demo table.t th { color: var(--muted); font-weight: 700; font-size: 12px; }
+.demo .check { display: flex; gap: 8px; align-items: flex-start; padding: 6px 0; }
+.demo .check .i { width: 18px; flex: none; text-align: center; font-weight: 800; }
+.demo .check.ok .i { color: var(--ok); }
+.demo .check.warn .i { color: var(--warn); }
+.demo .check.bad .i { color: var(--bad); }
+.demo .empty { color: var(--muted); text-align: center; padding: 24px; }
+.demo .mono { font-family: ui-monospace, Consolas, monospace; direction: ltr; unicode-bidi: plaintext; word-break: break-all; }
+.demo [hidden] { display: none !important; }
+.demo { background: var(--black); color: var(--text); border-radius: 20px; padding: 18px; font: 14px/1.6 Cairo, Inter, sans-serif; }
+.demo h3 { margin: 0 0 10px; }

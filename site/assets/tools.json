@@ -30,7 +30,7 @@
         "name": "ContactHarvest",
         "folder": "ContactHarvest",
         "zip": "downloads/ContactHarvest-v1.0.0.zip",
-        "size": 159328
+        "size": 159401
       }
     },
     {
@@ -57,7 +57,7 @@
         "name": "ReplyKit",
         "folder": "ReplyKit",
         "zip": "downloads/ReplyKit-v1.0.0.zip",
-        "size": 156858
+        "size": 156931
       }
     },
     {
@@ -88,7 +88,7 @@
         "name": "ChatCRM",
         "folder": "ChatCRM",
         "zip": "downloads/ChatCRM-v1.0.0.zip",
-        "size": 155952
+        "size": 156025
       }
     },
     {
@@ -116,7 +116,7 @@
         "name": "ChatLink QR",
         "folder": "ChatLink-QR",
         "zip": "downloads/ChatLink-QR-v1.0.0.zip",
-        "size": 156535
+        "size": 156608
       }
     },
     {
@@ -143,7 +143,7 @@
         "name": "PostCheck",
         "folder": "PostCheck",
         "zip": "downloads/PostCheck-v1.0.0.zip",
-        "size": 157171
+        "size": 157244
       }
     },
     {
@@ -174,7 +174,7 @@
         "name": "AdVault",
         "folder": "AdVault",
         "zip": "downloads/AdVault-v1.0.0.zip",
-        "size": 157031
+        "size": 157104
       }
     },
     {
@@ -202,7 +202,7 @@
         "name": "PixelScope",
         "folder": "PixelScope",
         "zip": "downloads/PixelScope-v1.0.0.zip",
-        "size": 158427
+        "size": 158500
       }
     },
     {
@@ -231,7 +231,7 @@
         "name": "UTM Studio",
         "folder": "UTM-Studio",
         "zip": "downloads/UTM-Studio-v1.0.0.zip",
-        "size": 158476
+        "size": 158549
       }
     },
     {
@@ -258,7 +258,7 @@
         "name": "CampaignMath",
         "folder": "CampaignMath",
         "zip": "downloads/CampaignMath-v1.0.0.zip",
-        "size": 155102
+        "size": 155175
       }
     },
     {
@@ -290,7 +290,7 @@
         "name": "IdeaDrop",
         "folder": "IdeaDrop",
         "zip": "downloads/IdeaDrop-v1.0.0.zip",
-        "size": 156969
+        "size": 157042
       }
     }
   ],
@@ -328,7 +328,7 @@
       "name": "Marketer's Toolkit",
       "folder": "Marketers-Toolkit",
       "zip": "downloads/Marketers-Toolkit-v1.0.0.zip",
-      "size": 156766
+      "size": 156839
     }
   }
 }

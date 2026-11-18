@@ -179,7 +179,12 @@
         let b = span.parentElement && span.parentElement.querySelector(':scope > .mt-badge');
         if (!e || !e.tag) { if (b) b.remove(); return; }
         if (!b) { b = h('span', { className: 'mt-badge' }); span.insertAdjacentElement('afterend', b); }
-        if (force || b.textContent !== e.tag) { b.textContent = e.tag; b.style.setProperty('--c', tagColor(e.tag)); }
+        if (force || b.textContent !== e.tag) {
+          b.textContent = e.tag;
+          const c = tagColor(e.tag);
+          b.style.setProperty('--c', c);
+          b.style.color = /^#(?:6B6B6B|111111|E10600|B80500)$/i.test(c) ? '#fff' : '#111';
+        }
       });
     }, force ? 0 : 400);
   }

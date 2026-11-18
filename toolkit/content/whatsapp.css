@@ -48,4 +48,4 @@
 
 /* تاج جنب اسم الشات */
 .mt-badge { display: inline-block; margin-inline-start: 6px; padding: 0 7px; border-radius: 99px; font-size: 10px; line-height: 16px; font-weight: 700;
-  color: #111; background: var(--c, #E10600); vertical-align: middle; font-family: MTCairo, sans-serif; white-space: nowrap; }
+  color: #111; background: var(--c, #E10600); box-shadow: inset 0 0 0 1px rgba(0,0,0,.28); vertical-align: middle; font-family: MTCairo, sans-serif; white-space: nowrap; }

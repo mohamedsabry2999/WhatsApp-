@@ -1,6 +1,8 @@
 *.zip
+!site/downloads/*.zip
 *.png
 !extension/**/*.png
 !toolkit/**/*.png
+!site/**/*.png
 previews/
 dist/
