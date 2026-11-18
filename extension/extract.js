@@ -72,23 +72,68 @@ async function extractWhatsAppContacts(options) {
     return digits(id);
   };
 
+  const keyFor = (id) => phoneOf(id, contactById.get(id)) || id;
+
+  // نجمع كل الأسماء المعروفة لكل شخص، حتى لو متسجل تحت معرّفين (@c.us و @lid)
+  const savedNames = new Map(), pushNames = new Map(), notifyNames = new Map();
+  for (const c of contacts) {
+    const id = idStr(c.id);
+    if (!id || !isPerson(id)) continue;
+    const k = keyFor(id);
+    if ((c.name || c.shortName) && !savedNames.has(k)) savedNames.set(k, c.name || c.shortName);
+    const pn = c.pushname || c.notifyName || c.verifiedName;
+    if (pn && !pushNames.has(k)) pushNames.set(k, pn);
+  }
+
+  // الاسم اللي الشخص كاتبه لنفسه بيتبعت مع كل رسالة منه (notifyName)
+  // بنقرا الرسايل اللي واتساب ويب حافظها على الجهاز وناخد أحدث اسم لكل شخص
+  await new Promise((resolve) => {
+    if (!db.objectStoreNames.contains('message')) return resolve();
+    let seen = 0;
+    const latest = new Map();
+    try {
+      const req = db.transaction('message', 'readonly').objectStore('message').openCursor();
+      req.onsuccess = () => {
+        const cur = req.result;
+        if (!cur || ++seen > 500000) {
+          for (const [k, v] of latest) notifyNames.set(k, v.name);
+          return resolve();
+        }
+        const m = cur.value || {};
+        const fromMe = (m.id && m.id.fromMe) || String(m.id || '').startsWith('true_');
+        const name = m.notifyName;
+        if (!fromMe && name) {
+          const sender = idStr(m.author) || idStr(m.from);
+          if (sender && isPerson(sender)) {
+            const k = keyFor(sender);
+            const t = Number(m.t) || 0;
+            const prev = latest.get(k);
+            if (!prev || t >= prev.t) latest.set(k, { name, t });
+          }
+        }
+        cur.continue();
+      };
+      req.onerror = () => resolve();
+    } catch (e) { resolve(); }
+  });
+
   const rows = new Map(); // key = رقم التليفون (أو المعرف لو الرقم مخفي)
   function add(id, chat) {
     if (!isPerson(id)) return; // نتجاهل الجروبات والقنوات والحالات
     const c = contactById.get(id) ||
       (id.endsWith('@lid') ? null : contactById.get(id.replace('@s.whatsapp.net', '@c.us')));
     const phone = phoneOf(id, c);
-    const savedName = (c && (c.name || c.shortName)) || '';
-    const pushName = (c && (c.pushname || c.verifiedName)) || '';
+    const key = phone || id;
+    const savedName = (c && (c.name || c.shortName)) || savedNames.get(key) || '';
+    const pushName = (c && (c.pushname || c.notifyName || c.verifiedName)) || pushNames.get(key) || notifyNames.get(key) || '';
     const chatName = (chat && (chat.name || chat.formattedTitle)) || '';
     const ts = chat && (chat.t || chat.timestamp) ? Number(chat.t || chat.timestamp) : 0;
-    const key = phone || id;
     const prev = rows.get(key);
     const row = {
       name: savedName || chatName || pushName || (prev && prev.name) || '',
       phone: phone ? '+' + phone : '(رقم مخفي)',
       pushName: pushName || (prev && prev.pushName) || '',
-      saved: !!(c && (c.isAddressBookContact || c.name)) || !!(prev && prev.saved),
+      saved: !!(c && (c.isAddressBookContact || c.name)) || savedNames.has(key) || !!(prev && prev.saved),
       lastMessage: Math.max(ts, (prev && prev.lastMessage) || 0),
       chatted: !!chat || !!(prev && prev.chatted),
       groups: (prev && prev.groups) || [],
