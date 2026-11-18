@@ -133,7 +133,7 @@ ${cf}
 
 const toolCard = (t, b, delay = 0) => `
   <a class="panel tool-card reveal" data-delay="${delay}" data-stage="${t.stage}" data-web="${t.web ? 1 : 0}" href="${b}tools/${t.id}.html">
-    <img class="ic" src="${b}assets/icons/${t.id}.svg" alt="">
+    <img class="ic" src="${b}assets/icons/${t.id}.svg" alt="" width="58" height="58">
     <h3 class="en" style="text-align:right">${t.nameHtml}</h3>
     <p>${esc(t.tagline)}</p>
     <div class="tags"><span class="tag">${stageLabel(t)}</span>${t.web ? '<span class="tag red">جرّبها أونلاين</span>' : ''}${t.extension ? '<span class="tag">إضافة كروم</span>' : ''}</div>
@@ -261,7 +261,7 @@ function home() {
         <span class="fw-en en">${esc(x.en)}</span>
         <b>${esc(x.ar)}</b>
         <span class="fw-d">${esc(x.desc)}</span>
-        <span class="fw-tools">${ts.length ? ts.map((t) => `<img src="assets/icons/${t.id}.svg" alt="${esc(t.name)}" title="${esc(t.name)}">`).join('') + `<i>${ts.length} ${ts.length > 2 ? 'أدوات' : ts.length === 2 ? 'أداتين' : 'أداة'}</i>` : '<i>أدوات قريبًا</i>'}</span>
+        <span class="fw-tools">${ts.length ? ts.map((t) => `<img src="assets/icons/${t.id}.svg" alt="${esc(t.name)}" title="${esc(t.name)}" width="26" height="26">`).join('') + `<i>${ts.length} ${ts.length > 2 ? 'أدوات' : ts.length === 2 ? 'أداتين' : 'أداة'}</i>` : '<i>أدوات قريبًا</i>'}</span>
       </button>`; }).join('')}
     </div>
   </section>
@@ -388,7 +388,7 @@ function toolPage(t) {
   <section class="panel tool-hero">
     <div class="reveal">
       <p class="eyebrow"><a href="../index.html#framework">${st ? `0${st.n} · ${esc(st.en)}` : 'الأدوات'}</a>&nbsp;/ ${st ? esc(st.ar) : ''}</p>
-      <img class="ic" src="${b}assets/icons/${t.id}.svg" alt="">
+      <img class="ic" src="${b}assets/icons/${t.id}.svg" alt="" width="58" height="58">
       <h1 class="tname">${t.nameHtml}</h1>
       <p style="font-size:22px;font-weight:800;margin:0">${esc(t.tagline)}</p>
       <p class="lead">${esc(t.description)}</p>
@@ -587,16 +587,36 @@ function demoCss() {
 }
 
 // ================= كتابة الملفات =================
-const write = (p, s) => { fs.mkdirSync(path.dirname(path.join(SITE, p)), { recursive: true }); fs.writeFileSync(path.join(SITE, p), s); console.log('✔ site/' + p); };
-write('index.html', home());
-write('install.html', install());
-write('privacy.html', privacy());
-tools.forEach((t) => write(`tools/${t.id}.html`, toolPage(t)));
+// Cache busting: كل CSS/JS/صورة محلية في الصفحات بتاخد ?v=<بصمة المحتوى>.
+// أي ملف يتغير، اللينك بتاعه بيتغير، فالـ CDN (زي بتاع هوستنجر) والمتصفح ميعرضوش نسخة قديمة أبدًا.
+const crypto = require('crypto');
+const hashCache = {};
+const fileHash = (abs) => {
+  if (!(abs in hashCache)) hashCache[abs] = fs.existsSync(abs) ? crypto.createHash('md5').update(fs.readFileSync(abs)).digest('hex').slice(0, 8) : null;
+  return hashCache[abs];
+};
+function bust(pagePath, html) {
+  const dir = path.dirname(path.join(SITE, pagePath));
+  return html.replace(/(\b(?:src|href)=")([^"?#:]+\.(?:css|js|png|jpg|jpeg|svg|webp))(")/g, (m, a, rel, c) => {
+    const h = fileHash(rel.startsWith('/') ? path.join(SITE, rel) : path.resolve(dir, rel));
+    return h ? `${a}${rel}?v=${h}${c}` : m;
+  });
+}
+const write = (p, s) => {
+  fs.mkdirSync(path.dirname(path.join(SITE, p)), { recursive: true });
+  fs.writeFileSync(path.join(SITE, p), p.endsWith('.html') ? bust(p, s) : s);
+  console.log('✔ site/' + p);
+};
+// الملفات اللي الصفحات بتلينك عليها لازم تتكتب الأول (عشان البصمة تتحسب على النسخة النهائية)
 write('app/demo.css', demoCss());
 for (const f of ['qrcode.js', 'xlsx.js', 'ui.js']) fs.copyFileSync(path.join(TK, 'lib', f), path.join(SITE, 'app', f));
 for (const t of tools.filter((x) => x.web)) fs.copyFileSync(path.join(TK, 'tools', t.id + '.js'), path.join(SITE, 'app', t.id + '.js'));
 fs.copyFileSync(path.join(TK, 'lib', 'framework.js'), path.join(SITE, 'app', 'framework.js'));
 console.log('✔ site/app (أدوات أونلاين: ' + tools.filter((x) => x.web).map((x) => x.name).join('، ') + ')');
+write('index.html', home());
+write('install.html', install());
+write('privacy.html', privacy());
+tools.forEach((t) => write(`tools/${t.id}.html`, toolPage(t)));
 write('update.html', update());
 write('404.html', layout({ title: 'الصفحة مش موجودة — محمد صبري', desc: '', b: '/', noindex: true, body: `<div class="wrap"><section class="panel hero" style="grid-template-columns:1fr;text-align:center"><div><h1 class="display">404<span class="dot">.</span><span class="soft">الصفحة دي مش موجودة.</span></h1><div style="margin-top:28px"><a class="btn btn-red" href="/index.html">ارجع للرئيسية</a></div></div></section></div>` }));
 write('robots.txt', `User-agent: *\nAllow: /\nSitemap: ${siteUrl}/sitemap.xml\n`);
