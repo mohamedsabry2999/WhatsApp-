@@ -109,8 +109,13 @@ print(';'.join(f"{n}={Image.open(io.BytesIO(z.read(n))).size}" for n in z.nameli
     for (let q = 0; q < 3; q++) { await a.click(`[data-q="${q}"][data-v="${v}"]`); await a.waitForTimeout(60); }
     await a.waitForTimeout(450); // بيتنقل للمرحلة اللي بعدها لوحده
   }
+  await a.evaluate(() => { MT_CONTACT.whatsapp = '201000000000'; });
   await a.click('#a-res');
   await a.waitForSelector('#audit-report');
+  const wa = await a.$eval('#audit-report a[href^="https://wa.me/201000000000"]', (x) => decodeURIComponent(x.href)).catch(() => '');
+  check('Audit: WhatsApp CTA carries company + score + weakest stage', wa.includes('شركة تجربة') && wa.includes('81/100') && wa.includes('اختيار السوق'), wa.slice(0, 120));
+  const shares = await a.$$eval('a[href^="https://wa.me/?text="], a[href*="linkedin.com/sharing"]', (x) => x.length);
+  check('Audit: share buttons under the result', shares >= 2, String(shares));
   const rep = await a.textContent('#audit-report');
   // (6×100 + 0 + 50) / 8 = 81.25 → 81
   check('Audit: score 81 → "منظومة ناضجة"', rep.includes('81') && rep.includes('منظومة ناضجة'), rep.replace(/\s+/g, ' ').slice(0, 90));

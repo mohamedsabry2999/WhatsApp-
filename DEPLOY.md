@@ -44,3 +44,19 @@ node scripts/build.js        # بيبني الإضافات + ملفات الـ z
 node scripts/build-site.js   # بيبني صفحات الموقع
 ```
 وبعدين ارفع فولدر `site` تاني.
+
+## بيانات التواصل (واتساب / LinkedIn / إيميل)
+عدّلها في `CONTACT` جوه `tools.config.js`، وبعدين اعمل build تاني. الخانة اللي تفضل فاضية، الزرار بتاعها بيستخبى.
+
+## الإحصائيات (Cloudflare Web Analytics، مجاني ومن غير كوكيز)
+1. اعمل حساب على Cloudflare ← **Analytics & Logs** ← **Web Analytics** ← **Add a site** ← اكتب `tools.mohammedsabry.site`.
+2. انسخ الـ `token` اللي في الكود اللي هيظهرلك، وحطه في `ANALYTICS.cloudflareToken` جوه `tools.config.js`.
+3. اعمل build وارفع تاني. صفحة الخصوصية بتتحدث لوحدها.
+
+## Google Search Console (بعد الرفع)
+1. ادخل [search.google.com/search-console](https://search.google.com/search-console) ← **Add property** ← **URL prefix** ← `https://tools.mohammedsabry.site/`.
+2. التحقق: اختار **HTML tag**، وابعتلي الكود عشان أحطه في الموقع. أو لو الدومين على هوستنجر، اختار **Domain** وضيف سجل الـ TXT من hPanel ← DNS.
+3. من **Sitemaps** ضيف `sitemap.xml`.
+
+## التحديث على هوستنجر
+امسح كل محتويات فولدر `tools` القديمة الأول، وبعدين ارفع الـ zip الجديد وفك ضغطه.

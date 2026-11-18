@@ -109,6 +109,31 @@ const check = (n, ok, x = '') => { results.push(ok); console.log(ok ? 'PASS' : '
     check(`mobile ${p}: no horizontal scroll`, o <= 0, String(o));
   }
 
+  // ===== تجهيزات الإطلاق =====
+  const L = await ctx.newPage();
+  await L.goto(BASE + 'tools/discount.html', { waitUntil: 'networkidle' });
+  const meta = await L.evaluate(() => ({
+    og: document.querySelector('meta[property="og:image"]').content,
+    canonical: (document.querySelector('link[rel="canonical"]') || {}).href,
+    share: Array.from(document.querySelectorAll('.share a')).map((a) => a.href),
+    ld: JSON.parse(document.querySelector('script[type="application/ld+json"]').textContent)['@graph'][0],
+    cf: !!document.querySelector('script[src*="cloudflareinsights"]'),
+  }));
+  check('SEO: per-tool og:image + canonical', meta.og.endsWith('/assets/og/discount.png') && meta.canonical.endsWith('/tools/discount.html'), meta.og);
+  const ogOk = await L.evaluate(async () => (await fetch('../assets/og/discount.png')).status);
+  check('SEO: og image file exists', ogOk === 200, String(ogOk));
+  check('SEO: JSON-LD SoftwareApplication, free', meta.ld['@type'] === 'SoftwareApplication' && meta.ld.offers.price === '0', meta.ld.name);
+  check('Share: WhatsApp + LinkedIn + X links', meta.share.some((h) => h.startsWith('https://wa.me/?text=')) && meta.share.some((h) => h.includes('linkedin.com/sharing')) && meta.share.some((h) => h.includes('twitter.com/intent')), String(meta.share.length));
+  check('Analytics: nothing injected while token is empty', meta.cf === false);
+  await L.goto(BASE + 'index.html', { waitUntil: 'networkidle' });
+  const homeInfo = await L.evaluate(() => ({ contact: !!document.getElementById('contact'), btns: Array.from(document.querySelectorAll('#contact .contact-btns a')).map((a) => a.href), disc: !!document.querySelector('.disclaimer') }));
+  check('Contact section + disclaimer (empty contact → main site only)', homeInfo.contact && homeInfo.disc && homeInfo.btns.length >= 1 && homeInfo.btns[0].startsWith('https://mohammedsabry.site'), homeInfo.btns.join(','));
+  await L.goto(BASE + 'update.html?tool=crm&v=1.0.0', { waitUntil: 'networkidle' });
+  const up1 = await L.evaluate(() => ({ sub: document.getElementById('u-sub').textContent, href: (document.querySelector('#u-box a') || {}).getAttribute?.('href') || '' }));
+  check('Update page: old version → download link', up1.sub.includes('فيه نسخة جديدة') && up1.href.includes('ChatCRM-v'), up1.href);
+  await L.goto(BASE + 'update.html?tool=crm&v=99.0.0', { waitUntil: 'networkidle' });
+  check('Update page: latest version → up to date', (await L.textContent('#u-sub')).includes('عندك أحدث نسخة'));
+
   check('no console/page errors', errors.length === 0, errors.slice(0, 5).join(' | '));
   await b.close();
   const f = results.filter((x) => !x).length;

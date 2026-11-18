@@ -116,3 +116,9 @@ if (FEAT.popup !== 'home') {
   const start = { inspect: '#qa-inspect', notion: '#qa-notion', harvest: '#qa-harvest' }[FEAT.popup];
   if (start) $(start).click();
 }
+
+// لينك "تحديثات": بيفتح صفحة على الموقع بتقارن النسخة دي بآخر نسخة (من غير أي صلاحية زيادة)
+try {
+  const u = document.getElementById('upd');
+  if (u && typeof MT_FEATURES !== 'undefined' && MT_FEATURES.siteUrl) u.href = `${MT_FEATURES.siteUrl}/update.html?tool=${MT_FEATURES.id}&v=${chrome.runtime.getManifest().version}`;
+} catch (e) {}

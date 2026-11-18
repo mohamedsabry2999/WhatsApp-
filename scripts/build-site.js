@@ -7,8 +7,28 @@ const ROOT = path.resolve(__dirname, '..');
 const SITE = path.join(ROOT, 'site');
 const TK = path.join(ROOT, 'toolkit');
 const data = JSON.parse(fs.readFileSync(path.join(SITE, 'assets', 'tools.json'), 'utf8'));
-const { tools, bundle, version, siteUrl } = data;
-const MAIN_SITE = 'https://mohammedsabry.site';
+const { tools, bundle, version, siteUrl, contact = {}, analytics = {}, changelog = [] } = data;
+const MAIN_SITE = contact.mainSite || 'https://mohammedsabry.site';
+const TODAY = new Date().toISOString().slice(0, 10);
+// لينكات التواصل (اللي فاضي بيستخبى)
+const waLink = (msg) => contact.whatsapp ? `https://wa.me/${contact.whatsapp}?text=${encodeURIComponent(msg)}` : '';
+function contactLinks(msg = 'أهلًا يا محمد، جاي من موقع الأدوات وحابب نتكلم.') {
+  const out = [];
+  if (contact.whatsapp) out.push({ k: 'wa', label: 'واتساب', href: waLink(msg) });
+  if (contact.linkedin) out.push({ k: 'li', label: 'LinkedIn', href: contact.linkedin });
+  if (contact.email) out.push({ k: 'mail', label: 'إيميل', href: `mailto:${contact.email}` });
+  out.push({ k: 'site', label: 'الموقع الرئيسي', href: MAIN_SITE });
+  return out;
+}
+const suggestHref = () => contact.whatsapp ? waLink('أهلًا يا محمد، عندي فكرة أداة ممكن تفيد المسوّقين: ')
+  : contact.email ? `mailto:${contact.email}?subject=${encodeURIComponent('اقتراح أداة')}` : MAIN_SITE;
+const shareRow = (text, url) => {
+  const wa = 'https://wa.me/?text=' + encodeURIComponent(text + '\n\n' + url);
+  const li = 'https://www.linkedin.com/sharing/share-offsite/?url=' + encodeURIComponent(url);
+  const x = 'https://twitter.com/intent/tweet?text=' + encodeURIComponent(text) + '&url=' + encodeURIComponent(url);
+  return `<div class="share"><span>شارك الأداة:</span><a href="${wa}" target="_blank" rel="noopener">واتساب</a><a href="${li}" target="_blank" rel="noopener">LinkedIn</a><a href="${x}" target="_blank" rel="noopener">X</a><button type="button" data-copy-link="${esc(url)}">نسخ اللينك</button></div>`;
+};
+const PERSON = { '@type': 'Person', name: 'Mohamed Sabry', alternateName: 'محمد صبري', jobTitle: 'Strategic Marketing & Growth Architect', url: MAIN_SITE, sameAs: [contact.linkedin].filter(Boolean) };
 
 const esc = (s) => String(s ?? '').replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
 const kb = (n) => Math.round(n / 1024) + ' KB';
@@ -44,8 +64,11 @@ const PERM = {
 const SHOT_LABEL = { crm: 'ChatCRM', post: 'PostCheck', inspect: 'PixelScope' };
 const HERO_POS = { crm: '0% 50%', post: '78% 0%', inspect: '96% 0%' };
 
-function layout({ title, desc, b = '', active = '', body, head = '', scripts = '' }) {
-  const nav = [['index.html', 'الرئيسية', 'home'], ['index.html#tools', 'الأدوات', 'tools'], ['index.html#web', 'جرّب أونلاين', 'web'], ['install.html', 'طريقة التثبيت', 'install'], ['index.html#about', 'عن محمد', 'about']];
+function layout({ title, desc, b = '', active = '', body, head = '', scripts = '', path: pagePath = '', og = 'og.png', jsonld = null, noindex = false }) {
+  const nav = [['index.html', 'الرئيسية', 'home'], ['index.html#tools', 'الأدوات', 'tools'], ['index.html#web', 'جرّب أونلاين', 'web'], ['install.html', 'طريقة التثبيت', 'install'], ['index.html#contact', 'تواصل', 'contact']];
+  const url = `${siteUrl}/${pagePath}`;
+  const ld = jsonld ? `<script type="application/ld+json">${JSON.stringify(jsonld).replace(/</g, '\\u003c')}</script>` : '';
+  const cf = analytics.cloudflareToken ? `<script defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='${JSON.stringify({ token: analytics.cloudflareToken })}'></script>` : '';
   return `<!doctype html>
 <html lang="ar" dir="rtl">
 <head>
@@ -54,11 +77,19 @@ function layout({ title, desc, b = '', active = '', body, head = '', scripts = '
 <title>${esc(title)}</title>
 <meta name="description" content="${esc(desc)}">
 <meta name="author" content="محمد صبري | Mohamed Sabry">
+${noindex ? '<meta name="robots" content="noindex">' : `<link rel="canonical" href="${url}">`}
 <meta property="og:title" content="${esc(title)}">
 <meta property="og:description" content="${esc(desc)}">
-<meta property="og:image" content="${siteUrl}/assets/og.png">
+<meta property="og:image" content="${siteUrl}/assets/${og}">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:url" content="${url}">
 <meta property="og:type" content="website">
+<meta property="og:locale" content="ar_EG">
+<meta property="og:site_name" content="أدوات محمد صبري">
 <meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="${siteUrl}/assets/${og}">
+${ld}
 <meta name="theme-color" content="#C7161D">
 <link rel="icon" href="${b}assets/favicon.png">
 <link rel="apple-touch-icon" href="${b}assets/apple-touch-icon.png">
@@ -86,12 +117,15 @@ ${body}
     <div class="about">${logo(b)}<p>أدوات مجانية بتشيل الشغل المتكرر من يوم المسوّق، عشان وقته يروح للقرار. البيانات كلها بتفضل على جهازك.</p></div>
     <div><h6>الأدوات</h6><ul>${tools.slice().sort(byStage).slice(0, Math.ceil(tools.length / 2)).map((t) => `<li><a href="${b}tools/${t.id}.html">${t.name}</a></li>`).join('')}</ul></div>
     <div><h6>&nbsp;</h6><ul>${tools.slice().sort(byStage).slice(Math.ceil(tools.length / 2)).map((t) => `<li><a href="${b}tools/${t.id}.html">${t.name}</a></li>`).join('')}</ul></div>
-    <div><h6>روابط</h6><ul><li><a href="${b}install.html">طريقة التثبيت</a></li><li><a href="${b}${bundle.download.zip}" download>Marketer's Toolkit (الكل)</a></li><li><a href="${b}privacy.html">الخصوصية</a></li><li><a href="${MAIN_SITE}">الموقع الرئيسي</a></li></ul></div>
+    <div><h6>روابط</h6><ul><li><a href="${b}install.html">طريقة التثبيت</a></li><li><a href="${b}update.html">التحديثات</a></li><li><a href="${b}${bundle.download.zip}" download>Marketer's Toolkit (الكل)</a></li><li><a href="${suggestHref()}" target="_blank" rel="noopener">اقترح أداة</a></li><li><a href="${b}privacy.html">الخصوصية</a></li>${contactLinks().map((c) => `<li><a href="${esc(c.href)}" target="_blank" rel="noopener">${c.label}</a></li>`).join('')}</ul></div>
   </div>
+  <p class="disclaimer">الأدوات دي مستقلة، ومش تابعة لـ WhatsApp أو Meta أو Notion أو Google أو أي منصة تانية. وكل العلامات التجارية ملك أصحابها.</p>
   <div class="legal"><span>© ${new Date().getFullYear()} محمد صبري | <span class="en">Mohamed Sabry</span>. كل الأدوات مجانية.</span><span class="en">v${version}</span></div>
 </div></footer>
+<script>var MT_CONTACT = ${JSON.stringify(contact)};</script>
 <script src="${b}assets/site.js"></script>
 ${scripts}
+${cf}
 </body>
 </html>
 `;
@@ -291,6 +325,23 @@ function home() {
     </div>
   </section>
 
+  <section id="contact">
+    <div class="dark split reveal">
+      <div style="position:relative">
+        <p class="eyebrow">تواصل <span class="en">· Contact</span></p>
+        <h2 class="h2">خلّينا نتكلم<span class="dot">.</span><span class="soft">من فهم السوق إلى نتائج قابلة للقياس.</span></h2>
+        <p class="lead">لو محتاج تحوّل التسويق عندك من أنشطة متفرقة لمنظومة واضحة، أو عندك سؤال عن أي أداة، كلّمني.</p>
+        <div class="contact-btns">${contactLinks().map((c, i) => `<a class="btn ${i === 0 ? 'btn-red' : 'btn-ghost-dark'}" href="${esc(c.href)}" target="_blank" rel="noopener">${c.label}</a>`).join('')}</div>
+      </div>
+      <div class="suggest" style="position:relative">
+        <span class="fw-n en">+1<span class="dot">.</span></span>
+        <b>اقترح أداة</b>
+        <p>فيه حاجة بتعملها كل يوم بإيدك وتاخد وقت؟ قولّي عليها، وممكن تبقى الأداة الجاية.</p>
+        <a class="btn btn-light" href="${suggestHref()}" target="_blank" rel="noopener">ابعت اقتراحك</a>
+      </div>
+    </div>
+  </section>
+
   <section class="final reveal">
     <p class="eyebrow" style="justify-content:center">ابدأ دلوقتي</p>
     <h2 class="display">التسويق منظومة قرارات<span class="dot">.</span><span class="soft">مش مجموعة أنشطة.</span></h2>
@@ -300,8 +351,13 @@ function home() {
 </div>`;
   return layout({
     title: 'أدوات تسويق مجانية — محمد صبري',
-    desc: `${tools.length} أدوات مجانية للمسوّقين: واتساب، والمحتوى، والإعلانات، وUTM، والتحليل. من غير اشتراكات، وبياناتك على جهازك.`,
-    b, active: 'home', body,
+    desc: `${tools.length} أداة مجانية للمسوّقين على المراحل التمانية للـ Market-to-Measurement Framework: واتساب، والمحتوى، والإعلانات، و UTM، والتحليل. من غير اشتراكات، وبياناتك على جهازك.`,
+    b, active: 'home', body, path: '',
+    jsonld: { '@context': 'https://schema.org', '@graph': [
+      { '@type': 'WebSite', name: 'أدوات محمد صبري للمسوّقين', url: siteUrl + '/', inLanguage: 'ar', publisher: PERSON },
+      PERSON,
+      { '@type': 'ItemList', name: 'أدوات التسويق', itemListElement: tools.map((t, i) => ({ '@type': 'ListItem', position: i + 1, url: `${siteUrl}/tools/${t.id}.html`, name: t.name })) },
+    ] },
     head: '<link rel="stylesheet" href="assets/guide.css">',
     scripts: toolsJson() + '\n<script src="assets/guide.js"></script>',
   });
@@ -342,6 +398,7 @@ function toolPage(t) {
         ${t.web && t.extension ? '<a class="btn btn-dark" href="#try">جرّبها أونلاين</a>' : ''}
         ${t.extension ? `<a class="btn btn-light" href="${b}install.html?tool=${t.id}">إزاي أثبّتها؟</a>` : ''}
       </div>
+      ${shareRow(`${t.name}: ${t.tagline}. أداة مجانية من محمد صبري`, `${siteUrl}/tools/${t.id}.html`)}
     </div>
     ${t.extension ? `<aside class="glass dl-card reveal" data-delay="120">
       <b style="font-size:18px">تحميل مجاني</b>
@@ -384,10 +441,20 @@ function toolPage(t) {
     Tools['${t.id}'].render(root.querySelector('.demo-tool'), { params: new URLSearchParams(location.search), actions: root.querySelector('.demo-actions') });
   })();
 </script>` : '';
+  const url = `${siteUrl}/tools/${t.id}.html`;
   return layout({
-    title: `${t.name} — ${t.tagline} | محمد صبري`,
+    title: `${t.seo || t.tagline} | ${t.name} — أدوات محمد صبري`,
     desc: t.description,
-    b, active: 'tools', body, scripts: demoScripts,
+    b, active: 'tools', body, scripts: demoScripts, path: `tools/${t.id}.html`, og: `og/${t.id}.png`,
+    jsonld: { '@context': 'https://schema.org', '@graph': [
+      { '@type': t.web && !t.extension ? 'WebApplication' : 'SoftwareApplication', name: t.name, alternateName: t.seo, description: t.description, url,
+        image: `${siteUrl}/assets/og/${t.id}.png`, screenshot: `${siteUrl}/assets/shots/${t.id}.jpg`, inLanguage: 'ar',
+        applicationCategory: 'BusinessApplication', operatingSystem: t.extension ? 'Chrome, Edge, Brave' : 'Any (Web)', softwareVersion: version,
+        offers: { '@type': 'Offer', price: '0', priceCurrency: 'EGP' }, author: PERSON, ...(t.download ? { downloadUrl: `${siteUrl}/${t.download.zip}` } : {}) },
+      { '@type': 'BreadcrumbList', itemListElement: [
+        { '@type': 'ListItem', position: 1, name: 'الأدوات', item: siteUrl + '/' },
+        { '@type': 'ListItem', position: 2, name: t.name, item: url }] },
+    ] },
   });
 }
 
@@ -412,14 +479,14 @@ function install() {
       <details class="faq" open><summary>ظهرتلي رسالة "Manifest file is missing or unreadable"</summary><div>إنت اخترت فولدر غلط. اختار الفولدر اللي <b>جواه</b> ملف <code>manifest.json</code> على طول. ساعات فك الضغط بيعمل فولدر جوه فولدر بنفس الاسم، فادخل جوه لحد ما تلاقي <code>manifest.json</code>.</div></details>
       <details class="faq"><summary>اخترت ملف الـ zip ومش راضي</summary><div>كروم مش بيقبل ملف zip. لازم تفك الضغط الأول (الخطوة 1)، وبعدين تختار الفولدر اللي طلع.</div></details>
       <details class="faq"><summary>الإضافة اختفت أو بقت "Error" بعد شوية</summary><div>غالبًا الفولدر اتمسح أو اتنقل. كروم بيشغّل الإضافة من الفولدر ده نفسه، فحطه في مكان ثابت (زي <code>Documents/Extensions</code>) ومتمسحوش.</div></details>
-      <details class="faq"><summary>إزاي أحدّث لنسخة جديدة؟</summary><div>نزّل النسخة الجديدة، وفك ضغطها مكان الفولدر القديم (استبدل الملفات). وبعدين في <code>chrome://extensions</code> دوس ⟳ على الإضافة. بياناتك هتفضل زي ما هي.</div></details>
+      <details class="faq"><summary>إزاي أحدّث لنسخة جديدة؟</summary><div>جوه أي إضافة فيه لينك <b>تحديثات</b> تحت، بيقولّك لو فيه نسخة أحدث (أو افتح <a href="update.html" style="color:var(--red)">صفحة التحديثات</a>). نزّل النسخة الجديدة، وفك ضغطها مكان الفولدر القديم (استبدل الملفات)، وبعدين في <code>chrome://extensions</code> دوس ⟳ على الإضافة. بياناتك هتفضل زي ما هي.</div></details>
       <details class="faq"><summary>بستخدم Edge أو Brave أو Opera</summary><div>نفس الخطوات بالظبط، بس العنوان بيختلف: <code>edge://extensions</code> · <code>brave://extensions</code> · <code>opera://extensions</code>. وفي Edge زرار Developer mode موجود في القايمة الجانبية.</div></details>
       <details class="faq"><summary>هل ده آمن؟</summary><div>أيوه. كل أداة بتطلب أقل صلاحيات ممكنة، ومكتوب في صفحتها كل صلاحية وليه. ومفيش أي أداة بتبعت بياناتك لأي سيرفر، كل حاجة بتفضل على جهازك. والكود مفتوح تقدر تبص عليه جوه الفولدر.</div></details>
-      <details class="faq"><summary>هل الأدوات بتشتغل على الموبايل؟</summary><div>الإضافات محتاجة كروم على الكمبيوتر. لكن ChatLink QR وUTM Studio وPostCheck وCampaignMath تقدر تجربهم من الموبايل على الموقع نفسه.</div></details>
+      <details class="faq"><summary>هل الأدوات بتشتغل على الموبايل؟</summary><div>الإضافات محتاجة كروم على الكمبيوتر. لكن ChatLink QR و UTM Studio و PostCheck و CampaignMath تقدر تجربهم من الموبايل على الموقع نفسه.</div></details>
     </div>
   </section>
 </div>`;
-  return layout({ title: 'طريقة تثبيت الأدوات (Load unpacked) — محمد صبري', desc: 'دليل تفاعلي خطوة بخطوة لتثبيت أدوات محمد صبري على كروم من فولدر (Load unpacked).', b, active: 'install', body, head: '<link rel="stylesheet" href="assets/guide.css">', scripts: toolsJson() + '\n<script src="assets/guide.js"></script>' });
+  return layout({ title: 'طريقة تثبيت الأدوات (Load unpacked) — محمد صبري', desc: 'دليل تفاعلي خطوة بخطوة لتثبيت أدوات محمد صبري على كروم من فولدر (Load unpacked).', b, active: 'install', body, path: 'install.html', head: '<link rel="stylesheet" href="assets/guide.css">', scripts: toolsJson() + '\n<script src="assets/guide.js"></script>' });
 }
 
 function privacy() {
@@ -431,15 +498,69 @@ function privacy() {
     <div class="lead" style="max-width:none">
       <p><b>مفيش جمع بيانات.</b> الأدوات مش بتبعت أي بيانات لأي سيرفر خاص بينا، ومفيهاش تحليلات (Analytics) ولا تتبع.</p>
       <p><b>كل حاجة محلية.</b> الردود، والـ CRM، واللينكات، والإعلانات المحفوظة، والإعدادات بتتحفظ في متصفحك بس (chrome.storage أو localStorage على الموقع). ولو شلت الإضافة، البيانات بتتمسح معاها.</p>
-      <p><b>واتساب ويب.</b> ContactHarvest وReplyKit وChatCRM بيقروا الصفحة اللي إنت فاتحها على جهازك. مفيش أي إرسال تلقائي للرسايل، وإنت اللي بتدوس إرسال دايمًا.</p>
+      <p><b>واتساب ويب.</b> ContactHarvest و ReplyKit و ChatCRM بيقروا الصفحة اللي إنت فاتحها على جهازك. مفيش أي إرسال تلقائي للرسايل، وإنت اللي بتدوس إرسال دايمًا.</p>
       <p><b>Notion.</b> IdeaDrop بيبعت الفكرة اللي إنت بتحفظها مباشرة من متصفحك لـ Notion، بالمفتاح بتاعك، ولقاعدة البيانات اللي إنت اخترتها بس.</p>
       <p><b>Meta Ad Library.</b> AdVault بيحفظ الإعلان اللي إنت بتدوس على زرار حفظه بس، ومش بيسحب أي إعلانات لوحده.</p>
-      <p><b>الموقع.</b> الموقع ده صفحات ثابتة، ومفيهوش كوكيز تتبع.</p>
+      <p><b>الموقع.</b> الموقع ده صفحات ثابتة، ومفيهوش كوكيز تتبع.${analytics.cloudflareToken ? ' بنستخدم Cloudflare Web Analytics عشان نعرف عدد الزيارات والصفحات الأكتر زيارة بس. ده من غير كوكيز، ومن غير ما نعرف إنت مين.' : ''}</p>
       <p style="color:var(--ink-3);font-size:15px">آخر تحديث: ${new Date().toISOString().slice(0, 10)}</p>
     </div>
   </section>
 </div>`;
-  return layout({ title: 'الخصوصية — أدوات محمد صبري', desc: 'سياسة الخصوصية لأدوات محمد صبري: مفيش جمع بيانات، وكل حاجة على جهازك.', b: '', active: '', body });
+  return layout({ title: 'الخصوصية — أدوات محمد صبري', desc: 'سياسة الخصوصية لأدوات محمد صبري: مفيش جمع بيانات، وكل حاجة على جهازك.', b: '', active: '', body, path: 'privacy.html' });
+}
+
+// ================= صفحة التحديثات =================
+// الإضافة بتفتحها كده: update.html?tool=<id>&v=<النسخة اللي عند المستخدم>
+function update() {
+  const all = [...tools.filter((t) => t.extension), bundle].map((t) => ({ id: t.id, name: t.name, zip: t.download.zip, folder: t.download.folder }));
+  const body = `
+<div class="wrap">
+  <section class="panel hero" style="grid-template-columns:1fr">
+    <div>
+      <p class="eyebrow">التحديثات <span class="en">· Updates</span></p>
+      <h1 class="display" style="font-size:clamp(34px,5vw,58px)" id="u-title">آخر نسخة: <span class="en">v${version}</span><span class="dot">.</span><span class="soft" id="u-sub">نزّل آخر نسخة من أي أداة.</span></h1>
+      <div id="u-box" style="margin-top:24px"></div>
+    </div>
+  </section>
+  <section>
+    <div class="split" style="align-items:start">
+      <div class="panel reveal" style="padding:clamp(24px,4vw,40px)">
+        <p class="eyebrow">إزاي تحدّث <span class="en">· How to update</span></p>
+        <ol class="lead" style="max-width:none;padding-inline-start:20px">
+          <li>نزّل النسخة الجديدة من الزرار.</li>
+          <li>فك الضغط <b>مكان الفولدر القديم</b> (استبدل الملفات)، عشان كروم بيشغّل الإضافة من نفس الفولدر.</li>
+          <li>افتح <span class="kbd">chrome://extensions</span> ودوس ⟳ على الإضافة.</li>
+        </ol>
+        <p style="color:var(--ink-3)">بياناتك (الردود، والـ CRM، واللينكات...) بتفضل زي ما هي.</p>
+      </div>
+      <div class="panel reveal" style="padding:clamp(24px,4vw,40px)">
+        <p class="eyebrow">الجديد <span class="en">· Changelog</span></p>
+        ${changelog.map((c) => `<div style="padding:10px 0;border-bottom:1px solid var(--line)"><b class="en">v${esc(c.version)}</b> <span style="color:var(--ink-3);font-size:14px">${esc(c.date)}</span><ul style="margin:6px 0 0;padding-inline-start:20px;color:var(--ink-2)">${c.notes.map((n) => `<li>${esc(n)}</li>`).join('')}</ul></div>`).join('')}
+      </div>
+    </div>
+  </section>
+</div>`;
+  const script = `<script>
+(function () {
+  var ALL = ${JSON.stringify(all)}, LATEST = ${JSON.stringify(version)};
+  var q = new URLSearchParams(location.search), id = q.get('tool'), v = q.get('v');
+  var t = ALL.filter(function (x) { return x.id === id; })[0];
+  var cmp = function (a, b) { a = String(a).split('.').map(Number); b = String(b).split('.').map(Number); for (var i = 0; i < 3; i++) { if ((a[i] || 0) !== (b[i] || 0)) return (a[i] || 0) - (b[i] || 0); } return 0; };
+  var box = document.getElementById('u-box'), sub = document.getElementById('u-sub');
+  if (t && v) {
+    if (cmp(v, LATEST) >= 0) {
+      sub.textContent = 'عندك أحدث نسخة من ' + t.name + ' (v' + v + ').';
+      box.innerHTML = '<span class="tag red" style="font-size:15px;padding:6px 16px">✓ مفيش تحديث جديد</span>';
+    } else {
+      sub.textContent = 'فيه نسخة جديدة من ' + t.name + '. عندك v' + v + '.';
+      box.innerHTML = '<a class="btn btn-red" download href="' + t.zip + '">تحميل ' + t.name + ' v' + LATEST + '</a>';
+    }
+  } else {
+    box.innerHTML = '<div class="tools-grid">' + ALL.map(function (x) { return '<a class="panel tool-card" download href="' + x.zip + '"><img class="ic" src="assets/icons/' + x.id + '.svg" alt=""><h3 class="en" style="text-align:right">' + x.name + '</h3><span class="go">تحميل v' + LATEST + '</span></a>'; }).join('') + '</div>';
+  }
+})();
+</script>`;
+  return layout({ title: 'التحديثات — أدوات محمد صبري', desc: 'آخر نسخة من أدوات محمد صبري وإزاي تحدّث.', b: '', active: '', body, scripts: script, path: 'update.html', noindex: true });
 }
 
 // ================= نسخة الأدوات الأونلاين =================
@@ -476,6 +597,7 @@ for (const f of ['qrcode.js', 'xlsx.js', 'ui.js']) fs.copyFileSync(path.join(TK,
 for (const t of tools.filter((x) => x.web)) fs.copyFileSync(path.join(TK, 'tools', t.id + '.js'), path.join(SITE, 'app', t.id + '.js'));
 fs.copyFileSync(path.join(TK, 'lib', 'framework.js'), path.join(SITE, 'app', 'framework.js'));
 console.log('✔ site/app (أدوات أونلاين: ' + tools.filter((x) => x.web).map((x) => x.name).join('، ') + ')');
-write('404.html', layout({ title: 'الصفحة مش موجودة — محمد صبري', desc: '', b: '/', body: `<div class="wrap"><section class="panel hero" style="grid-template-columns:1fr;text-align:center"><div><h1 class="display">404<span class="dot">.</span><span class="soft">الصفحة دي مش موجودة.</span></h1><div style="margin-top:28px"><a class="btn btn-red" href="/index.html">ارجع للرئيسية</a></div></div></section></div>` }));
+write('update.html', update());
+write('404.html', layout({ title: 'الصفحة مش موجودة — محمد صبري', desc: '', b: '/', noindex: true, body: `<div class="wrap"><section class="panel hero" style="grid-template-columns:1fr;text-align:center"><div><h1 class="display">404<span class="dot">.</span><span class="soft">الصفحة دي مش موجودة.</span></h1><div style="margin-top:28px"><a class="btn btn-red" href="/index.html">ارجع للرئيسية</a></div></div></section></div>` }));
 write('robots.txt', `User-agent: *\nAllow: /\nSitemap: ${siteUrl}/sitemap.xml\n`);
-write('sitemap.xml', `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${['', 'install.html', 'privacy.html', ...tools.map((t) => `tools/${t.id}.html`)].map((u) => `  <url><loc>${siteUrl}/${u}</loc></url>`).join('\n')}\n</urlset>\n`);
+write('sitemap.xml', `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${['', 'install.html', 'privacy.html', ...tools.map((t) => `tools/${t.id}.html`)].map((u) => `  <url><loc>${siteUrl}/${u}</loc><lastmod>${TODAY}</lastmod></url>`).join('\n')}\n</urlset>\n`);

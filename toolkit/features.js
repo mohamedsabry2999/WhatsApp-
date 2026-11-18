@@ -8,5 +8,6 @@ var MT_FEATURES = {
   home: 'replies',
   popup: 'home',
   welcome: '',
+  siteUrl: 'https://tools.mohammedsabry.site',
   replies: true, crm: true, ads: true, notion: true, utm: true, qr: true, harvest: true, inspect: true,
 };

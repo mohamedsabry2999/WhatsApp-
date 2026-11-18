@@ -57,3 +57,27 @@ async function svgToPngBlob(svg, px = 1024) {
   c.getContext('2d').drawImage(img, 0, 0, px, px);
   return new Promise((res) => c.toBlob(res, 'image/png'));
 }
+
+// ===== التواصل والمشاركة =====
+// MT_CONTACT بيتحط في صفحات الموقع من tools.config.js. جوه الإضافة بيرجع للموقع الرئيسي.
+function contactInfo() {
+  return Object.assign({ whatsapp: '', linkedin: '', email: '', mainSite: 'https://mohammedsabry.site' }, (typeof MT_CONTACT !== 'undefined' && MT_CONTACT) || {});
+}
+// زرار "كلّم محمد" برسالة جاهزة على واتساب لو الرقم موجود، وإلا الموقع الرئيسي
+function contactButtons(message, primaryLabel = 'كلّم محمد صبري') {
+  const c = contactInfo();
+  const out = [];
+  if (c.whatsapp) out.push(`<a class="btn primary" href="https://wa.me/${esc(c.whatsapp)}?text=${encodeURIComponent(message)}" target="_blank" rel="noopener">${esc(primaryLabel)} على واتساب</a>`);
+  if (c.linkedin) out.push(`<a class="btn" href="${esc(c.linkedin)}" target="_blank" rel="noopener">LinkedIn</a>`);
+  if (c.email) out.push(`<a class="btn" href="mailto:${esc(c.email)}?subject=${encodeURIComponent('من أدوات محمد صبري')}&body=${encodeURIComponent(message)}">إيميل</a>`);
+  if (!out.length) out.push(`<a class="btn primary" href="${esc(c.mainSite)}" target="_blank" rel="noopener">${esc(primaryLabel)}</a>`);
+  return out.join('');
+}
+// أزرار مشاركة (لينكات عادية، من غير أي كود خارجي)
+function shareButtons(text, url) {
+  const wa = 'https://wa.me/?text=' + encodeURIComponent(text + (url ? '\n\n' + url : ''));
+  const li = 'https://www.linkedin.com/sharing/share-offsite/?url=' + encodeURIComponent(url);
+  const x = 'https://twitter.com/intent/tweet?text=' + encodeURIComponent(text) + '&url=' + encodeURIComponent(url);
+  return `<a class="btn sm" href="${wa}" target="_blank" rel="noopener">واتساب</a><a class="btn sm" href="${li}" target="_blank" rel="noopener">LinkedIn</a><a class="btn sm" href="${x}" target="_blank" rel="noopener">X</a>`;
+}
+const TOOLS_SITE = 'https://tools.mohammedsabry.site';

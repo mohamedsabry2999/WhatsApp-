@@ -45,6 +45,8 @@ fs.mkdirSync(SHOTS, { recursive: true });
       }
       await page.waitForTimeout(700);
       const title = isPopup ? await page.textContent('#brand') : await page.textContent('h1');
+      const upd = await page.$eval('#upd', (a) => a.href).catch(() => '');
+      if (!upd.includes(`/update.html?tool=${feat.id}&v=${m.version}`)) errors.push('bad update link: ' + upd);
       const navVisible = isPopup ? 0 : await page.$$eval('#nav a', (as) => as.filter((a) => !a.hidden).length);
       await page.screenshot({ path: path.join(SHOTS, name + '.png') });
       const ok = errors.length === 0 && !!title && (isPopup || feat.tools.length > 1 || navVisible === 1);

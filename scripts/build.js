@@ -5,7 +5,7 @@
 const fs = require('fs');
 const path = require('path');
 const { execFileSync } = require('child_process');
-const { VERSION, AUTHOR, SITE_URL, FRAMEWORK, tools, bundle, ALL_OFF } = require('../tools.config.js');
+const { VERSION, AUTHOR, SITE_URL, FRAMEWORK, CONTACT, ANALYTICS, CHANGELOG, SEO, tools, bundle, ALL_OFF } = require('../tools.config.js');
 
 const ROOT = path.resolve(__dirname, '..');
 const SRC = path.join(ROOT, 'toolkit');
@@ -47,7 +47,7 @@ function manifestFor(t) {
 function featuresFor(t) {
   const f = {
     id: t.id, name: t.name, nameHtml: t.nameHtml, tagline: t.tagline,
-    tools: t.tools, home: t.home || '', popup: t.popup || 'none', welcome: t.welcome || '',
+    tools: t.tools, home: t.home || '', popup: t.popup || 'none', welcome: t.welcome || '', siteUrl: SITE_URL,
     ...ALL_OFF, ...t.features,
   };
   return '// متولّد من tools.config.js بواسطة scripts/build.js\nvar MT_FEATURES = ' + JSON.stringify(f, null, 2) + ';\n';
@@ -89,7 +89,8 @@ function siteData(built) {
     bullets: t.bullets, where: t.where || '', web: !!t.web, extension: t.extension !== false, permissions: t.permissions, hosts: t.hosts,
     download: built.find((b) => b.id === t.id) || null,
   });
-  return { version: VERSION, author: AUTHOR, siteUrl: SITE_URL, framework: FRAMEWORK, tools: tools.map(pick), bundle: pick(bundle) };
+  return { version: VERSION, author: AUTHOR, siteUrl: SITE_URL, framework: FRAMEWORK, contact: CONTACT, analytics: ANALYTICS, changelog: CHANGELOG,
+    tools: tools.map((t) => ({ ...pick(t), seo: SEO[t.id] || '' })), bundle: pick(bundle) };
 }
 
 fs.mkdirSync(DIST, { recursive: true });

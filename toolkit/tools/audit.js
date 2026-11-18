@@ -2,7 +2,7 @@
 const AUDIT = {
   business: {
     q: ['عندكم هدف تسويقي مكتوب ومربوط برقم إيراد؟', 'الميزانية التسويقية محسوبة كنسبة من الإيراد أو من الهدف؟', 'الإدارة والتسويق متفقين على أولويات السنة؟'],
-    rec: 'ابدأ من رقم: الإيراد المطلوب، ومنه احسب كام عميل وLead محتاجين، وبعدها الميزانية. كده التسويق يبقى مربوط بالبيزنس.',
+    rec: 'ابدأ من رقم: الإيراد المطلوب، ومنه احسب كام عميل و Lead محتاجين، وبعدها الميزانية. كده التسويق يبقى مربوط بالبيزنس.',
     tools: ['calc'],
   },
   intel: {
@@ -36,7 +36,7 @@ const AUDIT = {
     tools: ['brief', 'crm', 'replies', 'post'],
   },
   measure: {
-    q: ['بتقيسوا CPL وCAC وROAS، مش اللايكات بس؟', 'عندكم تقرير شهري ثابت بنفس المؤشرات؟', 'بتعدّلوا الخطة بناءً على النتايج؟'],
+    q: ['بتقيسوا CPL و CAC و ROAS، مش اللايكات بس؟', 'عندكم تقرير شهري ثابت بنفس المؤشرات؟', 'بتعدّلوا الخطة بناءً على النتايج؟'],
     rec: 'حط UTM على كل لينك، وتقرير شهري بنفس المؤشرات كل مرة، وقرار واحد على الأقل من كل تقرير.',
     tools: ['utm', 'calc'],
   },
@@ -150,10 +150,11 @@ Tools.audit = {
           <div class="card" style="margin-top:14px;border-color:var(--brand);text-align:center;padding:22px">
             <h3 style="font-size:18px">عايز خطة تحوّل النتيجة دي لمنظومة؟</h3>
             <p class="muted" style="margin:0 0 12px">التقييم ده مبني على الـ Market-to-Measurement Framework بتاع محمد صبري.</p>
-            <a class="btn primary" href="https://mohammedsabry.site" target="_blank">كلّم محمد صبري</a>
+            <div class="row" style="justify-content:center">${contactButtons(`أهلًا يا محمد، عملت تقييم GrowthScore${st.company ? ' لـ ' + st.company : ''} وخدت ${r.total}/100 (${lvl}).${r.priorities[0] ? ' أضعف مرحلة عندنا: ' + r.priorities[0].ar + '.' : ''} حابب نتكلم عن خطة.`)}</div>
           </div>
         </div>
-        <div class="row" style="margin-top:14px;justify-content:center">
+        <div class="row" style="margin-top:14px;justify-content:center;gap:6px"><span class="muted">شارك التقييم:</span>${shareButtons(`خدت ${r.total}/100 في GrowthScore. قيّم تسويق شركتك على 8 مراحل في 5 دقايق:`, TOOLS_SITE + '/tools/audit.html')}</div>
+        <div class="row" style="margin-top:10px;justify-content:center">
           <button class="btn primary" id="a-print">حفظ PDF / طباعة</button>
           <button class="btn" id="a-copy">نسخ النتيجة</button>
           <button class="btn" id="a-edit">راجع إجاباتي</button>

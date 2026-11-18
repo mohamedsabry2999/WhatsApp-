@@ -47,6 +47,12 @@
     document.getElementById('tools').scrollIntoView({ behavior: 'smooth' });
   }));
 
+  // نسخ لينك الأداة
+  document.querySelectorAll('[data-copy-link]').forEach((b) => b.addEventListener('click', async () => {
+    try { await navigator.clipboard.writeText(b.dataset.copyLink); } catch (e) {}
+    const t = b.textContent; b.textContent = 'اتنسخ ✓'; setTimeout(() => { b.textContent = t; }, 1500);
+  }));
+
   // الأرقام بتعدّ
   document.querySelectorAll('[data-count]').forEach((el) => {
     const target = +el.dataset.count, suffix = el.dataset.suffix || '';

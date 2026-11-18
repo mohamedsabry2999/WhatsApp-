@@ -6,6 +6,45 @@ const AUTHOR = 'محمد صبري | Mohamed Sabry';
 // رابط الموقع (غيّره لو اخترت subdomain تاني)
 const SITE_URL = 'https://tools.mohammedsabry.site';
 
+// ===== بيانات التواصل =====
+// أي حاجة فاضية هنا الزرار بتاعها بيستخبى (والزرار بيودّي على الموقع الرئيسي بدلها).
+// whatsapp: الرقم بالصيغة الدولية من غير + ولا مسافات، مثلًا '201001234567'
+const CONTACT = {
+  whatsapp: '',
+  linkedin: '',   // مثلًا 'https://www.linkedin.com/in/username'
+  email: '',
+  mainSite: 'https://mohammedsabry.site',
+};
+
+// ===== الإحصائيات =====
+// Cloudflare Web Analytics (مجاني ومن غير كوكيز): حط الـ token هنا وهيتضاف لكل الصفحات.
+// لو فاضي، الموقع مفيهوش أي تتبع خالص.
+const ANALYTICS = { cloudflareToken: '' };
+
+// ===== سجل التحديثات (بيظهر في صفحة "التحديثات") =====
+const CHANGELOG = [
+  { version: '1.1.0', date: '2026-11-18', notes: ['4 أدوات جديدة: BriefBuilder، و DiscountCheck، و GrowthScore، و SocialSizer', 'الأدوات بقت مترتبة على المراحل التمانية للـ Market-to-Measurement Framework', 'لوجو وألوان الهوية الرسمية', 'لينك "تحديثات" جوه كل إضافة'] },
+  { version: '1.0.0', date: '2026-11-18', notes: ['أول إصدار: 10 أدوات + Marketer\'s Toolkit'] },
+];
+
+// عناوين SEO بالكلمات اللي الناس بتدوّر بيها
+const SEO = {
+  contactharvest: 'تصدير أرقام واتساب لإكسيل',
+  replies: 'ردود جاهزة لواتساب ويب',
+  crm: 'CRM مجاني لواتساب ويب',
+  walink: 'عمل لينك واتساب و QR Code',
+  post: 'مراجعة الكابشن وعدد الحروف والهاشتاجات',
+  ads: 'حفظ إعلانات المنافسين من مكتبة إعلانات فيسبوك',
+  inspect: 'كشف Facebook Pixel وأكواد التتبع لأي موقع',
+  utm: 'UTM Builder بالعربي',
+  calc: 'حاسبة CPL و ROAS وميزانية الإعلانات',
+  notion: 'حفظ أي فكرة على Notion بضغطة',
+  brief: 'بريف محتوى وبرومت تصميم جاهز',
+  discount: 'حاسبة الخصم والربح',
+  audit: 'تقييم التسويق لشركتك مجانًا',
+  resizer: 'مقاسات صور السوشيال ميديا',
+};
+
 const ALL_OFF = { replies: false, crm: false, ads: false, notion: false, utm: false, qr: false, harvest: false, inspect: false };
 
 const tools = [
@@ -46,7 +85,7 @@ const tools = [
     id: 'walink', stage: 'execution', name: 'ChatLink QR', nameHtml: 'ChatLink <span>QR</span>', category: 'واتساب',
     tagline: 'لينك واتساب برسالة جاهزة + QR لكل حملة',
     description: 'اعمل لينك wa.me برسالة جاهزة وكود حملة، عشان تعرف كل رسالة جاتلك من أنهي إعلان. ومعاه QR بالأسود أو الأحمر جاهز للطباعة. وكمان QR لأي لينك تاني.',
-    bullets: ['بيظبط الرقم المصري لوحده', 'كود الحملة جوه الرسالة', 'QR بصيغة PNG وSVG', 'مكتبة لكل لينكاتك'],
+    bullets: ['بيظبط الرقم المصري لوحده', 'كود الحملة جوه الرسالة', 'QR بصيغة PNG و SVG', 'مكتبة لكل لينكاتك'],
     where: 'أي مكان',
     web: true,
     features: { qr: true },
@@ -78,8 +117,8 @@ const tools = [
   {
     id: 'inspect', stage: 'intel', name: 'PixelScope', nameHtml: 'Pixel<span>Scope</span>', category: 'تحليل',
     tagline: 'اعرف أي موقع بيستخدم أنهي Pixel وأكواد تتبع',
-    description: 'افتح أي موقع ودوس الأيقونة: هيطلعلك Meta Pixel، وGA4، وGTM، وGoogle Ads، وTikTok، وSnap، وLinkedIn، وClarity، وHotjar بأرقام الـ ID. ومعاهم تقرير SEO سريع وشكل اللينك لما يتشارك.',
-    bullets: ['+12 أداة تتبع بأرقام الـ ID', 'المنصة (Shopify، WordPress، Salla...)', 'Title وDescription وH1 وSchema', 'نسخ التقرير بضغطة'],
+    description: 'افتح أي موقع ودوس الأيقونة: هيطلعلك Meta Pixel، و GA4، و GTM، و Google Ads، و TikTok، و Snap، و LinkedIn، و Clarity، و Hotjar بأرقام الـ ID. ومعاهم تقرير SEO سريع وشكل اللينك لما يتشارك.',
+    bullets: ['+12 أداة تتبع بأرقام الـ ID', 'المنصة (Shopify، WordPress، Salla...)', 'Title و Description و H1 و Schema', 'نسخ التقرير بضغطة'],
     where: 'أي موقع',
     web: false,
     features: { inspect: true },
@@ -89,8 +128,8 @@ const tools = [
   {
     id: 'utm', stage: 'measure', name: 'UTM Studio', nameHtml: 'UTM <span>Studio</span>', category: 'تحليل',
     tagline: 'لينكات UTM بنظام تسمية ثابت',
-    description: 'بيعمل لينكات UTM بنظام تسمية واحد (حروف صغيرة ومن غير مسافات)، وفيه قوالب Meta وTikTok الديناميك ومكتبة لكل حملاتك. ومعاه QR للمطبوعات وتصدير Excel.',
-    bullets: ['تسمية موحّدة تلقائيًا', 'قوالب Meta وTikTok الديناميك', 'بيحافظ على باراميترات اللينك', 'مكتبة + QR + Excel'],
+    description: 'بيعمل لينكات UTM بنظام تسمية واحد (حروف صغيرة ومن غير مسافات)، وفيه قوالب Meta و TikTok الديناميك ومكتبة لكل حملاتك. ومعاه QR للمطبوعات وتصدير Excel.',
+    bullets: ['تسمية موحّدة تلقائيًا', 'قوالب Meta و TikTok الديناميك', 'بيحافظ على باراميترات اللينك', 'مكتبة + QR + Excel'],
     where: 'أي مكان',
     web: true,
     features: { utm: true },
@@ -100,7 +139,7 @@ const tools = [
   {
     id: 'calc', stage: 'measure', name: 'CampaignMath', nameHtml: 'Campaign<span>Math</span>', category: 'تحليل',
     tagline: 'كل مؤشرات الحملة + الميزانية من الهدف',
-    description: 'حط أرقام الحملة يطلعلك CPM، وCTR، وCPC، وCPL، وCAC، وROAS، وROI. أو ابدأ من عدد العملاء اللي محتاجهم، وهو يقولّك الميزانية المطلوبة ويقسّمها على المنصات.',
+    description: 'حط أرقام الحملة يطلعلك CPM، و CTR، و CPC، و CPL، و CAC، و ROAS، و ROI. أو ابدأ من عدد العملاء اللي محتاجهم، وهو يقولّك الميزانية المطلوبة ويقسّمها على المنصات.',
     bullets: ['10 مؤشرات في ثانية', 'الميزانية من الهدف', 'تقسيم على المنصات', 'ج.م / ر.س / د.إ / $'],
     where: 'أي مكان',
     web: true,
@@ -149,7 +188,7 @@ const tools = [
   {
     id: 'resizer', stage: 'execution', name: 'SocialSizer', nameHtml: 'Social<span>Sizer</span>', category: 'محتوى',
     tagline: 'صورة واحدة ← كل مقاسات السوشيال',
-    description: 'ارفع صورة واحدة وخدها بكل مقاسات المنصات (Post، وStory، وCover، وThumbnail...) مرة واحدة. فيه قص ذكي بتحدد فيه منتصف الصورة، أو ملء بخلفية. والصورة مش بتترفع على أي سيرفر.',
+    description: 'ارفع صورة واحدة وخدها بكل مقاسات المنصات (Post، و Story، و Cover، و Thumbnail...) مرة واحدة. فيه قص ذكي بتحدد فيه منتصف الصورة، أو ملء بخلفية. والصورة مش بتترفع على أي سيرفر.',
     bullets: ['+14 مقاس جاهز', 'قص أو ملء بخلفية', 'تحديد منتصف الصورة', 'تحميل الكل في ZIP'],
     where: 'أي مكان', web: true,
     features: {}, tools: ['resizer'], home: 'resizer',
@@ -170,4 +209,4 @@ const bundle = {
   content: ['whatsapp', 'ads'],
 };
 
-module.exports = { VERSION, AUTHOR, SITE_URL, FRAMEWORK, tools, bundle, ALL_OFF };
+module.exports = { VERSION, AUTHOR, SITE_URL, FRAMEWORK, CONTACT, ANALYTICS, CHANGELOG, SEO, tools, bundle, ALL_OFF };

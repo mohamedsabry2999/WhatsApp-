@@ -50,7 +50,7 @@ Tools.discount = {
       <div class="card" style="margin-top:14px">
         <h3>كل نسب الخصم</h3>
         <div id="d-table"></div>
-        <div class="row" style="margin-top:12px"><button class="btn" id="d-copy">انسخ النتيجة كبوست</button><span class="muted" style="font-size:12px">جاهزة تنزل على LinkedIn أو فيسبوك</span></div>
+        <div class="row" style="margin-top:12px"><button class="btn" id="d-copy">انسخ النتيجة كبوست</button><span class="row" id="d-share" style="gap:6px"></span></div>
       </div>`;
 
     const v = (id) => { const x = parseFloat($('#d-' + id, el).value); return isFinite(x) ? x : 0; };
@@ -93,6 +93,7 @@ Tools.discount = {
           <b style="width:52px;color:var(--white);font-family:Inter">${d}%</b>
           <div style="flex:1;height:10px;background:var(--black);border-radius:9px;overflow:hidden">${x.loss ? '' : `<div style="width:${Math.min(100, (x.extraPct / maxBar) * 100)}%;height:100%;background:${x.extraPct >= 100 ? 'var(--bad)' : 'var(--brand)'}"></div>`}</div>
           <span style="width:200px;text-align:left;font-family:Inter, Cairo">${x.loss ? '<span style="color:var(--bad)">خسارة في كل بيعة</span>' : `<bdi dir="ltr">+${pct(x.extraPct)}</bdi> مبيعات`}</span></div>`).join('');
+      $('#d-share', el).innerHTML = '<span class="muted" style="font-size:12px">شارك:</span>' + shareButtons(r.loss ? `خصم ${inp.discount}% على منتج هامشه ${pct(r.marginPct)} = خسارة في كل بيعة. احسب خصمك:` : `خصم ${inp.discount}% على منتج هامشه ${pct(r.marginPct)} محتاج تبيع ${pct(r.extraPct)} زيادة عشان تطلع بنفس المكسب. احسب خصمك:`, TOOLS_SITE + '/tools/discount.html');
       clearTimeout(saveT);
       saveT = setTimeout(() => Store.set('discount', { ...inp, cur: cur() }), 400);
     }

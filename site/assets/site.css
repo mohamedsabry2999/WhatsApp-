@@ -212,6 +212,17 @@ details.faq code, .kbd { font: 700 13px Inter, monospace; background: var(--bg);
 .fw-card.soon .fw-tools i { color: var(--ink-3); border: 1px dashed var(--ink-3); border-radius: 999px; padding: 1px 10px; margin: 0; }
 .fw-card.on { box-shadow: 0 0 0 2px var(--red), var(--shadow-lift); }
 
+/* ===== مشاركة + تواصل ===== */
+.share { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; margin-top: 22px; font-size: 14px; color: var(--ink-3); font-weight: 700; }
+.share a, .share button { padding: 5px 14px; border-radius: 999px; background: #fff; border: 1px solid var(--line); color: var(--ink); font: 700 13px Cairo, Inter, sans-serif; cursor: pointer; }
+.share a:hover, .share button:hover { border-color: var(--red); color: var(--red); }
+.contact-btns { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 26px; }
+.suggest { background: var(--black-2); border: 1px solid var(--black-line); border-radius: 22px; padding: 28px; }
+.suggest b { display: block; font-size: 22px; margin: 8px 0 4px; }
+.suggest p { color: rgba(255,255,255,.6); margin: 0 0 18px; }
+.suggest .fw-n { font: 800 40px/1 Inter, sans-serif; letter-spacing: -1px; color: #fff; }
+.disclaimer { color: var(--ink-3); font-size: 12px; margin: 0 0 6px; }
+
 /* ===== تقسيمة عمودين ===== */
 .split { display: grid; grid-template-columns: 1.1fr 1fr; gap: 40px; align-items: center; }
 
