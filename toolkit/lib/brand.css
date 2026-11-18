@@ -4,7 +4,7 @@
 @font-face { font-family: Inter; font-weight: 400; src: url(../fonts/inter-latin-400-normal.woff2) format("woff2"); }
 @font-face { font-family: Inter; font-weight: 800; src: url(../fonts/inter-latin-800-normal.woff2) format("woff2"); }
 :root {
-  --brand: #E10600; --brand-soft: rgba(225, 6, 0, .14);
+  --brand: #C7161D; --brand-soft: rgba(199, 22, 29, .14);
   --black: #111111; --panel: #1B1B1B; --panel-2: #222222; --line: #2E2E2E;
   --white: #FFFFFF; --text: #EDEDED; --muted: #9A9A9A;
   --ok: #FFFFFF; --warn: #FFB020; --bad: #FF6B63;

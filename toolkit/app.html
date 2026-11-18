@@ -27,7 +27,8 @@
   body.single aside { position: static; height: auto; flex-direction: row; align-items: center; justify-content: space-between; border-left: 0; border-bottom: 3px solid var(--brand); padding: 12px 32px; }
   body.single aside nav { display: none; }
   body.single .logo { border: 0; margin: 0; padding: 0; }
-  body.single aside .sig { margin: 0; border: 0; padding: 0; text-align: left; }
+  body.single aside .sig { margin: 0; border: 0; padding: 0; text-align: left; display: flex; align-items: center; gap: 12px; }
+  body.single aside .sig img { margin: 0 !important; }
   body.single main { margin: 0 auto; }
   @media (max-width: 760px) { body { grid-template-columns: 1fr; } aside { position: static; height: auto; } main { padding: 18px 16px; } }
 </style>
@@ -51,7 +52,7 @@
       <a href="#utm">UTM Builder</a>
       <a href="#calc">حاسبة الحملات</a>
     </nav>
-    <div class="sig">تطوير: <b>محمد صبري</b><br><bdi dir="ltr">Mohamed Sabry</bdi> · v<span id="ver"></span></div>
+    <div class="sig"><img src="icons/logo-white.png" alt="محمد صبري" style="height:34px;width:auto;display:block;margin-bottom:6px">تطوير: <b>محمد صبري</b><br><bdi dir="ltr">Mohamed Sabry</bdi> · v<span id="ver"></span></div>
   </aside>
   <main id="main"></main>
 

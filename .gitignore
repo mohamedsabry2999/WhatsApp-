@@ -6,3 +6,4 @@
 !site/**/*.png
 previews/
 dist/
+!brand/*.png

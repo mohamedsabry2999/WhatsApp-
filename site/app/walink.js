@@ -25,7 +25,7 @@ Tools.walink = {
           </div>
           <div class="row" style="margin-top:12px">
             <label class="check" style="padding:0"><input type="radio" name="qc" value="#111111" checked> QR أسود</label>
-            <label class="check" style="padding:0"><input type="radio" name="qc" value="#E10600"> QR أحمر</label>
+            <label class="check" style="padding:0"><input type="radio" name="qc" value="#C7161D"> QR أحمر</label>
           </div>
           <div class="card mono" id="out" style="margin-top:12px;background:var(--black)"></div>
           <div class="row" style="margin-top:10px">

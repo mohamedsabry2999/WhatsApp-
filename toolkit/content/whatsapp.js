@@ -183,7 +183,7 @@
           b.textContent = e.tag;
           const c = tagColor(e.tag);
           b.style.setProperty('--c', c);
-          b.style.color = /^#(?:6B6B6B|111111|E10600|B80500)$/i.test(c) ? '#fff' : '#111';
+          b.style.color = /^#(?:6B6B6B|111111|C7161D|9E1018)$/i.test(c) ? '#fff' : '#111';
         }
       });
     }, force ? 0 : 400);

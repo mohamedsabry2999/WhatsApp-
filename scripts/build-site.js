@@ -18,9 +18,9 @@ const CATS = ['واتساب', 'محتوى', 'تحليل'];
 const LOGO_IMG = fs.existsSync(path.join(SITE, 'assets', 'logo.svg')) || fs.existsSync(path.join(SITE, 'assets', 'logo.png'));
 const LOGO_FILE = fs.existsSync(path.join(SITE, 'assets', 'logo.svg')) ? 'logo.svg' : 'logo.png';
 const logo = (b) => LOGO_IMG
-  ? `<a class="logo" href="${b}index.html" aria-label="محمد صبري"><img class="logo-img" src="${b}assets/${LOGO_FILE}" alt="محمد صبري"></a>`
+  ? `<a class="logo" href="${b}index.html" aria-label="محمد صبري — أدوات التسويق"><img class="logo-img" src="${b}assets/${LOGO_FILE}" alt="محمد صبري" width="66" height="46"><span class="logo-sep"></span><span class="logo-sub"><b class="en">TOOLS</b><small>أدوات التسويق</small></span></a>`
   : `<a class="logo" href="${b}index.html" aria-label="محمد صبري — الرئيسية">
-      <span class="logo-mark"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="4" height="16" rx="1" fill="#fff"/><rect x="10" y="4" width="4" height="16" rx="1" fill="#fff"/><rect x="17" y="4" width="4" height="16" rx="1" fill="#E10600"/></svg></span>
+      <span class="logo-mark"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="4" height="16" rx="1" fill="#fff"/><rect x="10" y="4" width="4" height="16" rx="1" fill="#fff"/><rect x="17" y="4" width="4" height="16" rx="1" fill="#C7161D"/></svg></span>
       <span class="logo-text"><b>محمد صبري</b><small>Marketing Tools</small></span></a>`;
 
 const PERM = {
@@ -55,8 +55,9 @@ function layout({ title, desc, b = '', active = '', body, head = '', scripts = '
 <meta property="og:image" content="${siteUrl}/assets/og.png">
 <meta property="og:type" content="website">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="theme-color" content="#E10600">
+<meta name="theme-color" content="#C7161D">
 <link rel="icon" href="${b}assets/favicon.png">
+<link rel="apple-touch-icon" href="${b}assets/apple-touch-icon.png">
 <link rel="preload" href="${b}assets/fonts/cairo-arabic-800-normal.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="${b}assets/site.css">
 ${head}
@@ -258,6 +259,7 @@ function home() {
   <section id="about">
     <div class="dark split reveal">
       <div style="position:relative">
+        <img src="assets/logo-white.png" alt="محمد صبري" style="height:120px;width:auto;margin-bottom:22px">
         <p class="eyebrow">مين ورا الأدوات <span class="en">· About</span></p>
         <h2 class="h2">محمد صبري<span class="dot">.</span><span class="soft en" style="text-align:right">Strategic Marketing &amp; Growth Architect</span></h2>
       </div>

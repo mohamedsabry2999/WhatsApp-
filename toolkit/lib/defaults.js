@@ -7,8 +7,8 @@ const DEFAULT_REPLIES = [
   { id: 'r5', shortcut: 'ميعاد', title: 'تحديد ميعاد', text: 'تمام يا {الاسم_الأول}، إيه أنسب ميعاد ليك نتكلم فيه؟\nأنا متاح {اليوم} و بكرة.' },
 ];
 const DEFAULT_TAGS = ['عميل محتمل', 'مهتم', 'متابعة', 'عميل', 'مقفول'];
-const TAG_COLORS = { 'عميل محتمل': '#E10600', 'مهتم': '#FF7A00', 'متابعة': '#FFB020', 'عميل': '#FFFFFF', 'مقفول': '#6B6B6B' };
-const tagColor = (t) => TAG_COLORS[t] || '#E10600';
+const TAG_COLORS = { 'عميل محتمل': '#C7161D', 'مهتم': '#FF7A00', 'متابعة': '#FFB020', 'عميل': '#FFFFFF', 'مقفول': '#6B6B6B' };
+const tagColor = (t) => TAG_COLORS[t] || '#C7161D';
 
 // استبدال المتغيرات في الرد
 function fillTemplate(text, name) {

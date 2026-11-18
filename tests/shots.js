@@ -11,7 +11,7 @@ const OUT = path.join(ROOT, 'site', 'assets', 'shots');
 const TMP = fs.mkdtempSync(path.join(os.tmpdir(), 'mt-shots-'));
 fs.mkdirSync(OUT, { recursive: true });
 
-const AV = ['#E10600', '#111', '#6B6B6B', '#B80500', '#333', '#9A9A9A', '#E10600', '#444'];
+const AV = ['#C7161D', '#111', '#6B6B6B', '#9E1018', '#333', '#9A9A9A', '#C7161D', '#444'];
 const CHATS = [['أحمد محمد', 'تمام، ابعتلي العرض', '10:42'], ['سارة علي', 'هل فيه باقة شهرية؟', '10:15'], ['شركة النور للتجارة', 'محتاجين ميعاد الأسبوع ده', '09:58'], ['كريم حسن', 'شكرًا جدًا 🙏', 'أمس'], ['+20 112 555 0198', 'السلام عليكم، شفت الإعلان', 'أمس'], ['منى عادل', 'هبعتلك التفاصيل بكرة', 'الأحد'], ['يوسف إبراهيم', 'تمام كده', 'السبت']];
 const WA_HTML = `<!doctype html><html dir="rtl"><head><meta charset="utf-8"><title>Chat</title><style>
 body{margin:0;font:14px "Segoe UI",Tahoma,sans-serif;display:flex;height:100vh;background:#f0f2f5;color:#111}
@@ -24,7 +24,7 @@ body{margin:0;font:14px "Segoe UI",Tahoma,sans-serif;display:flex;height:100vh;b
 .row .t2{color:#667781;font-size:13px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 #main{flex:1;display:flex;flex-direction:column}
 #main header{height:60px;background:#f0f2f5;display:flex;align-items:center;gap:12px;padding:0 16px;border-right:1px solid #e9edef}
-#main header .av{width:40px;height:40px;border-radius:50%;background:#E10600;color:#fff;display:grid;place-items:center;font-weight:700}
+#main header .av{width:40px;height:40px;border-radius:50%;background:#C7161D;color:#fff;display:grid;place-items:center;font-weight:700}
 #main header small{display:block;color:#667781;font-size:12px}
 #msgs{flex:1;background:#efeae2;background-image:radial-gradient(rgba(0,0,0,.035) 1px,transparent 1px);background-size:18px 18px;padding:20px 60px;display:flex;flex-direction:column;gap:8px}
 .m{max-width:60%;padding:7px 10px 8px;border-radius:8px;box-shadow:0 1px .5px rgba(0,0,0,.13);font-size:14.5px}.m.in{background:#fff;align-self:flex-start}.m.out{background:#d9fdd3;align-self:flex-end}
@@ -44,7 +44,7 @@ rq.onsuccess=()=>{const tx=rq.result.transaction(['chat','contact'],'readwrite')
 
 const creative = (bg, fg, t1, t2) => 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(`<svg xmlns="http://www.w3.org/2000/svg" width="600" height="420"><rect width="600" height="420" fill="${bg}"/><circle cx="520" cy="60" r="140" fill="${fg}" opacity=".12"/><text x="300" y="190" font-family="Tahoma" font-size="56" font-weight="700" fill="${fg}" text-anchor="middle">${t1}</text><text x="300" y="260" font-family="Tahoma" font-size="28" fill="${fg}" text-anchor="middle" opacity=".8">${t2}</text></svg>`);
 const ADS = [['Competitor A', 'خصم 30% على كل الباقات لحد آخر الشهر. احجز مكانك دلوقتي!', creative('#111', '#fff', 'خصم 30%', 'لحد آخر الشهر'), 'Active', '10 Nov 2026', '1234567890123'],
-  ['Brand Studio', 'أول استشارة مجانًا. ابعتلنا على واتساب ونرد عليك في نفس اليوم.', creative('#E10600', '#fff', 'استشارة مجانية', 'ابعتلنا على واتساب'), 'Active', '2 Nov 2026', '2345678901234'],
+  ['Brand Studio', 'أول استشارة مجانًا. ابعتلنا على واتساب ونرد عليك في نفس اليوم.', creative('#C7161D', '#fff', 'استشارة مجانية', 'ابعتلنا على واتساب'), 'Active', '2 Nov 2026', '2345678901234'],
   ['Growth Lab', 'كورس التسويق الرقمي: 8 أسابيع، شغل عملي على حملات حقيقية.', creative('#f2f2f2', '#111', 'كورس 8 أسابيع', 'سجّل دلوقتي'), 'Inactive', '1 Oct 2026', '3456789012345']];
 const ADS_HTML = `<!doctype html><html><head><meta charset="utf-8"><title>Ad Library</title><style>body{margin:0;font:14px "Segoe UI",Helvetica,Arial,sans-serif;background:#f0f2f5;color:#1c1e21}
 .top{background:#fff;height:56px;display:flex;align-items:center;padding:0 20px;gap:16px;box-shadow:0 1px 2px rgba(0,0,0,.1)}.top b{font-size:18px}.top .s{flex:1;max-width:520px;background:#f0f2f5;border-radius:20px;padding:9px 16px;color:#65676b}
@@ -148,7 +148,7 @@ im.save(${JSON.stringify(path.join(OUT, id + '.jpg'))},quality=84,optimize=True,
     <img src="data:image/png;base64,${fs.readFileSync(popImg).toString('base64')}" style="width:340px;border-radius:12px;box-shadow:0 20px 60px rgba(0,0,0,.25)">
     <div style="background:#fff;border-radius:10px;box-shadow:0 20px 60px rgba(0,0,0,.18);overflow:hidden;width:760px">
       <div style="background:#f3f3f3;padding:8px 14px;border-bottom:1px solid #ddd;direction:ltr;color:#444">ContactHarvest-2026-11-18.xlsx — Excel</div>
-      <table style="border-collapse:collapse;width:100%">${rows.slice(0, 9).map((r, i) => `<tr style="height:30px">${r.map((c) => `<td style="unicode-bidi:plaintext;border:1px solid #e1e1e1;padding:4px 8px;${i === 0 ? 'background:#111;color:#fff;font-weight:700;border-bottom:3px solid #E10600' : ''}">${c}</td>`).join('')}</tr>`).join('')}</table>
+      <table style="border-collapse:collapse;width:100%">${rows.slice(0, 9).map((r, i) => `<tr style="height:30px">${r.map((c) => `<td style="unicode-bidi:plaintext;border:1px solid #e1e1e1;padding:4px 8px;${i === 0 ? 'background:#111;color:#fff;font-weight:700;border-bottom:3px solid #C7161D' : ''}">${c}</td>`).join('')}</tr>`).join('')}</table>
     </div></body></html>`);
   jpg(await shot(comp, 'harvest-comp'), 'contactharvest');
 
@@ -227,10 +227,10 @@ im.save(${JSON.stringify(path.join(OUT, id + '.jpg'))},quality=84,optimize=True,
   const font = (f) => 'data:font/woff2;base64,' + fs.readFileSync(path.join(ROOT, 'site', 'assets', 'fonts', f)).toString('base64');
   await og.setContent(`<html dir="rtl" style="overflow:hidden"><head><style>@font-face{font-family:C;font-weight:800;src:url(${font('cairo-arabic-800-normal.woff2')})}@font-face{font-family:C;font-weight:300;src:url(${font('cairo-arabic-300-normal.woff2')})}@font-face{font-family:I;font-weight:800;src:url(${font('inter-latin-800-normal.woff2')})}</style></head>
     <body style="margin:0;width:1200px;height:630px;background:#0E0E0E;color:#fff;font-family:C;position:relative;overflow:hidden">
-    <div style="position:absolute;top:-220px;left:-220px;width:620px;height:620px;border-radius:50%;background:radial-gradient(circle,rgba(225,6,0,.35),transparent 70%)"></div>
-    <div style="position:absolute;top:0;right:0;left:0;height:8px;background:#E10600"></div>
-    <div style="padding:70px 80px 0;position:relative"><div style="display:flex;gap:12px;align-items:center;color:rgba(255,255,255,.55);font-size:26px;font-weight:800"><span style="width:30px;height:3px;background:#E10600"></span>محمد صبري</div>
-    <div style="font-size:84px;font-weight:800;line-height:1.15;margin-top:16px">أدوات تسويق مجانية<span style="color:#E10600">.</span></div>
+    <div style="position:absolute;top:-220px;left:-220px;width:620px;height:620px;border-radius:50%;background:radial-gradient(circle,rgba(199, 22, 29,.35),transparent 70%)"></div>
+    <div style="position:absolute;top:0;right:0;left:0;height:8px;background:#C7161D"></div>
+    <div style="padding:70px 80px 0;position:relative"><img src="data:image/png;base64,${fs.readFileSync(path.join(ROOT, 'site', 'assets', 'logo-white.png')).toString('base64')}" style="height:96px">
+    <div style="font-size:84px;font-weight:800;line-height:1.15;margin-top:16px">أدوات تسويق مجانية<span style="color:#C7161D">.</span></div>
     <div style="font-size:52px;font-weight:300;color:rgba(255,255,255,.45);line-height:1.2">بتوفّر يومك.</div></div>
     <div style="position:absolute;bottom:60px;right:80px;left:80px;display:flex;justify-content:space-between;align-items:center"><div style="display:flex;gap:12px">${icons.join('')}</div>
     <div style="font:800 22px I;color:rgba(255,255,255,.6);direction:ltr">tools.mohammedsabry.site</div></div></body></html>`);

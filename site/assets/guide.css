@@ -10,7 +10,7 @@
 .g-step.on .n { background: var(--red); color: #fff; }
 .g-step.on b { color: #fff; }
 .g-step.on p, .g-step.on .extra { display: block; }
-.g-step.done .n { background: rgba(225,6,0,.18); color: var(--red); }
+.g-step.done .n { background: rgba(199, 22, 29,.18); color: var(--red); }
 .copy-cmd { display: inline-flex; align-items: center; gap: 8px; background: #000; border: 1px solid var(--black-line); border-radius: 10px; padding: 6px 6px 6px 12px; font: 700 13px Inter; color: #fff; direction: ltr; }
 .copy-cmd button { background: var(--red); color: #fff; border: 0; border-radius: 7px; padding: 4px 10px; font: 700 12px Cairo, Inter; cursor: pointer; }
 
@@ -119,7 +119,7 @@
 .tool-pick { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 26px; }
 .tool-pick button { display: flex; align-items: center; gap: 8px; padding: 6px 14px 6px 8px; border-radius: 999px; border: 1px solid var(--black-line); background: var(--black-2); color: rgba(255,255,255,.75); cursor: pointer; font: 700 13px Inter, Cairo; }
 .tool-pick button img { width: 22px; height: 22px; border-radius: 6px; }
-.tool-pick button.on { border-color: var(--red); color: #fff; background: rgba(225,6,0,.12); }
+.tool-pick button.on { border-color: var(--red); color: #fff; background: rgba(199, 22, 29,.12); }
 
 @media (max-width: 980px) {
   .guide { grid-template-columns: 1fr; }
